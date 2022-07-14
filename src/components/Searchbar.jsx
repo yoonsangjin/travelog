@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
-import Map from './Map';
+import { useRecoilState } from 'recoil'
+import { placeState } from '../recoil/Atom';
+
+
 
 const SearchBarContainer = styled.div`
 
@@ -39,7 +42,7 @@ const SearchBarContainer = styled.div`
 
 function Searchbar() {
   const [inputValue, setInputValue] = useState('');
-  const [place, setPlace] = useState('');
+  const [place, setPlace] = useRecoilState(placeState);
   
   const onChange = (e) => {
     setInputValue(e.target.value);
@@ -49,7 +52,7 @@ function Searchbar() {
     e.preventDefault();
     setPlace(inputValue);
     setInputValue('');  
-    console.log(inputValue);
+    console.log({ place });
   };
 
   return (
@@ -62,7 +65,6 @@ function Searchbar() {
             />
             <button type='submit' className='searchBtn'><ImSearch /></button>
       </form>
-      <Map Searchbar={ place } />
     </SearchBarContainer>
   );
 }

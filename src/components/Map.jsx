@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import Searchbar from './Searchbar';
-const { kakao } = window;
-console.log({kakao})
+import { useRecoilState } from 'recoil';
+import { placeState } from '../recoil/Atom';
 
-function Map({ Searchbar }) {
+const { kakao } = window;
+
+function Map() {
+    const [place, ] = useRecoilState(placeState);
+    console.log({place})
 
     useEffect(() => {
+        
         let infowindow = new kakao.maps.InfoWindow({zIndex:1});
         const container = document.getElementById('map');
 		const options = {
@@ -17,7 +21,7 @@ function Map({ Searchbar }) {
 
         const ps = new kakao.maps.services.Places();
 
-        ps.keywordSearch(Searchbar, placesSearchCB);
+        ps.keywordSearch(place, placesSearchCB);
 
         function placesSearchCB (data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
@@ -44,7 +48,7 @@ function Map({ Searchbar }) {
             });
         }
 
-    }, [Searchbar]);
+    }, [place]);
 
     return (
         <MapContainer>

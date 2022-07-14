@@ -7,18 +7,29 @@ import Login from './pages/login/Login.jsx';
 import LoginForEmail from './pages/login/LoginForEmail.jsx';
 import Navbar from './components/Navbar.jsx';
 import Signup from './pages/login/Signup.jsx';
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+
+
 
 function App() {
   return (
     <div className="App">
-      <Reset/>
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Main/>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/loginForEmail" element={<LoginForEmail />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
+      <RecoilRoot>
+        <Reset/>
+        <Navbar/>
+        <Routes>
+          <Route path="/" element={<Main/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginForEmail" element={<LoginForEmail />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </RecoilRoot>
     </div>
   );
 }

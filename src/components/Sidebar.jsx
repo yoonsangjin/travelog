@@ -6,32 +6,47 @@ import { IoMdCafe } from 'react-icons/io';
 import { TbStar } from 'react-icons/tb';
 import Extendbar from './Extendbar';
 
+
 function Sidebar() {
 
-
-  return (
-    <SidebarStyle>
-        <div className='sidebar'>
-            <div className='filterBox'>
-                <div className="searchBox">
-                    <ImSearch className='icon' id='searchIcon'/>
+    return (
+        <SidebarStyle>
+            <div className='sidebar'>
+                <div className='filterBox'>
+                    <div className="searchBox">
+                        <ImSearch 
+                        className='icon' 
+                        id='searchIcon'
+                        />
+                    </div>
+                    <div className="restaurantBox">
+                        <BiRestaurant 
+                        className='icon' 
+                        id='restaurantIcon'
+                        />
+                    </div>
+                    <div className="landmarkBox">
+                        <ImLibrary 
+                        className='icon' 
+                        id='landmarkIcon'
+                        />
+                    </div>
+                    <div className="cafeBox">
+                        <IoMdCafe 
+                        className='icon' 
+                        id='cafeIcon'
+                        />
+                    </div>
+                    <div className="favoriteBox">
+                        <TbStar 
+                        className='icon' 
+                        id='favoriteIcon'
+                        />
+                    </div>
                 </div>
-                <div className="restaurantBox">
-                    <BiRestaurant className='icon' id='restaurantIcon'/>
-                </div>
-                <div className="landmarkBox">
-                    <ImLibrary className='icon' id='landmarkIcon'/>
-                </div>
-                <div className="cafeBox">
-                    <IoMdCafe className='icon' id='cafeIcon' />
-                </div>
-                <div className="favoriteBox">
-                    <TbStar className='icon' id='favoriteIcon'/>
-                </div>
+                <Extendbar/>
             </div>
-        </div>
-        <Extendbar/>
-    </SidebarStyle>
+        </SidebarStyle>
   );
 }
 
