@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 import axios from "axios";
 
 const { Kakao } = window;
@@ -62,15 +63,28 @@ const KakaoLogin = () => {
   }, []);
   return (
     <div>
-      <a id='custom-login-btn' onClick={loginWithKakao}>
-        <img
-          src='//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg'
-          width='222'
-          alt='카카오 로그인 버튼'
-        />
-      </a>
+      <SocialButton onClick={loginWithKakao}>
+        카카오로 로그인
+      </SocialButton>
     </div>
   );
 };
 
 export default KakaoLogin;
+
+const SocialButton = styled.button`
+  display: block;
+  width: 300px;
+  height: 55px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 55px;
+  position: relative;
+  top: 70px;
+  left: 100px;
+  margin: 15px 0;
+  background-color: #f7e317;
+  color: #381e1f;
+  border: none;
+  border-radius: 22px;
+`;
