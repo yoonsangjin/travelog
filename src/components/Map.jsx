@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { placeState } from '../recoil/Atom';
+import { placeState, mainInputValueState } from '../recoil/Atom';
 
 const { kakao } = window;
 
 function Map() {
     const [place, ] = useRecoilState(placeState);
-    console.log({place})
+    const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
+    console.log({place});
+    console.log({mainInputValue});
 
     useEffect(() => {
         

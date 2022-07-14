@@ -5,3 +5,12 @@ export const placeState = atom({
     default: '',
 });
 
+export const mainInputValueState = atom({
+    key: 'mainInputValueState',
+    default: '',
+})
+
+export const extendbarState = atom({
+    key: 'extendbarState',
+    default: '',
+});

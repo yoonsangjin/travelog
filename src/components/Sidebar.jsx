@@ -5,10 +5,16 @@ import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { TbStar } from 'react-icons/tb';
 import Extendbar from './Extendbar';
+import { useRecoilState } from 'recoil';
+import { extendbarState, placeState, mainInputValueState } from '../recoil/Atom';
 
 
 function Sidebar() {
-
+    const [close, setClose] = useRecoilState(extendbarState);
+    const [place, setPlace] = useRecoilState(placeState);
+    const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
+    
+    const handleOpen = () => setClose(false);
     return (
         <SidebarStyle>
             <div className='sidebar'>
@@ -17,24 +23,34 @@ function Sidebar() {
                         <ImSearch 
                         className='icon' 
                         id='searchIcon'
+                        onClick={handleOpen}
                         />
                     </div>
                     <div className="restaurantBox">
                         <BiRestaurant 
                         className='icon' 
                         id='restaurantIcon'
+                        onClick={() => {
+                            setPlace(mainInputValue + ' 맛집')
+                        }}
                         />
                     </div>
                     <div className="landmarkBox">
                         <ImLibrary 
                         className='icon' 
                         id='landmarkIcon'
+                        onClick={() => {
+                            setPlace(mainInputValue + ' 관광지')
+                        }}
                         />
                     </div>
                     <div className="cafeBox">
                         <IoMdCafe 
                         className='icon' 
                         id='cafeIcon'
+                        onClick={() => {
+                            setPlace(mainInputValue + ' 카페')
+                        }}
                         />
                     </div>
                     <div className="favoriteBox">
