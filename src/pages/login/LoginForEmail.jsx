@@ -19,7 +19,6 @@ const LoginHeader = styled.h2`
 	font-size: 30px;
 	position: relative;
 	top: 50px;
-	left: 211px;
 `;
 const LoginButton = styled.button`
 	display: block;
@@ -45,7 +44,6 @@ const LoginInput = styled.input`
 	box-sizing: border-box;
 	position: relative;
 	top: 100px;
-	left: 100px;
 	margin-bottom: 20px;
 	color: #5f6caf;
 	background-color: #edf7fa;

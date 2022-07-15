@@ -8,7 +8,7 @@ const SignupSection = styled.section`
 `;
 const SignupContainer = styled.article`
 	width: 500px;
-	height: 600px;
+	height: 550px;
 	margin: 100px auto;
 	box-shadow: 1px 1px 22px 2px rgba(0, 0, 0, 0.25);
 	border-radius: 38px;
@@ -18,7 +18,6 @@ const SignupHeader = styled.h2`
 	font-size: 30px;
 	position: relative;
 	top: 50px;
-	left: 200px;
 `;
 const SignupInput = styled.input`
 	width: 300px;
@@ -27,7 +26,6 @@ const SignupInput = styled.input`
 	box-sizing: border-box;
 	position: relative;
 	top: 100px;
-	left: 100px;
 	margin-bottom: 25px;
 	color: #5f6caf;
 	background-color: #edf7fa;
@@ -43,7 +41,7 @@ const SignupButton = styled.button`
 	line-height: 55px;
 	margin-bottom: 25px;
 	position: relative;
-	top: 100px;
+	top: 130px;
 	left: 100px;
 	background-color: #5f6caf;
 	color: #fff;
@@ -55,7 +53,10 @@ const InvalidInput = styled.p`
 	color: #ff8364;
 	position: relative;
 	top: 80px;
-	left: 110px;
+	left: -50px;
+	&: nth-of-type(2) {
+		left: -70px;
+	}
 `;
 
 function Signup() {
