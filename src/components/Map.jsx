@@ -7,8 +7,7 @@ const { kakao } = window;
 
 function Map() {
     const [place, ] = useRecoilState(placeState);
-    const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
-    console.log({place});
+    const [mainInputValue, ] = useRecoilState(mainInputValueState);
     console.log({mainInputValue});
 
     useEffect(() => {
@@ -20,20 +19,23 @@ function Map() {
 			level: 5
 		};
         const kakaoMap = new kakao.maps.Map(container, options);
-
-        const ps = new kakao.maps.services.Places();
-
-        ps.keywordSearch(place, placesSearchCB);
+        kakaoMap.setMaxLevel(12);
+        
+        const places = new kakao.maps.services.Places();
+        const searchOptions = {
+            page: 5,
+        }
+        places.keywordSearch(place, placesSearchCB, searchOptions);
 
         function placesSearchCB (data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
                 let bounds = new kakao.maps.LatLngBounds();
-
+                console.log(data);
                 for (let i=0; i<data.length; i++) {
                     displayMarker(data[i]);    
                     bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
                 }
-
+                
                 kakaoMap.setBounds(bounds);
             } 
         }

@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import Extendbar from './Extendbar';
+import Map from './Map';
 import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { TbStar } from 'react-icons/tb';
-import Extendbar from './Extendbar';
 import { useRecoilState } from 'recoil';
 import { extendbarState, placeState, mainInputValueState } from '../recoil/Atom';
 
@@ -13,7 +14,7 @@ function Sidebar() {
     const [close, setClose] = useRecoilState(extendbarState);
     const [place, setPlace] = useRecoilState(placeState);
     const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
-    
+
     const handleOpen = () => setClose(false);
     return (
         <SidebarStyle>
