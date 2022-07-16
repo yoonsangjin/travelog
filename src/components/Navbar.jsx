@@ -3,36 +3,39 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 const Nav = styled.nav`
-	width: 100%;
-	height: 5vh;
+	width: 100vw;
+	height: 5rem;
 	background-color: #fff;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-  box-s
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
 `;
 const LogoContainer = styled.h1`
-	width: 50px;
-	height: 50px;
+	width: 4rem;
+	height: 3rem;
 	background-color: #5f6caf;
-	margin-left: 10px;
+	margin-left: 0.7rem;
 	text-align: center;
-	line-height: 50px;
+	line-height: 3rem;
 	color: #fff;
 `;
 
 const NavUl = styled.ul`
 	display: flex;
 	align-items: center;
-	margin-right: 100px;
+	margin-right: 6rem;
 `;
 const NavLi = styled.li`
-	margin: 0 30px;
+	margin: 0 2.5rem;
 	color: #5f6caf;
 `;
-const LoginBtn = styled.button`
-	width: 80px;
-	height: 50px;
+const LoginBtn = styled(NavLink)`
+	display: block;
+	text-align: center;
+	line-height: 3rem;
+	width: 6rem;
+	height: 3rem;
 	background-color: #5f6caf;
 	border: none;
 	border-radius: 22px;
@@ -53,9 +56,7 @@ function Navbar() {
 					<NavLink to="/">my page</NavLink>
 				</NavLi>
 				<NavLi>
-					<LoginBtn>
-						<NavLink to="/login">login</NavLink>
-					</LoginBtn>
+					<LoginBtn to="/login">login</LoginBtn>
 				</NavLi>
 			</NavUl>
 		</Nav>

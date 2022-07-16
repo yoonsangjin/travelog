@@ -9,15 +9,17 @@ import Writing from './pages/writing/Writing';
 import Navbar from './components/Navbar.jsx';
 import Signup from './pages/login/Signup.jsx';
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import Title from './pages/main/Title.jsx';
 
 function App() {
 	return (
 		<div className="App">
 			<RecoilRoot>
 				<Reset />
-				<Navbar />
+				{window.location.pathname === '/intro' ? '' : <Navbar />}
 				<Routes>
 					<Route path="/" element={<Main />} />
+					<Route path="/intro" element={<Title />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/loginForEmail" element={<LoginForEmail />} />
 					<Route path="/signup" element={<Signup />} />
