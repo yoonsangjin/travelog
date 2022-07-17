@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import DaumPostcodeEmbed from 'react-daum-postcode'
 import { NavLink, useNavigate } from 'react-router-dom'
+import S3 from '../../components/S3'
 
 const SignupSection = styled.section`
   width: 100vw;
@@ -103,13 +104,14 @@ const MenuLi = styled(NavLi)`
     color: #ffffff;
   }
 `
+
 function EditProfile() {
   const [editname, setEditName] = useState('')
   const [editnickname, setEditNickname] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [popup, setPopup] = useState('false')
   const [address, setAddress] = useState('')
-  const [address2, setAddress2] = useState('어드레스2')
+  const [address2, setAddress2] = useState('')
   const [profileImage, setProfileImage] = useState('')
   const navigate = useNavigate()
 
@@ -127,7 +129,7 @@ function EditProfile() {
     try {
       userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data)
     } catch (err) {}
-
+    console.log(userData)
     let resultData = { ...userData, phoneNumber, address }
     editname && (resultData.name = editname)
     editnickname && (resultData.nickname = editnickname)
@@ -139,10 +141,17 @@ function EditProfile() {
         url: `http://localhost:8000/api/users/${resultData.id}`,
         headers: { Authorization: `Bearer ${token}` },
         data: {
-          password: `${resultData.password}`,
-          currentPassword: `${resultData.password}`,
-          phoneNumber: `${resultData.phoneNumber}`,
+          name: resultData.name,
+          nickname: resultData.nickname,
+          phoneNumber: resultData.phoneNumber,
+          address: resultData.address,
+          age: resultData.age,
+
+          profileImg: '',
         },
+        // {
+
+        // },
       })
     } catch (err) {
       alert(err.stack)
@@ -244,6 +253,7 @@ function EditProfile() {
             </AddressButton>
             <SignupInput
               type="text"
+              value={address2}
               name="address2"
               onChange={e => {
                 setAddress2(e.target.value)
