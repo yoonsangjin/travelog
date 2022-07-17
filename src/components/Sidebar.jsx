@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Extendbar from './Extendbar';
-import MakeMap from '../function/MakeMap';
-import SearchMap from '../function/SearchMap';
 import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
@@ -13,8 +11,6 @@ import { extendbarState,
 		mainInputValueState,
 		customState
 		} from '../recoil/Atom';
-
-const { kakao } = window;
 
 function Sidebar() {
 	const [, setClose] = useRecoilState(extendbarState);
@@ -28,12 +24,14 @@ function Sidebar() {
 			<div className="sidebar">
 				<div className="filterBox">
 					<div className="searchBox">
-						<ImSearch className="icon" id="searchIcon" onClick={handleOpen} />
+						<ImSearch className="icon"
+						 style={{marginTop: '30px', backgroundColor: '#d9d9d9'}}
+						 onClick={handleOpen} />
 					</div>
 					<div className="restaurantBox">
 						<BiRestaurant
 							className="icon"
-							id="restaurantIcon"
+							style={{backgroundColor: '#0029fe'}}
 							onClick={() => {
 								setPlace(mainInputValue + ' 맛집');
 							}}
@@ -42,7 +40,7 @@ function Sidebar() {
 					<div className="landmarkBox">
 						<ImLibrary
 							className="icon"
-							id="landmarkIcon"
+							style={{backgroundColor:'#039b00'}}
 							onClick={() => {
 								setPlace(mainInputValue + ' 관광지');
 							}}
@@ -51,7 +49,7 @@ function Sidebar() {
 					<div className="cafeBox">
 						<IoMdCafe
 							className="icon"
-							id="cafeIcon"
+							style={{backgroundColor: '#e05836'}}
 							onClick={() => {
 								setPlace(mainInputValue + ' 카페');
 							}}
@@ -60,9 +58,9 @@ function Sidebar() {
 					<div className="favoriteBox">
 						<TbStar 
 						className="icon" 
-						id="favoriteIcon"
+						style={{backgroundColor: '#ffb877'}}
 						onClick={() => {
-							setCustom(!custom)
+							setCustom(!custom);
 						}} />
 					</div>
 				</div>
@@ -96,6 +94,7 @@ const SidebarStyle = styled.div`
 		margin: 10px;
 		padding: 10px;
 		border-radius: 5px;
+		color: white;
 	}
 
 	.icon:hover {
@@ -106,32 +105,6 @@ const SidebarStyle = styled.div`
 	.icon:active {
 		filter: invert(80%);
 	}
-
-	#searchIcon {
-		margin-top: 30px;
-		background-color: #d9d9d9;
-		color: white;
-	}
-
-	#restaurantIcon {
-		background-color: #0029fe;
-		color: white;
-	}
-
-	#landmarkIcon {
-		background-color: #039b00;
-		color: white;
-	}
-
-	#cafeIcon {
-		background-color: #e05836;
-		color: white;
-	}
-
-	#favoriteIcon {
-		background-color: #ffb877;
-		color: white;
-	}
-`;
+`
 
 export default Sidebar;
