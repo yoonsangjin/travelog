@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 
 function Title() {
+	const [inputValue, setInputValue] = useState('');
 	const scrolling = () => {
 		const viewHight = window.innerHeight;
-		window.scrollTo(0, viewHight);
+		window.scrollTo({
+			top: viewHight,
+			left: 0,
+			behavior: 'smooth',
+		});
 	};
 	return (
 		<div>
@@ -19,8 +24,17 @@ function Title() {
 			<SearchSection>
 				<SearchBarContainer>
 					<SearchBarTitle>어디로 떠나세요?</SearchBarTitle>
-					<SearchBarInput />
-					<Search />
+					<SearchBarInput
+						value={inputValue}
+						onChange={e => {
+							setInputValue(e.target.value);
+						}}
+					/>
+					<Search
+						onClick={() => {
+							console.log(inputValue);
+						}}
+					/>
 				</SearchBarContainer>
 				<CardContainer>
 					<Card></Card>
@@ -134,7 +148,7 @@ const CardContainer = styled.div`
 const Card = styled.div`
 	width: 12rem;
 	height: 15rem;
-	background-color: yellow;
+	background-color: #fff;
 	margin: 2.5rem auto;
 	border-radius: 20px;
 `;
