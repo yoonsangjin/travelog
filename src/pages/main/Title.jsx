@@ -1,6 +1,26 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
+import TitleCard from '../../components/TitleCard';
+
+const mockData = [
+	{
+		place: '제주도',
+		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
+	},
+	{
+		place: '부산',
+		img: 'https://cdn.pixabay.com/photo/2016/10/17/07/53/busan-night-scene-1747130_1280.jpg',
+	},
+	{
+		place: '양양',
+		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
+	},
+	{
+		place: '목포',
+		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
+	},
+];
 
 function Title() {
 	const [inputValue, setInputValue] = useState('');
@@ -37,10 +57,9 @@ function Title() {
 					/>
 				</SearchBarContainer>
 				<CardContainer>
-					<Card></Card>
-					<Card></Card>
-					<Card></Card>
-					<Card></Card>
+					{mockData.map(i => {
+						return <TitleCard key={`Title-card-${i}`} place={i.place} img={i.img} />;
+					})}
 				</CardContainer>
 			</SearchSection>
 		</div>
@@ -96,12 +115,7 @@ const VideoContainer = styled.section`
 const SearchSection = styled.section`
 	width: 100vw;
 	height: 100vh;
-	background-image: url('https://cdn.pixabay.com/photo/2018/11/29/21/19/hamburg-3846525_1280.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
-	opacity: 0.85;
 `;
-
 const SearchBarContainer = styled.div`
 	width: 50rem;
 	height: 9rem;
@@ -143,12 +157,4 @@ const CardContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 1fr;
-`;
-
-const Card = styled.div`
-	width: 12rem;
-	height: 15rem;
-	background-color: #fff;
-	margin: 2.5rem auto;
-	border-radius: 20px;
 `;
