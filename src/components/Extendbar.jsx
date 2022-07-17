@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import Searchbar from './Searchbar';
 import styled from 'styled-components';

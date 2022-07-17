@@ -14,3 +14,8 @@ export const extendbarState = atom({
     key: 'extendbarState',
     default: '',
 });
+
+export const customState = atom({
+    key: 'customState',
+    default: 'false',
+});

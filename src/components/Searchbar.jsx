@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import { useRecoilState } from 'recoil'
 import { placeState, mainInputValueState } from '../recoil/Atom';
+import MakeMap from '../function/MakeMap';
 
 // debounce 추후 구현 예정
 function debounce(func, timeout) {
@@ -25,7 +26,6 @@ function Searchbar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setPlace(mainInputValue);
-    console.log({ place });
   };
 
   return (
@@ -48,7 +48,7 @@ const SearchBarContainer = styled.div`
       display: flex;
       justify-self: center;
       margin: 15px 20px;
-      height: 40px;
+      height: 60px;
       width: 250px;
       background-color: white;
     }

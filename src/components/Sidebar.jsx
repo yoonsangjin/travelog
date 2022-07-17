@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Extendbar from './Extendbar';
-import Map from './Map';
+import MakeMap from '../function/MakeMap';
+import SearchMap from '../function/SearchMap';
 import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { TbStar } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
-import { extendbarState, placeState, mainInputValueState } from '../recoil/Atom';
+import { extendbarState, 
+		placeState, 
+		mainInputValueState,
+		customState
+		} from '../recoil/Atom';
+
+const { kakao } = window;
 
 function Sidebar() {
-	const [close, setClose] = useRecoilState(extendbarState);
+	const [, setClose] = useRecoilState(extendbarState);
 	const [place, setPlace] = useRecoilState(placeState);
-	const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
+	const [mainInputValue, ] = useRecoilState(mainInputValueState);
+	const [custom, setCustom] = useRecoilState(customState);
 
 	const handleOpen = () => setClose(false);
 	return (
@@ -50,7 +58,12 @@ function Sidebar() {
 						/>
 					</div>
 					<div className="favoriteBox">
-						<TbStar className="icon" id="favoriteIcon" />
+						<TbStar 
+						className="icon" 
+						id="favoriteIcon"
+						onClick={() => {
+							setCustom(!custom)
+						}} />
 					</div>
 				</div>
 				<Extendbar />
@@ -70,7 +83,7 @@ const SidebarStyle = styled.div`
 		font-size: 1.5rem;
 		line-height: 48px;
 		transition: 0.3s ease-in-out;
-		height: calc(100vh - 60px);
+		height: calc(100vh - 80px);
 		z-index: 5;
 	}
 
