@@ -17,12 +17,20 @@ function Map() {
         customMarker(kakaoMap);
     }, [place]);
 
-    return (
-        <MapContainer>
-            <div id='map'>
-            </div>
-        </MapContainer>
-    );
+			kakao.maps.event.addListener(marker, 'click', function () {
+				infowindow.setContent(
+					`<div style="padding:5px; font-size:12px; margin:auto;"> ${place.place_name} </div>`,
+				);
+				infowindow.open(kakaoMap, marker);
+			});
+		}
+	}, [place]);
+
+	return (
+		<MapContainer>
+			<div id="map"></div>
+		</MapContainer>
+	);
 }
 
 const MapContainer = styled.div`
