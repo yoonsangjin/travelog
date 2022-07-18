@@ -5,6 +5,7 @@ export default function searchMap(kakaoMap, place, setPlaceInfo, searchOptions) 
 
 	places.keywordSearch(place, placesSearchCB, searchOptions);
 
+<<<<<<< HEAD:src/function/SearchMap.js
 	function placesSearchCB(data, status, pagination) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(data);
@@ -39,4 +40,21 @@ export default function searchMap(kakaoMap, place, setPlaceInfo, searchOptions) 
 			infowindow.open(kakaoMap, marker);
 		});
 	}
+=======
+    let infowindow = new kakao.maps.InfoWindow({
+            zIndex: 1,
+            removable: true,
+    });
+    
+    kakao.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(`<div class="infoWindow"> 
+        <div>${place.place_name}</div>
+        <div>${place.address_name}</div>
+        <div>${place.phone}</div>
+        <a href=${place.place_url} target='_blank' style='color:#5f6caf;'>카카오 지도로 보기</a> 
+        </div>`);
+        infowindow.open(kakaoMap, marker);
+    });
+    }
+>>>>>>> e2bbf38e0393f90a83d9baff1a906a7320919618:src/function/searchMap.js
 }

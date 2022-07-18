@@ -1,5 +1,6 @@
 const { kakao } = window;
 
+<<<<<<< HEAD:src/function/MakeMap.js
 export default function makeMap() {
 	const container = document.getElementById('map');
 	const options = {
@@ -11,4 +12,9 @@ export default function makeMap() {
 	kakaoMap.setMaxLevel(12);
 
 	return kakaoMap;
+=======
+    kakaoMap.setMaxLevel(12);
+        
+    return kakaoMap;
+>>>>>>> e2bbf38e0393f90a83d9baff1a906a7320919618:src/function/makeMap.js
 }
