@@ -1,4 +1,4 @@
-export default function MakeMap() {
+export default function makeMap() {
     const container = document.getElementById('map');
     const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
