@@ -12,7 +12,7 @@ export const mainInputValueState = atom({
 
 export const extendbarState = atom({
     key: 'extendbarState',
-    default: '',
+    default: 'true',
 });
 
 export const customState = atom({
@@ -22,5 +22,7 @@ export const customState = atom({
 
 export const placeInfoState = atom({
     key: 'placeInfoState',
-    default: [],
+    default: '',
 });
+
+

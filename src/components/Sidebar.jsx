@@ -13,12 +13,11 @@ import { extendbarState,
 		} from '../recoil/Atom';
 
 function Sidebar() {
-	const [, setClose] = useRecoilState(extendbarState);
+	const [close, setClose] = useRecoilState(extendbarState);
 	const [, setPlace] = useRecoilState(placeState);
 	const [mainInputValue, ] = useRecoilState(mainInputValueState);
 	const [custom, setCustom] = useRecoilState(customState);
 
-	const handleOpen = () => setClose(false);
 	return (
 		<SidebarStyle>
 			<div className="sidebar">
@@ -26,7 +25,7 @@ function Sidebar() {
 					<div className="searchBox">
 						<ImSearch className="icon"
 						 style={{marginTop: '30px', backgroundColor: '#d9d9d9'}}
-						 onClick={handleOpen} />
+						 onClick={() => setClose(!close)} />
 					</div>
 					<div className="restaurantBox">
 						<BiRestaurant

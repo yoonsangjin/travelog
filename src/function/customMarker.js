@@ -4,7 +4,10 @@ export default function customMarker(kakaoMap) {
             position: kakaoMap.getCenter()
         });
 
-        let infowindow = new kakao.maps.InfoWindow({zIndex:1});
+        let infowindow = new kakao.maps.InfoWindow({
+            zIndex: 1,
+            removable: true,
+        });
         const geocoder = new kakao.maps.services.Geocoder();
 
         kakao.maps.event.addListener(kakaoMap, 'click', function(mouseEvent) {

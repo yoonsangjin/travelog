@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { placeState } from '../recoil/Atom';
+import { placeState, placeInfoState } from '../recoil/Atom';
 import makeMap from '../function/makeMap';
 import searchMap from '../function/searchMap';
 import customMarker from '../function/customMarker';
@@ -10,22 +10,12 @@ const { kakao } = window;
 
 function Map() {
     const [place, ] = useRecoilState(placeState);
-
+    const [placeInfo, setPlaceInfo] = useRecoilState(placeInfoState);
     useEffect(() => {
         const kakaoMap = makeMap();
-        searchMap(kakaoMap, place);
+        searchMap(kakaoMap, place, setPlaceInfo);
         customMarker(kakaoMap);
     }, [place]);
-
-			kakao.maps.event.addListener(marker, 'click', function () {
-				infowindow.setContent(
-					`<div style="padding:5px; font-size:12px; margin:auto;"> ${place.place_name} </div>`,
-				);
-				infowindow.open(kakaoMap, marker);
-			});
-		}
-	}, [place]);
-
 	return (
 		<MapContainer>
 			<div id="map"></div>
@@ -50,6 +40,9 @@ const MapContainer = styled.div`
         border-radius: 0.5rem;
         font-weight: bold;
     }
+	.exit {
+		float: right;
+	}
 `
 
 export default Map;
