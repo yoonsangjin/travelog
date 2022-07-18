@@ -8,7 +8,7 @@ export default function SearchMap(kakaoMap, place, searchOptions) {
             console.log(data);
             let bounds = new kakao.maps.LatLngBounds();
                 for (let i=0; i<data.length; i++) {
-                        
+                    displayMarker(data[i]);
                     bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
                 }
                 
