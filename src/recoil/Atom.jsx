@@ -19,3 +19,8 @@ export const customState = atom({
     key: 'customState',
     default: 'false',
 });
+
+export const centerState = atom({
+    key: 'centerState',
+    default: 'false',
+});
