@@ -1,37 +1,24 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { placeState, mainInputValueState, customState, centerState } from '../recoil/Atom';
-import MakeMap from '../function/MakeMap';
-import SearchMap from '../function/SearchMap';
+import { placeState, 
+        customState } from '../recoil/Atom';
+import makeMap from '../function/makeMap';
+import searchMap from '../function/searchMap';
+import customMarker from '../function/customMarker';
 
 const { kakao } = window;
 
 function Map() {
     const [place, ] = useRecoilState(placeState);
-    const [mainInputValue, ] = useRecoilState(mainInputValueState);
-    const [custom, setCustom] = useRecoilState(customState);
-    const [center, setCenter] = useRecoilState(centerState);
+    const [custom, ] = useRecoilState(customState);
 
     useEffect(() => {
         console.log(custom);
-        const kakaoMap = MakeMap();
-        const marker = new kakao.maps.Marker({
-            position: kakaoMap.getCenter()
-        });
-        SearchMap(kakaoMap, place);
-        if(custom) {
-            kakao.maps.event.addListener(kakaoMap, 'click', function(mouseEvent) {
-                const marker = new kakao.maps.Marker({
-                    position: kakaoMap.getCenter()
-                });
-                let latlng = mouseEvent.latLng;
-                marker.setMap(kakaoMap);
-                marker.setPosition(latlng);
-                marker.setDraggable(true);
-            });
-        }
-    }, [place, custom]);
+        const kakaoMap = makeMap();
+        searchMap(kakaoMap, place);
+        customMarker(kakaoMap);
+    }, [place]);
 
     return (
         <MapContainer>

@@ -14,7 +14,7 @@ import { extendbarState,
 
 function Sidebar() {
 	const [, setClose] = useRecoilState(extendbarState);
-	const [place, setPlace] = useRecoilState(placeState);
+	const [, setPlace] = useRecoilState(placeState);
 	const [mainInputValue, ] = useRecoilState(mainInputValueState);
 	const [custom, setCustom] = useRecoilState(customState);
 
@@ -60,7 +60,12 @@ function Sidebar() {
 						className="icon" 
 						style={{backgroundColor: '#ffb877'}}
 						onClick={() => {
-							setCustom(!custom);
+							setCustom((custom) => {
+								if(custom == true) {
+								return false;
+								};
+								return true;
+							});
 						}} />
 					</div>
 				</div>

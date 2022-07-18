@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import { useRecoilState } from 'recoil';
 import { placeState, mainInputValueState } from '../recoil/Atom';
-import MakeMap from '../function/MakeMap';
+import MakeMap from '../function/makeMap';
 
 // debounce 추후 구현 예정
 function debounce(func, timeout) {
