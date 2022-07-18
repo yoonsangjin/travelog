@@ -16,19 +16,19 @@ function Map() {
     useEffect(() => {
         console.log(custom);
         const kakaoMap = MakeMap();
-        const marker = new kakao.maps.Marker({ 
-            position: kakaoMap.getCenter() 
-        }); 
+        const marker = new kakao.maps.Marker({
+            position: kakaoMap.getCenter()
+        });
         SearchMap(kakaoMap, place);
         if(custom) {
-            kakao.maps.event.addListener(kakaoMap, 'click', function(mouseEvent) {        
-                const marker = new kakao.maps.Marker({ 
-                    position: kakaoMap.getCenter() 
-                }); 
-                let latlng = mouseEvent.latLng; 
+            kakao.maps.event.addListener(kakaoMap, 'click', function(mouseEvent) {
+                const marker = new kakao.maps.Marker({
+                    position: kakaoMap.getCenter()
+                });
+                let latlng = mouseEvent.latLng;
                 marker.setMap(kakaoMap);
                 marker.setPosition(latlng);
-                marker.setDraggable(true); 
+                marker.setDraggable(true);
             });
         }
     }, [place, custom]);
