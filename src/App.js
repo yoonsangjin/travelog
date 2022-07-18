@@ -18,7 +18,7 @@ function App() {
 				<Reset />
 				{window.location.pathname === '/intro' ? '' : <Navbar />}
 				<Routes>
-					<Route path="/" element={<Main />} />
+					<Route path="/main" element={<Main />} />
 					<Route path="/intro" element={<Title />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/loginForEmail" element={<LoginForEmail />} />
