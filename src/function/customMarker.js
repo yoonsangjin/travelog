@@ -10,15 +10,11 @@ export default function customMarker(kakaoMap) {
         kakao.maps.event.addListener(kakaoMap, 'click', function(mouseEvent) {
             searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    const placeName = geocoder.addressSearch(result[0].address.address_name, (result, status) => {
-                        if (status === kakao.maps.services.Status.OK) {
-                            console.log(result);
-                        }
-                    });
+                    geocoder.addressSearch(result[0].address.address_name);
                     let detailAddr = !!result[0].road_address ? `<div>${result[0].road_address.building_name}</div>` : '';
                     detailAddr += `<div>${result[0].address.address_name}</div>`;
                     
-                    let content = `<div class="bAddr">
+                    let content = `<div class="infoWindow">
                                     ${detailAddr} 
                                 </div>`;
                     marker.setPosition(mouseEvent.latLng);

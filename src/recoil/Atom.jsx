@@ -19,3 +19,8 @@ export const customState = atom({
     key: 'customState',
     default: 'false',
 });
+
+export const placeInfoState = atom({
+    key: 'placeInfoState',
+    default: [],
+});

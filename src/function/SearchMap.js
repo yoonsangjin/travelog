@@ -26,11 +26,11 @@ export default function SearchMap(kakaoMap, place, searchOptions) {
     let infowindow = new kakao.maps.InfoWindow({zIndex:1});
     
     kakao.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(`<div> 
+        infowindow.setContent(`<div class="infoWindow"> 
         <div>${place.place_name}</div>
         <div>${place.address_name}</div>
         <div>${place.phone}</div>
-        <a href=${place.place_url} target='_blank'>카카오 지도로 보기</a> 
+        <a href=${place.place_url} target='_blank' style='color:#5f6caf;'>카카오 지도로 보기</a> 
         </div>`);
         infowindow.open(kakaoMap, marker);
     });
