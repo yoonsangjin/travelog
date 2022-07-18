@@ -2,21 +2,26 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import TitleCard from '../../components/TitleCard';
+import videoBG from './video/background.mp4';
 
 const mockData = [
 	{
+		id: 1,
 		place: '제주도',
 		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
 	},
 	{
+		id: 2,
 		place: '부산',
 		img: 'https://cdn.pixabay.com/photo/2016/10/17/07/53/busan-night-scene-1747130_1280.jpg',
 	},
 	{
+		id: 3,
 		place: '양양',
 		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
 	},
 	{
+		id: 4,
 		place: '목포',
 		img: 'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254_1280.jpg',
 	},
@@ -39,7 +44,18 @@ function Title() {
 					<TitleText>logo</TitleText>
 					<TitleButton onClick={scrolling}>시작하기</TitleButton>
 				</TitleSection>
-				<VideoContainer>{/* 영상으로 수정 예정 */}</VideoContainer>
+				<VideoContainer>
+					<Video src={videoBG} autoPlay loop muted />
+					{/* <ReactPlayer
+						url="https://www.youtube.com/embed/7BV6WKM8Gp4"
+						playing={true}
+						muted={true}
+						controls={false}
+						pip={false}
+						loop={true}
+						light={false}
+					/> */}
+				</VideoContainer>
 			</TitleContainer>
 			<SearchSection>
 				<SearchBarContainer>
@@ -52,13 +68,13 @@ function Title() {
 					/>
 					<Search
 						onClick={() => {
-							console.log(inputValue);
+							window.location.href = `/main?place=${inputValue}`;
 						}}
 					/>
 				</SearchBarContainer>
 				<CardContainer>
 					{mockData.map(i => {
-						return <TitleCard key={`Title-card-${i}`} place={i.place} img={i.img} />;
+						return <TitleCard key={`Title-card-${i.id}`} place={i.place} img={i.img} />;
 					})}
 				</CardContainer>
 			</SearchSection>
@@ -106,12 +122,14 @@ const VideoContainer = styled.section`
 	width: 65vw;
 	height: 100vh;
 	overflow: hidden;
-	background-image: url('https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg');
-	background-repeat: no-repeat;
-	background-position: right;
-	background-size: cover;
 `;
-
+const Video = styled.video`
+	width: 120%;
+	height: 105%;
+	object-fit: cover;
+	position: relative;
+	top: -0.1rem;
+`;
 const SearchSection = styled.section`
 	width: 100vw;
 	height: 100vh;
