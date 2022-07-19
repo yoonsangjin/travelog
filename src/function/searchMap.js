@@ -1,4 +1,6 @@
-export default function SearchMap(kakaoMap, place, setPlaceInfo, searchOptions) {
+const { kakao } = window;
+
+export default function searchMap(kakaoMap, place, setPlaceInfo, searchOptions) {
 	const places = new kakao.maps.services.Places();
 
 	places.keywordSearch(place, placesSearchCB, searchOptions);
