@@ -58,7 +58,7 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 
-const Writing = () => {
+function Writing() {
 	// Editor DOM 선택용
 	const editorRef = useRef();
 
@@ -90,6 +90,6 @@ const Writing = () => {
 			</WritingContainer>
 		</WritingSection>
 	);
-};
+}
 
 export default Writing;
