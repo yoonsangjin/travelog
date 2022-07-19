@@ -24,3 +24,8 @@ export const placeInfoState = atom({
 	key: 'placeInfoState',
 	default: '',
 });
+
+export const loginState = atom({
+	key: 'loginState',
+	default: false,
+});

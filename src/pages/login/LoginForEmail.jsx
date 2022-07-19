@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { loginState } from '../../recoil/Atom';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -55,6 +57,7 @@ const LoginInput = styled.input`
 function LoginForEmail() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [isloggedIn, setIsLoggedIn] = useRecoilState(loginState);
 
 	//이메일과 비밀번호 올바른 형식인지 검사
 	const emailRegex =
@@ -82,6 +85,7 @@ function LoginForEmail() {
 				//로그인 성공시 토큰을 로컬 스토리지에 저장
 				//세션이 만료되어도 로그인을 유지하기 위해 로컬 스토리지를 사용
 				localStorage.setItem('token', result.data.token);
+				setIsLoggedIn(true);
 
 				//로그인 성공하면 redirect
 				window.location.href = '/';

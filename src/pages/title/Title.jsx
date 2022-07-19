@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TitleCard from '../../components/TitleCard';
 import videoBG from './video/background.mp4';
 import SearchbarIntro from '../../components/SearchbarIntro';
+import { useRecoilState } from 'recoil';
+import { loginState } from '../../recoil/Atom';
 
 const mockData = [
 	{
@@ -28,6 +30,11 @@ const mockData = [
 ];
 
 function Title() {
+	const [isloggedIn, setIsLoggedIn] = useRecoilState(loginState);
+	useEffect(() => {
+		if (localStorage.getItem('token')) console.log('exist!');
+		console.log(isloggedIn);
+	}, []);
 	const scrolling = () => {
 		const viewHight = window.innerHeight;
 		window.scrollTo({

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { loginState } from '../recoil/Atom';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
@@ -44,6 +46,11 @@ const LoginBtn = styled(NavLink)`
 `;
 
 function Navbar() {
+	const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+	useEffect(() => {
+		if (localStorage.getItem('token')) setIsLoggedIn(true);
+		console.log(isLoggedIn);
+	}, []);
 	return (
 		<Nav>
 			<LogoContainer
@@ -60,9 +67,15 @@ function Navbar() {
 				<NavLi>
 					<NavLink to="/">my page</NavLink>
 				</NavLi>
-				<NavLi>
-					<LoginBtn to="/login">login</LoginBtn>
-				</NavLi>
+				{!isLoggedIn ? (
+					<NavLi>
+						<LoginBtn to="/login">login</LoginBtn>
+					</NavLi>
+				) : (
+					<NavLi>
+						<LoginBtn to="/">logout</LoginBtn>
+					</NavLi>
+				)}
 			</NavUl>
 		</Nav>
 	);
