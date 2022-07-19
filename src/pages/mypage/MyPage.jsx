@@ -8,7 +8,7 @@ const MyPage = () => {
   return (
     <div>
       <MyPageHeader>
-        <LoginIcon>
+        <Profile>
           <Img src={Image} />
           username
           <MyInfo>
@@ -16,10 +16,10 @@ const MyPage = () => {
             <p>내 여행={0}</p>
             <p>내 글={0}</p>
           </MyInfo>
-        </LoginIcon>
-        <Icon>
-          <img src="img/photolog.jfif" />
-        </Icon>
+        </Profile>
+        <PhotoLog>
+          <img src="img/photolog.jfif" alt="photolog" />
+        </PhotoLog>
       </MyPageHeader>
       <Feed>
         <ImgFeed src="img/airport.jpg" />
@@ -41,8 +41,9 @@ const MyPageHeader = styled.div`
   width: 100vw;
 `;
 
-const LoginIcon = styled.div`
+const Profile = styled.div`
   width: 60vw;
+  height: 20vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,9 +60,10 @@ const MyInfo = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 20vw;
+  margin-top: 1rem;
 `;
 
-const Icon = styled.div`
+const PhotoLog = styled.div`
   display: flex;
   width: 40vw;
   justify-content: center;
