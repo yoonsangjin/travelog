@@ -1,3 +1,5 @@
+const { kakao } = window;
+
 export default function makeMap() {
 	const container = document.getElementById('map');
 	const options = {

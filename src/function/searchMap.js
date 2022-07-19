@@ -1,3 +1,5 @@
+const { kakao } = window;
+
 export default function searchMap(kakaoMap, place, setPlaceInfo, searchOptions) {
 	const places = new kakao.maps.services.Places();
 

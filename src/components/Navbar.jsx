@@ -19,15 +19,16 @@ const LogoContainer = styled.h1`
 	text-align: center;
 	line-height: 3rem;
 	color: #fff;
+	cursor: pointer;
 `;
 
 const NavUl = styled.ul`
 	display: flex;
 	align-items: center;
-	margin-right: 6rem;
+	margin-right: 3rem;
 `;
 const NavLi = styled.li`
-	margin: 0 2.5rem;
+	margin: 0 2rem;
 	color: #5f6caf;
 `;
 const LoginBtn = styled(NavLink)`
@@ -45,8 +46,12 @@ const LoginBtn = styled(NavLink)`
 function Navbar() {
 	return (
 		<Nav>
-			<LogoContainer>
-				<NavLink to="/">logo</NavLink>
+			<LogoContainer
+				onClick={() => {
+					window.location.href = '/';
+				}}
+			>
+				logo
 			</LogoContainer>
 			<NavUl>
 				<NavLi>

@@ -1,3 +1,5 @@
+const { kakao } = window;
+
 export default function customMarker(kakaoMap) {
 	const marker = new kakao.maps.Marker({
 		position: kakaoMap.getCenter(),
