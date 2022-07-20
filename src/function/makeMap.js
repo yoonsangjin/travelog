@@ -4,7 +4,7 @@ const { kakao } = window;
 
 export default function makeMap() {
 	const container = document.getElementById('map');
-	const defaultLatLng = new kakao.maps.LatLng(36.390884093020325, 127.40080871739734)
+	const defaultLatLng = new kakao.maps.LatLng(36.390884093020325, 127.40080871739734);
 	const options = {
 		center: defaultLatLng,
 		level: 4,
@@ -12,7 +12,6 @@ export default function makeMap() {
 	const kakaoMap = new kakao.maps.Map(container, options);
 
 	kakaoMap.setMaxLevel(12);
-	
 
 	const places = new kakao.maps.services.Places();
 
@@ -24,9 +23,9 @@ export default function makeMap() {
 			displayMarker(data[0]);
 			bounds.extend(defaultLatLng);
 			kakaoMap.setBounds(bounds);
-		};
-	};
-	
+		}
+	}
+
 	function displayMarker(place) {
 		let marker = new kakao.maps.Marker({
 			map: kakaoMap,
@@ -42,9 +41,7 @@ export default function makeMap() {
 			infowindow.setContent(overlayContents(place));
 			infowindow.open(kakaoMap, marker);
 		});
-	};
-
-	
+	}
 
 	return kakaoMap;
 }

@@ -12,7 +12,7 @@ function Extendbar() {
 		<ExtendbarStyle>
 			<div className={close ? 'extendbar close' : 'extendbar'}>
 				<Searchbar />
-					<PlaceInfo/>
+				<PlaceInfo />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
 			</div>
 		</ExtendbarStyle>
@@ -44,7 +44,6 @@ const ExtendbarStyle = styled.div`
 		padding: 0;
 		left: 260px;
 	}
-
 `;
 
 export default Extendbar;

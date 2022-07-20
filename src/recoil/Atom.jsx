@@ -11,18 +11,21 @@ export const mainInputValueState = atom({
 });
 
 export const extendbarState = atom({
-    key: 'extendbarState',
-    default: 'true',
+	key: 'extendbarState',
+	default: 'true',
 });
 
 export const bookmarkState = atom({
-    key: 'bookmarkState',
-    default: [],
+	key: 'bookmarkState',
+	default: [],
 });
 
 export const placeInfoState = atom({
-    key: 'placeInfoState',
-    default: '',
+	key: 'placeInfoState',
+	default: '',
 });
 
-
+export const loginState = atom({
+	key: 'loginState',
+	default: Boolean(localStorage.getItem('token')),
+});
