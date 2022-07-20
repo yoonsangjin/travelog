@@ -12,9 +12,7 @@ function Extendbar() {
 		<ExtendbarStyle>
 			<div className={close ? 'extendbar close' : 'extendbar'}>
 				<Searchbar />
-				<div className='infoBoxContainer'>
 					<PlaceInfo/>
-				</div>
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
 			</div>
 		</ExtendbarStyle>
@@ -28,7 +26,7 @@ const ExtendbarStyle = styled.div`
 		position: absolute;
 		top: -80px;
 		left: 64px;
-		width: 300px;
+		width: 20rem;
 		height: 100vh;
 		background-color: #edf7fa;
 	}
@@ -47,11 +45,6 @@ const ExtendbarStyle = styled.div`
 		left: 260px;
 	}
 
-	.infoBoxContainer {
-		position: absolute;
-		overflow: scroll;
-		top: 80px;
-	}
 `;
 
 export default Extendbar;

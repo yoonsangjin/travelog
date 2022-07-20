@@ -9,4 +9,5 @@ div {
 	display: grid;
 	grid-template-columns: 2fr 1fr;
 	position: fixed;
+	
 }

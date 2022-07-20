@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Extendbar from './Extendbar';
 import { BiRestaurant } from 'react-icons/bi';
@@ -9,14 +9,12 @@ import { useRecoilState } from 'recoil';
 import { extendbarState, 
 		placeState, 
 		mainInputValueState,
-		customState
 		} from '../recoil/Atom';
 
 function Sidebar() {
 	const [close, setClose] = useRecoilState(extendbarState);
 	const [, setPlace] = useRecoilState(placeState);
 	const [mainInputValue, ] = useRecoilState(mainInputValueState);
-	const [custom, setCustom] = useRecoilState(customState);
 
 	return (
 		<SidebarStyle>
@@ -58,14 +56,7 @@ function Sidebar() {
 						<TbStar 
 						className="icon" 
 						style={{backgroundColor: '#ffb877'}}
-						onClick={() => {
-							setCustom((custom) => {
-								if(custom == true) {
-								return false;
-								};
-								return true;
-							});
-						}} />
+						 />
 					</div>
 				</div>
 				<Extendbar />
