@@ -106,8 +106,10 @@ function Navbar() {
             />
             {style ? (
               <MenuUl>
-                <MenuLi>개인 정보 변경</MenuLi>
-                <MenuLi>여행 페이지</MenuLi>
+                <MenuLi>
+                  <NavLink to="/editprofile">회원 정보 수정</NavLink>
+                </MenuLi>
+                <MenuLi>여행 페이지 이동</MenuLi>
                 <MenuLi>
                   <NavLink to="/mypage">마이페이지</NavLink>
                 </MenuLi>

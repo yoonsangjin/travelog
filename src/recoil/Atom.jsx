@@ -27,7 +27,7 @@ export const placeInfoState = atom({
 
 export const loginState = atom({
   key: 'loginState',
-  default: false,
+  default: Boolean(localStorage.getItem('token')),
 });
 
 export const iconMenuState = atom({
