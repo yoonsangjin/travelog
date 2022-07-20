@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { placeInfoState, bookmarkState } from '../recoil/Atom';
+import { placeInfoState, 
+		bookmarkState,
+		activeState } from '../recoil/Atom';
 import styled from 'styled-components';
+
 
 function PlaceInfo() {
 	const [placeInfo] = useRecoilState(placeInfoState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
-	const [active, setActive] = useState('false');
-
+	const [active, setActive] = useRecoilState(activeState);
 	function handleStyle(data) {
 		if (data.category_group_code == 'AT4') {
-			return { border: '2px double rgb(3, 155, 0)' };
+			return { border: '2px solid rgb(3, 155, 0)' };
 		} else if (data.category_group_code == 'FD6') {
-			return { border: '2px double rgb(0, 41, 254)' };
+			return { border: '2px solid rgb(0, 41, 254)' };
 		} else if (data.category_group_code == 'CE7') {
-			return { border: '2px double rgb(224, 88, 54)' };
+			return { border: '2px solid rgb(224, 88, 54)' };
 		}
 	}
 
@@ -31,6 +33,10 @@ function PlaceInfo() {
 		}
 	}
 
+	function ActivateExtend() {
+		setActive(true);
+	};
+
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map(data => (
 			<div key={data.id} style={handleStyle(data)} className="infoBox">
@@ -38,15 +44,17 @@ function PlaceInfo() {
 					★
 				</button>
 				<ul>
-					<li>{data.place_name}</li>
+					<li onClick={ActivateExtend} style={{color: '#5f6caf', cursor: 'pointer'}}>{data.place_name}</li>
 					<li>{data.address_name}</li>
 					<li>{data.phone}</li>
 				</ul>
 			</div>
 		));
 	}
-	return <PlaceInfoStyle>{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}</PlaceInfoStyle>;
-}
+	return (<PlaceInfoStyle>
+			{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}
+		</PlaceInfoStyle>
+)}
 export default PlaceInfo;
 
 const PlaceInfoStyle = styled.div`

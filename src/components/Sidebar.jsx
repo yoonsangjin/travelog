@@ -1,17 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import Extendbar from './Extendbar';
+import Bookmarkbar from './Bookmarkbar';
 import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { TbStar } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
-import { extendbarState, placeState, mainInputValueState } from '../recoil/Atom';
+import { extendbarState,
+		bookmarkbarState, 
+		placeState, 
+		mainInputValueState } from '../recoil/Atom';
 
 function Sidebar() {
 	const [close, setClose] = useRecoilState(extendbarState);
 	const [, setPlace] = useRecoilState(placeState);
 	const [mainInputValue] = useRecoilState(mainInputValueState);
+	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
 
 	return (
 		<SidebarStyle>
@@ -21,7 +26,10 @@ function Sidebar() {
 						<ImSearch
 							className="icon"
 							style={{ marginTop: '30px', backgroundColor: '#d9d9d9' }}
-							onClick={() => setClose(!close)}
+							onClick={() => {
+								setBmClose(true);
+								setClose(!close);
+							}}
 						/>
 					</div>
 					<div className="restaurantBox">
@@ -52,10 +60,16 @@ function Sidebar() {
 						/>
 					</div>
 					<div className="favoriteBox">
-						<TbStar className="icon" style={{ backgroundColor: '#ffb877' }} />
+						<TbStar className="icon"
+								style={{ backgroundColor: '#ffb877' }}
+								onClick={() => {
+									setClose(true);
+									setBmClose(!bmClose);
+								}} />
 					</div>
 				</div>
 				<Extendbar />
+				<Bookmarkbar />
 			</div>
 		</SidebarStyle>
 	);

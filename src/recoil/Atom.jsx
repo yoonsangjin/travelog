@@ -20,9 +20,25 @@ export const bookmarkState = atom({
 	default: [],
 });
 
+export const bookmarkbarState = atom({
+	key: 'bookmarkbarState',
+	default: 'false',
+});
+
+export const bookmarkListState = atom({
+	key: 'bookmarkListState',
+	default: ['내 북마크', '북마크1'],
+});
+
+
 export const placeInfoState = atom({
 	key: 'placeInfoState',
 	default: '',
+});
+
+export const activeState = atom({
+	key: 'placeInfoActiveState',
+	default: 'false',
 });
 
 export const loginState = atom({

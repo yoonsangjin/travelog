@@ -2,6 +2,7 @@ import React from 'react';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import Searchbar from './Searchbar';
 import PlaceInfo from './PlaceInfo';
+import PlaceInfoExtend from './PlaceInfoExtend';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { extendbarState } from '../recoil/Atom';
@@ -14,6 +15,7 @@ function Extendbar() {
 				<Searchbar />
 				<PlaceInfo />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
+				<PlaceInfoExtend/>
 			</div>
 		</ExtendbarStyle>
 	);
@@ -25,7 +27,7 @@ const ExtendbarStyle = styled.div`
 		flex-flow: column;
 		position: absolute;
 		top: -5rem;
-		left: 64px;
+		left: 4rem;
 		width: 20rem;
 		height: 100vh;
 		background-color: #edf7fa;
