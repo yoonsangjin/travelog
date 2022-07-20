@@ -8,6 +8,16 @@ function PlaceInfo() {
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [active, setActive] = useState('false');
 
+	function handleStyle(data) {
+		if (data.category_group_code == 'AT4') {
+			return { border: '1px solid rgb(3, 155, 0)' };
+		} else if (data.category_group_code == 'FD6') {
+			return { border: '1px solid rgb(0, 41, 254)' };
+		} else if (data.category_group_code == 'CE7') {
+			return { border: '1px solid rgb(224, 88, 54)' };
+		}
+	}
+
 	function handleBookmark(e) {
 		if (!bookmark.includes(e.target.id)) {
 			setBookmark([...bookmark, e.target.id]);
@@ -20,9 +30,10 @@ function PlaceInfo() {
 			console.log(bookmark);
 		}
 	}
+
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map(data => (
-			<div key={data.id} className="infobox">
+			<div key={data.id} style={handleStyle(data)} className="infoBox">
 				<button id={data.id} className="bookmarkBtn" onClick={handleBookmark}>
 					★
 				</button>

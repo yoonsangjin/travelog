@@ -24,7 +24,7 @@ const ExtendbarStyle = styled.div`
 		display: flex;
 		flex-flow: column;
 		position: absolute;
-		top: -80px;
+		top: -5rem;
 		left: 64px;
 		width: 20rem;
 		height: 100vh;
