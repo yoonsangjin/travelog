@@ -10,6 +10,7 @@ import Navbar from './components/Navbar.jsx';
 import Signup from './pages/login/Signup.jsx';
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import Title from './pages/title/Title.jsx';
+import ColorLog from './components/ColorLog';
 
 function App() {
 	return (
@@ -24,6 +25,7 @@ function App() {
 					<Route path="/loginForEmail" element={<LoginForEmail />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/writing" element={<Writing />} />
+					<Route path="/colorlog" element={<ColorLog />} />
 				</Routes>
 			</RecoilRoot>
 		</div>
