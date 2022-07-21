@@ -17,10 +17,13 @@ export default function customMarker(kakaoMap) {
 				geocoder.addressSearch(result[0].address.address_name);
 				let detailAddr = !!result[0].road_address
 					? `<div>${result[0].road_address.building_name}</div>`
-					: '';
+					: '장소 이름이 없습니다.';
 				detailAddr += `<div>${result[0].address.address_name}</div>`;
 
-				let content = `<div class="infoWindow">
+				let content = `<div class="customOverlay">
+								<input type='checkbox' id='toggle' hidden> 
+								<label for='toggle' class='toggleSwitch' style='font-size: 1.5rem;'>★</label>
+								</label>
                                     ${detailAddr} 
                                 </div>`;
 				marker.setPosition(mouseEvent.latLng);

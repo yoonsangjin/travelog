@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import Searchbar from './Searchbar';
+import React, { useEffect } from 'react';
+import Searchbar from '../Searchbar';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { bookmarkbarState, viewDetailState } from '../recoil/Atom';
+import { bookmarkbarState, viewDetailState } from '../../../recoil/Atom';
 import BookmarkList from './BookmarkList';
 import BookmarkDetail from './BookmarkDetail';
 
 function Bookmarkbar() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
-	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
+	const [viewDetail,] = useRecoilState(viewDetailState);
 
 	useEffect(() => {
 		renderDetailPage();

@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import { useRecoilState } from 'recoil';
-import { placeState, mainInputValueState } from '../recoil/Atom';
-import MakeMap from '../function/makeMap';
+import { placeState, mainInputValueState } from '../../recoil/Atom';
 
 // debounce 추후 구현 예정
 function debounce(func, timeout) {
@@ -18,7 +17,7 @@ function debounce(func, timeout) {
 
 function Searchbar() {
 	const [mainInputValue, setmainInputValue] = useRecoilState(mainInputValueState);
-	const [place, setPlace] = useRecoilState(placeState);
+	const [, setPlace] = useRecoilState(placeState);
 	const onChange = e => {
 		setmainInputValue(e.target.value);
 	};

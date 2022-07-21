@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { activeState } from '../recoil/Atom';
+import { activeState } from '../../recoil/Atom';
 
 function PlaceInfoExtend() {
     const [active, setActive] = useRecoilState(activeState);

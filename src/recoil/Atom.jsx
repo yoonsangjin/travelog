@@ -27,7 +27,7 @@ export const bookmarkbarState = atom({
 
 export const bookmarkListState = atom({
 	key: 'bookmarkListState',
-	default: ['내 북마크', '북마크1'],
+	default: ['부산여행', '김해여행'],
 });
 
 export const viewDetailState = atom({

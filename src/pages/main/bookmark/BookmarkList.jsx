@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { bookmarkListState, viewDetailState } from '../recoil/Atom';
+import { bookmarkListState, viewDetailState } from '../../../recoil/Atom';
 
 function BookmarkList() {
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
