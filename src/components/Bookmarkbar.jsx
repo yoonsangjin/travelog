@@ -1,23 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Searchbar from './Searchbar';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { bookmarkbarState,
-        bookmarkListState,
-        } from '../recoil/Atom';
+import { bookmarkbarState, viewDetailState } from '../recoil/Atom';
+import BookmarkList from './BookmarkList';
+import BookmarkDetail from './BookmarkDetail';
 
 function Bookmarkbar() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
-    const [bmList, setBmList ] = useRecoilState(bookmarkListState);
+	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
+
+	useEffect(() => {
+		renderDetailPage();
+	}, [viewDetail]);
+
+	function renderDetailPage() {
+		return viewDetail ? <BookmarkList /> : <BookmarkDetail />;
+	}
+
 	return (
 		<BookmarkbarStyle>
 			<div className={bmClose ? 'bookmarkbar close' : 'bookmarkbar'}>
 				<Searchbar />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setBmClose(true)} />
-                <div className='bmContainer'>
-                    <button className='addFolder' ></button>
-                </div>
+				<h1>나의 여정</h1>
+				<div className="contents">{renderDetailPage()}</div>
 			</div>
 		</BookmarkbarStyle>
 	);
@@ -33,6 +41,10 @@ const BookmarkbarStyle = styled.div`
 		width: 20rem;
 		height: 100vh;
 		background-color: #edf7fa;
+	}
+
+	h1 {
+		text-align: center;
 	}
 
 	.close {

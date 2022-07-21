@@ -30,6 +30,10 @@ export const bookmarkListState = atom({
 	default: ['내 북마크', '북마크1'],
 });
 
+export const viewDetailState = atom({
+	key: 'ViewDetailState',
+	default: 'true',
+});
 
 export const placeInfoState = atom({
 	key: 'placeInfoState',

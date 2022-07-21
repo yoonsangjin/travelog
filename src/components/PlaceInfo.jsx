@@ -1,10 +1,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { placeInfoState, 
-		bookmarkState,
-		activeState } from '../recoil/Atom';
+import { placeInfoState, bookmarkState, activeState } from '../recoil/Atom';
 import styled from 'styled-components';
-
 
 function PlaceInfo() {
 	const [placeInfo] = useRecoilState(placeInfoState);
@@ -21,8 +18,8 @@ function PlaceInfo() {
 	}
 
 	function handleBookmark(e) {
-		if (!bookmark.includes(e.target.id)) {
-			setBookmark([...bookmark, e.target.id]);
+		if (!bookmark.includes(e.target.name)) {
+			setBookmark([...bookmark, placeInfo[e.target.name]]);
 			e.currentTarget.style.cssText = 'color: rgb(255, 184, 119)';
 			console.log(bookmark);
 		} else {
@@ -35,26 +32,26 @@ function PlaceInfo() {
 
 	function ActivateExtend() {
 		setActive(true);
-	};
+	}
 
 	function makePlaceInfo(placeInfo) {
-		return placeInfo.map(data => (
-			<div key={data.id} style={handleStyle(data)} className="infoBox">
-				<button id={data.id} className="bookmarkBtn" onClick={handleBookmark}>
+		return placeInfo.map((data, i) => (
+			<div key={i} style={handleStyle(data)} className="infoBox">
+				<button id={data.id} name={i} className="bookmarkBtn" onClick={handleBookmark}>
 					★
 				</button>
 				<ul>
-					<li onClick={ActivateExtend} style={{color: '#5f6caf', cursor: 'pointer'}}>{data.place_name}</li>
+					<li onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
+						{data.place_name}
+					</li>
 					<li>{data.address_name}</li>
 					<li>{data.phone}</li>
 				</ul>
 			</div>
 		));
 	}
-	return (<PlaceInfoStyle>
-			{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}
-		</PlaceInfoStyle>
-)}
+	return <PlaceInfoStyle>{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}</PlaceInfoStyle>;
+}
 export default PlaceInfo;
 
 const PlaceInfoStyle = styled.div`

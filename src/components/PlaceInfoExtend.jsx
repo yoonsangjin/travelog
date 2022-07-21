@@ -8,6 +8,9 @@ function PlaceInfoExtend() {
     return (
         <PlaceInfoExtendbar>
             <div className={active ? 'placeInfoExtend active' : 'placeInfoExtend'}>
+                <div className='infoExtend'>
+                    
+                </div>
             </div>
         </PlaceInfoExtendbar>
     )
