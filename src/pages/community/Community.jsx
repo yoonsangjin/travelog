@@ -4,9 +4,6 @@ import SearchbarIntro from '../../components/SearchbarIntro';
 import styled from 'styled-components';
 function Community() {
 	const [inputValue, setInputValue] = useState('');
-	const [travelTab, setTravelTab] = useState(false);
-	const [qanda, setQAndA] = useState(false);
-	const [companion, setCompanion] = useState(true);
 
 	const handleChange = e => {
 		setInputValue(e.target.value);
@@ -14,9 +11,6 @@ function Community() {
 	const handleClick = () => {
 		console.log(inputValue);
 	};
-	// const handleClickForTab = e => {
-	// 	e.target.style.backgroundColor = 'blue';
-	// };
 	return (
 		<div>
 			<TabMenuUl>
