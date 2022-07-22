@@ -22,7 +22,8 @@
     "reset-css": "^5.0.1",
     "styled-components": "^5.3.5",
     "styled-reset": "^4.4.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+		"react-tooltip": "^4.2.21"
   },
   "scripts": {
     "start": "react-scripts start",
