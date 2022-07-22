@@ -1,21 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { bookmarkState } from '../../../recoil/Atom';
+import { bookmarkListState } from '../../../recoil/Atom';
 
 function BookmarkDetail() {
-	const [bookmark] = useRecoilState(bookmarkState);
-	function getBookmark() {
-		return bookmark.map((data, i) => (
-			<div key={i} style={handleStyle(data)} className="infoBox">
-				<ul>
-					<li>{data.place_name}</li>
-					<li>{data.address_name}</li>
-					<li>{data.phone}</li>
-				</ul>
-			</div>
-		));
-	}
+	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 
 	function handleStyle(data) {
 		if (data.category_group_code === 'AT4') {
@@ -29,8 +18,8 @@ function BookmarkDetail() {
 
 	return (
 		<DetailPageStyle>
-			<div className="folder">부산여행</div>
-			<div className="content">{getBookmark()}</div>
+			<div className="folder">{}</div>
+			<div className="content"></div>
 			<button>글쓰기</button>
 		</DetailPageStyle>
 	);

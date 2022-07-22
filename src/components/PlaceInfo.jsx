@@ -1,12 +1,31 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import { placeInfoState, bookmarkState, activeState } from '../recoil/Atom';
+import React, { useState, useRef } from 'react';
+import SetBookmarkList from '../pages/main/bookmark/SetBookmarkList';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import {
+	placeInfoState,
+	addBookmarkState,
+	bookmarkState,
+	bookmarkListState,
+	activeState,
+	detailInfoState,
+} from '../recoil/Atom';
 
 function PlaceInfo() {
 	const [placeInfo] = useRecoilState(placeInfoState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [active, setActive] = useRecoilState(activeState);
+	const [detailInfo, setDetailInfo] = useRecoilState(detailInfoState);
+	const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState);
+	const [bmList, setBmList] = useRecoilState(bookmarkListState);
+
+	const placeRef = useRef([]);
+	placeRef.current = [];
+
+	function addRef(data) {
+		placeRef.current.push(data);
+	}
+
 	function handleStyle(data) {
 		if (data.category_group_code == 'AT4') {
 			return { border: '2px solid rgb(3, 155, 0)' };
@@ -18,39 +37,50 @@ function PlaceInfo() {
 	}
 
 	function handleBookmark(e) {
-		if (!bookmark.includes(e.target.name)) {
-			setBookmark([...bookmark, placeInfo[e.target.name]]);
+		// 북마크 추가 모달 오픈
+		if (bookmark == '') {
+			// 북마크에 장소 추가
+			setAddBookmark(true);
+			const id = e.target.id;
+			const filterArray = placeRef.current.filter(e => e.id == id);
+			setBookmark(filterArray[0]);
 			e.currentTarget.style.cssText = 'color: rgb(255, 184, 119)';
 			console.log(bookmark);
 		} else {
+			// 북마크에 장소 삭제
 			const id = e.target.id;
-			setBookmark(bookmark.filter(e => e !== id));
+			setBookmark('');
 			e.currentTarget.style.cssText = '';
 			console.log(bookmark);
 		}
 	}
 
-	function ActivateExtend() {
+	function ActivateExtend(e) {
 		setActive(true);
+		setDetailInfo(placeRef.current[e.target.id]);
 	}
 
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map((data, i) => (
-			<div key={i} style={handleStyle(data)} className="infoBox">
-				<button id={data.id} name={i} className="bookmarkBtn" onClick={handleBookmark}>
+			<div key={i} id={data.id} style={handleStyle(data)} className="infoBox" ref={addRef(data)}>
+				<button id={data.id} className="bookmarkBtn" onClick={handleBookmark}>
 					★
 				</button>
 				<ul>
-					<li onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
+					<li onClick={ActivateExtend} id={i} style={{ color: '#5f6caf', cursor: 'pointer' }}>
 						{data.place_name}
 					</li>
 					<li>{data.address_name}</li>
-					<li>{data.phone}</li>
 				</ul>
 			</div>
 		));
 	}
-	return <PlaceInfoStyle>{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}</PlaceInfoStyle>;
+	return (
+		<PlaceInfoStyle>
+			{placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}
+			{addBookmark == true ? <SetBookmarkList /> : ''}
+		</PlaceInfoStyle>
+	);
 }
 export default PlaceInfo;
 
@@ -83,5 +113,23 @@ const PlaceInfoStyle = styled.div`
 		border: none;
 		color: #ddd;
 		background: white;
+	}
+
+	.bmModal {
+		position: absolute;
+		top: 5rem;
+		left: 10rem;
+		background-color: white;
+		display: flex;
+		flex-flow: column;
+		width: 10rem;
+		height: 5rem;
+		text-align: center;
+	}
+
+	#x {
+		float: right;
+		height: 1rem;
+		line-height: 1rem;
 	}
 `;

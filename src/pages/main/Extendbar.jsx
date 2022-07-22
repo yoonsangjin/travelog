@@ -5,17 +5,18 @@ import PlaceInfo from '../../components/PlaceInfo';
 import PlaceInfoExtend from './PlaceInfoExtend';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { extendbarState } from '../../recoil/Atom';
+import { extendbarState, detailInfoState } from '../../recoil/Atom';
 
 function Extendbar() {
 	const [close, setClose] = useRecoilState(extendbarState);
+	const [detailInfo,] = useRecoilState(detailInfoState);
 	return (
 		<ExtendbarStyle>
 			<div className={close ? 'extendbar close' : 'extendbar'}>
 				<Searchbar />
 				<PlaceInfo />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
-				<PlaceInfoExtend />
+				{detailInfo == '' ? '' : <PlaceInfoExtend />}
 			</div>
 		</ExtendbarStyle>
 	);

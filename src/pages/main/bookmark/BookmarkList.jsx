@@ -9,6 +9,10 @@ function BookmarkList() {
 	function addFolder(e) {
 		setBmList(...bmList, e.target.value);
 	}
+	function viewMore(e) {
+		setViewDetail(false);
+		console.log(e.target.id);
+	}
 
 	return (
 		<BmListStyle>
@@ -20,7 +24,7 @@ function BookmarkList() {
 			</div>
 			<div className="listContainer">
 				{bmList.map((element, i) => (
-					<div key={i} className="folder" onClick={() => setViewDetail(false)}>
+					<div key={i} className="folder" id={element} onClick={viewMore}>
 						{element}
 					</div>
 				))}
