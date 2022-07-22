@@ -17,7 +17,7 @@ import ColorLog from './components/ColorLog'
 import Kakao from './pages/login/Kakao.jsx'
 import S3 from './components/S3'
 import Companion from './pages/community/Companion'
-
+import Community from './pages/community/Community';
 function App() {
   return (
     <div>
@@ -42,6 +42,7 @@ function App() {
       </RecoilRoot>
     </div>
   )
+
 }
 
 export default App
