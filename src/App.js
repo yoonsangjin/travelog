@@ -1,19 +1,21 @@
-import React from 'react';
-import { Reset } from 'styled-reset';
-import './App.css';
-import MyPage from './pages/mypage/MyPage';
-import Main from './pages/main/Main.jsx';
-import { Routes, Route } from 'react-router-dom';
-import Login from './pages/login/Login.jsx';
-import LoginForEmail from './pages/login/LoginForEmail.jsx';
-import Writing from './pages/writing/Writing';
-import Navbar from './components/Navbar.jsx';
-import Signup from './pages/login/Signup.jsx';
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import Title from './pages/title/Title.jsx';
-import EditProfile from './pages/mypage/EditProfile';
-import PasswordCheck from './pages/mypage/PasswordCheck';
-
+import React from 'react'
+import { Reset } from 'styled-reset'
+import './App.css'
+import MyPage from './pages/mypage/MyPage'
+import Main from './pages/main/Main.jsx'
+import { Routes, Route } from 'react-router-dom'
+import Login from './pages/login/Login.jsx'
+import LoginForEmail from './pages/login/LoginForEmail.jsx'
+import Writing from './pages/writing/Writing'
+import Navbar from './components/Navbar.jsx'
+import Signup from './pages/login/Signup.jsx'
+import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil'
+import Title from './pages/title/Title.jsx'
+import EditProfile from './pages/mypage/EditProfile'
+import PasswordCheck from './pages/mypage/PasswordCheck'
+import ColorLog from './components/ColorLog'
+import Kakao from './pages/login/Kakao.jsx'
+import S3 from './components/S3'
 function App() {
   return (
     <div>
@@ -30,10 +32,13 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/passwordcheck" element={<PasswordCheck />} />
+          <Route path="/colorlog" element={<ColorLog />} />
+          <Route path="/oauth" element={<Kakao />} />
+          <Route path="/aws" element={<S3 />} />
         </Routes>
       </RecoilRoot>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

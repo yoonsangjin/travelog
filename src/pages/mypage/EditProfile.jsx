@@ -176,7 +176,7 @@ function EditProfile() {
             type="file"
             name="image"
             onChange={e => {
-              formData.append('images', e.target.files)
+              formData.append('images', e.target.files[0])
             }}
           />
           <SignupButton onClick={handleSubmit}>변경</SignupButton>

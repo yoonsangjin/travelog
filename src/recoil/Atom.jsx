@@ -20,6 +20,11 @@ export const customState = atom({
   default: 'false',
 })
 
+export const bookmarkState = atom({
+  key: 'bookmarkState',
+  default: [],
+})
+
 export const placeInfoState = atom({
   key: 'placeInfoState',
   default: '',
