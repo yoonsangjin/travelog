@@ -16,6 +16,8 @@ import PasswordCheck from './pages/mypage/PasswordCheck'
 import ColorLog from './components/ColorLog'
 import Kakao from './pages/login/Kakao.jsx'
 import S3 from './components/S3'
+import Companion from './pages/community/Companion'
+
 function App() {
   return (
     <div>
@@ -35,6 +37,7 @@ function App() {
           <Route path="/colorlog" element={<ColorLog />} />
           <Route path="/oauth" element={<Kakao />} />
           <Route path="/aws" element={<S3 />} />
+          <Route path="/community" element={<Companion />} />
         </Routes>
       </RecoilRoot>
     </div>
