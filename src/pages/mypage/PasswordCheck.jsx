@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-
+import { NavLink } from 'react-router-dom'
 const SignupSection = styled.section`
   width: 100vw;
   height: 100vw;
@@ -58,6 +58,40 @@ const InvalidInput = styled.p`
   top: 4.8rem;
   left: 6.8rem;
 `
+const NavUl = styled.ul`
+  display: flex;
+  align-items: center;
+  margin-right: 3rem;
+`
+const NavLi = styled.li`
+  margin: 0 2rem;
+  color: #5f6caf;
+`
+const MenuUl = styled(NavUl)`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 15vw;
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  left: -0.5rem;
+  top: 11rem;
+  background-color: #edf7fa;
+`
+const MenuLi = styled(NavLi)`
+  color: #5f6caf;
+  margin: 0;
+  height: 3rem;
+  width: 15vw;
+  line-height: 3rem;
+  color: black;
+  cursor: pointer;
+  font-size: 22px;
+  &:hover {
+    background-color: #5f6caf;
+    color: #ffffff;
+  }
+`
 //회원 정보 변경창에 들어가기전 패스워드 확인
 function PasswordCheck() {
   const [password, setPassword] = useState('')
@@ -65,6 +99,11 @@ function PasswordCheck() {
   //입력된 정보가 올바른 형식인지 검사
   const passwordValidation = password.length < 8
   const passwordConfirmValidation = password !== passwordConfirm
+  const token = window.localStorage.getItem('token')
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+    //data: { currentPassword: '12341234' },
+  }
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -88,38 +127,61 @@ function PasswordCheck() {
       }
     }
   }
-
+  const deleteUser = async () => {
+    if (window.confirm('회원 탈퇴하시겠습니까?')) {
+      try {
+        await axios.delete(`http://localhost:8000/api/users/9`, config)
+        console.log('삭제되었습니다')
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      return
+    }
+  }
   return (
-    <SignupSection>
-      <SignupContainer>
-        <SignupHeader>비밀 번호 확인</SignupHeader>
-        <form>
-          <SignupInput
-            name="password"
-            value={password}
-            type="password"
-            onChange={e => {
-              setPassword(e.target.value)
-            }}
-            placeholder="비밀번호를 입력해 주세요."
-          />
-          {passwordValidation && <InvalidInput> * 8자 이상 입력해 주세요.</InvalidInput>}
-          <SignupInput
-            name="passwordConfirm"
-            value={passwordConfirm}
-            type="password"
-            onChange={e => {
-              setPasswordConfirm(e.target.value)
-            }}
-            placeholder="비밀번호를 다시 입력해 주세요."
-          />
-          {passwordConfirmValidation && (
-            <InvalidInput> * 비밀번호가 일치하지 않습니다.</InvalidInput>
-          )}
-          <SignupButton onClick={handleSubmit}>변경</SignupButton>
-        </form>
-      </SignupContainer>
-    </SignupSection>
+    <>
+      <MenuUl>
+        <MenuLi>
+          <NavLink to="/editprofile">회원정보 수정</NavLink>
+        </MenuLi>
+        <MenuLi>
+          <NavLink to="#">비밀번호 변경</NavLink>
+        </MenuLi>
+
+        <MenuLi onClick={deleteUser}>회원탈퇴</MenuLi>
+      </MenuUl>
+      <SignupSection>
+        <SignupContainer>
+          <SignupHeader>비밀 번호 확인</SignupHeader>
+          <form>
+            <SignupInput
+              name="password"
+              value={password}
+              type="password"
+              onChange={e => {
+                setPassword(e.target.value)
+              }}
+              placeholder="비밀번호를 입력해 주세요."
+            />
+            {passwordValidation && <InvalidInput> * 8자 이상 입력해 주세요.</InvalidInput>}
+            <SignupInput
+              name="passwordConfirm"
+              value={passwordConfirm}
+              type="password"
+              onChange={e => {
+                setPasswordConfirm(e.target.value)
+              }}
+              placeholder="비밀번호를 다시 입력해 주세요."
+            />
+            {passwordConfirmValidation && (
+              <InvalidInput> * 비밀번호가 일치하지 않습니다.</InvalidInput>
+            )}
+            <SignupButton onClick={handleSubmit}>변경</SignupButton>
+          </form>
+        </SignupContainer>
+      </SignupSection>
+    </>
   )
 }
 

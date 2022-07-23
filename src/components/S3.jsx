@@ -39,7 +39,7 @@ function S3(file) {
         }, 3000)
       })
       .send(err => {
-        if (err) console.log(err)
+        if (err) alert(err)
       })
   }
 
