@@ -9,7 +9,7 @@ const SignupSection = styled.section`
 `
 const SignupContainer = styled.article`
   width: 30rem;
-  height: 40rem;
+  height: 48rem;
   margin: 6rem auto;
   box-shadow: 1px 1px 22px 2px rgba(0, 0, 0, 0.25);
   border-radius: 38px;
@@ -19,7 +19,7 @@ const SignupHeader = styled.h2`
   font-size: 2rem;
   position: relative;
   top: 3rem;
-  left: 12rem;
+  left: 8rem;
 `
 const SignupInput = styled.input`
   width: 18rem;
@@ -58,59 +58,33 @@ const InvalidInput = styled.p`
   top: 4.8rem;
   left: 6.8rem;
 `
-
-function Signup() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [age, setAge] = useState('')
+//회원 정보 변경창에 들어가기전 패스워드 확인
+function PasswordCheck() {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
-
   //입력된 정보가 올바른 형식인지 검사
-  const emailRegex =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
-  const emailValidation = emailRegex.test(email)
   const passwordValidation = password.length < 8
   const passwordConfirmValidation = password !== passwordConfirm
-  const ageValidation = age.length < 1
-
-  let ageData = 0
-
-  //입력받은 생년월일로 연령대 계산
-  const getAgeInfo = input => {
-    const date = new Date().getFullYear()
-    const birth = parseInt(input.slice(0, 4))
-
-    ageData = date - birth + 1
-  }
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (name === '') {
-      alert('이름을 확인해 주세요.')
-    } else if (!emailValidation) {
-      alert('이메일을 확인해 주세요.')
-    } else if (passwordValidation || passwordConfirmValidation) {
+    if (passwordValidation || passwordConfirmValidation) {
       alert('비밀번호를 확인해 주세요.')
-    } else if (ageValidation) {
-      alert('생년월일 정보를 확인해 주세요')
     }
 
-    getAgeInfo(age)
-
-    //모든 유효성 검사를 통과한다면 백에 회원가입 요청
-    if (emailValidation && !passwordConfirmValidation && !passwordValidation && !ageValidation) {
+    //회원가입 요청
+    if (!passwordConfirmValidation && !passwordValidation) {
       try {
-        const data = { nickname: name, email, password, age: ageData }
+        const data = { password }
         await axios({
-          method: 'post',
-          url: 'http://localhost:8000/api/users/register',
+          method: 'get',
+          url: 'http://localhost:8000/api/users',
           data: data,
         })
         window.location.href = '/login'
       } catch (err) {
-        console.error(err.response.data.error)
-        alert(err.response.data.error)
+        console.error(err.stack)
+        alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`)
       }
     }
   }
@@ -118,25 +92,8 @@ function Signup() {
   return (
     <SignupSection>
       <SignupContainer>
-        <SignupHeader>회원가입</SignupHeader>
+        <SignupHeader>비밀 번호 확인</SignupHeader>
         <form>
-          <SignupInput
-            name="name"
-            value={name}
-            onChange={e => {
-              setName(e.target.value)
-            }}
-            placeholder="이름을 입력해 주세요."
-          />
-          <SignupInput
-            name="email"
-            value={email}
-            onChange={e => {
-              setEmail(e.target.value)
-            }}
-            placeholder="이메일을 입력해 주세요."
-          />
-          {!emailValidation && <InvalidInput> * 이메일 형식이 올바르지 않습니다.</InvalidInput>}
           <SignupInput
             name="password"
             value={password}
@@ -159,24 +116,11 @@ function Signup() {
           {passwordConfirmValidation && (
             <InvalidInput> * 비밀번호가 일치하지 않습니다.</InvalidInput>
           )}
-
-          <SignupInput
-            name="date"
-            value={age}
-            type="date"
-            min="1900-01-01"
-            max="9999-12-31"
-            onChange={e => {
-              setAge(e.target.value)
-            }}
-            placeholder="생년월일을 입력해 주세요."
-          />
-          {ageValidation && <InvalidInput> * 생년월일 정보가 없습니다.</InvalidInput>}
-          <SignupButton onClick={handleSubmit}>회원가입</SignupButton>
+          <SignupButton onClick={handleSubmit}>변경</SignupButton>
         </form>
       </SignupContainer>
     </SignupSection>
   )
 }
 
-export default Signup
+export default PasswordCheck
