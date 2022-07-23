@@ -6,7 +6,7 @@ import axios from 'axios'
 const KakaoLogin = () => {
   const RedirectForAuth = e => {
     e.preventDefault()
-    window.location.href = KAKAO_AUTH_URL
+    window.location.assign(KAKAO_AUTH_URL)
   }
   return <SocialButton onClick={RedirectForAuth}>카카오로 로그인</SocialButton>
 }
