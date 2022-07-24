@@ -75,3 +75,13 @@ export const iconMenuState = atom({
   key: 'iconMenuState',
   default: false,
 })
+
+export const toggleState = atom({
+  key: 'toggleState',
+  default: false,
+})
+
+export const boardState = atom({
+  key: 'boardState',
+  default: [],
+})

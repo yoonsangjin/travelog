@@ -1,6 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { IoIosClose } from 'react-icons/io'
+import React from 'react';
+import styled from 'styled-components';
+import { IoIosClose } from 'react-icons/io';
+import { useRecoilState } from 'recoil';
+import { boardState } from '../../recoil/Atom.jsx'
 const ListBox = styled.div`
   padding: 1rem;
   position: relative;
@@ -41,9 +43,12 @@ const Closebtn = styled.button`
     height: 1.5rem;
   }
 `
+
 function WritingListS({ id, name, url }) {
+  const [board, setBoard] = useRecoilState(boardState)
   const handleButton = () => {
-    // 구현 중
+		const newArr = board.filter(e => id !== e.id);
+		setBoard(newArr);
   }
 
   return (
