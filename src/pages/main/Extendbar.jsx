@@ -3,13 +3,16 @@ import { BsCaretLeftSquare } from 'react-icons/bs'
 import Searchbar from './Searchbar'
 import PlaceInfo from '../../components/PlaceInfo'
 import PlaceInfoExtend from './PlaceInfoExtend'
+import BookmarkModal from './bookmark/BookmarkModal'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
-import { extendbarState, detailInfoState } from '../../recoil/Atom'
+import { extendbarState, detailInfoState, addBookmarkState } from '../../recoil/Atom'
 
 function Extendbar() {
   const [close, setClose] = useRecoilState(extendbarState)
   const [detailInfo] = useRecoilState(detailInfoState)
+  const [addBookmark, ] = useRecoilState(addBookmarkState)
+
   return (
     <ExtendbarStyle>
       <div className={close ? 'extendbar close' : 'extendbar'}>
@@ -18,6 +21,7 @@ function Extendbar() {
         <BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
         {detailInfo == '' ? '' : <PlaceInfoExtend />}
       </div>
+      {addBookmark ? <BookmarkModal /> : ''}
     </ExtendbarStyle>
   )
 }

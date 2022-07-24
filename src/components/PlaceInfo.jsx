@@ -1,5 +1,4 @@
-import React, { useRef } from 'react'
-import SetBookmarkList from '../pages/main/bookmark/SetBookmarkList'
+import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
 import {
@@ -24,6 +23,19 @@ function PlaceInfo() {
     placeRef.current.push(data)
   }
 
+  function handleBookmark(e) {
+    setAddBookmark(true)
+    const targetObj = placeRef.current[e.target.name]
+    if (!bookmark.some(data => data.id == e.target.id)) {
+      setBookmark([...bookmark, targetObj])
+      e.target.style.color = '#ffb877'
+    } else if (bookmark.some(data => data.id == e.target.id)) {
+      setBookmark(bookmark.filter(data => data.id != e.target.id))
+      console.log(bookmark)
+      e.target.style.color = ''
+    }
+  }
+
   function handleStyle(data) {
     if (data.category_group_code == 'AT4') {
       return { border: '2px solid rgb(3, 155, 0)' }
@@ -31,25 +43,11 @@ function PlaceInfo() {
       return { border: '2px solid rgb(0, 41, 254)' }
     } else if (data.category_group_code == 'CE7') {
       return { border: '2px solid rgb(224, 88, 54)' }
+    } else if (data.category_group_code == '') {
+      return { border: '2px solid #d9d9d9' }
     }
   }
 
-  function handleBookmark(e) {
-    // 북마크 추가 모달 오픈
-    if (bookmark == '') {
-      // 북마크에 장소 추가
-      setAddBookmark(true)
-      const id = e.target.id
-      const filterArray = placeRef.current.filter(e => e.id == id)
-      setBookmark(filterArray[0])
-      e.currentTarget.style.cssText = 'color: rgb(255, 184, 119)'
-    } else {
-      // 북마크에 장소 삭제
-      const id = e.target.id
-      setBookmark('')
-      e.currentTarget.style.cssText = ''
-    }
-  }
 
   function ActivateExtend(e) {
     setActive(true)
@@ -58,8 +56,8 @@ function PlaceInfo() {
 
   function makePlaceInfo(placeInfo) {
     return placeInfo.map((data, i) => (
-      <div key={i} id={data.id} style={handleStyle(data)} className="infoBox" ref={addRef(data)}>
-        <button id={data.id} className="bookmarkBtn" onClick={handleBookmark}>
+      <div key={i} id={data.id} name={i} style={handleStyle(data)} className="infoBox" ref={addRef(data)}>
+        <button id={data.id} name={i} className="bookmarkBtn" onClick={handleBookmark}>
           ★
         </button>
         <ul>
@@ -73,8 +71,7 @@ function PlaceInfo() {
   }
   return (
     <PlaceInfoStyle>
-      {placeInfo !== '' ? makePlaceInfo(placeInfo) : ''}
-      {addBookmark == true ? <SetBookmarkList /> : ''}
+      {placeInfo == '' ? '' : makePlaceInfo(placeInfo)}
     </PlaceInfoStyle>
   )
 }
@@ -91,6 +88,15 @@ const PlaceInfoStyle = styled.div`
   position: absolute;
   overflow: scroll;
   top: 80px;
+
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 
   .infoBox {
     width: 15rem;
@@ -109,23 +115,5 @@ const PlaceInfoStyle = styled.div`
     border: none;
     color: #ddd;
     background: white;
-  }
-
-  .bmModal {
-    position: absolute;
-    top: 5rem;
-    left: 10rem;
-    background-color: white;
-    display: flex;
-    flex-flow: column;
-    width: 10rem;
-    height: 5rem;
-    text-align: center;
-  }
-
-  #x {
-    float: right;
-    height: 1rem;
-    line-height: 1rem;
   }
 `

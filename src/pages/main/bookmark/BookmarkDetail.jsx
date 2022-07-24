@@ -36,6 +36,14 @@ const DetailPageStyle = styled.div`
     margin: 1rem auto;
     overflow: scroll;
   }
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 
   .infoBox {
     width: 15rem;

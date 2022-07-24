@@ -25,7 +25,7 @@ export const mainInputValueState = atom({
 
 export const extendbarState = atom({
   key: 'extendbarState',
-  default: true,
+  default: false,
 })
 
 export const addBookmarkState = atom({
@@ -36,7 +36,7 @@ export const addBookmarkState = atom({
 // bookmark에 저장될 data
 export const bookmarkState = atom({
   key: 'bookmarkState',
-  default: '',
+  default: [],
 })
 
 export const bookmarkListState = atom({
@@ -51,7 +51,7 @@ export const handleInputState = atom({
 
 export const bookmarkbarState = atom({
   key: 'bookmarkbarState',
-  default: false,
+  default: true,
 })
 
 // bookmark info창 controller

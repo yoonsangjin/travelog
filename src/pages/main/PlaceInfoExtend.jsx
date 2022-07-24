@@ -45,9 +45,14 @@ const PlaceInfoExtendbar = styled.div`
     overflow: scroll;
     background-color: #edf7fa;
   }
-
-  .placeInfoExtend::-webkit-scrollbar {
-    display: none;
+  
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
   }
 
   .detailInfo {
