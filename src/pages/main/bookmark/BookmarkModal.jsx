@@ -6,7 +6,7 @@ import { bookmarkListState, addBookmarkState, handleInputState } from '../../../
 
 export default function BookmarkModal() {
   const [bmList, ] = useRecoilState(bookmarkListState)
-  const [, setAddBookmark] = useRecoilState(addBookmarkState)
+  const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState)
 
   return (
     <BmModalStyle>
@@ -22,7 +22,7 @@ export default function BookmarkModal() {
 const BmModalStyle = styled.div`
   position: absolute;
   top: 0;
-  left: 82vw;
+  left: 90vw;
   background-color: white;
   display: flex;
   flex-flow: column;

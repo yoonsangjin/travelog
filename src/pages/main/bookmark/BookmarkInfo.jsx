@@ -36,37 +36,28 @@ function BookmarkInfo() {
   const btnRef = useRef([])
   btnRef.current = []
   const pRef = useRef([])
-  pRef.current = []
 
-  function addPlaceRef(i) {
-    placeRef.current.push(i)
-  }
-  function addInputRef(i) {
-    inputRef.current.push(i)
-  }
-  function addDivRef(i) {
-    divRef.current.push(i)
-  }
-  function addBtnRef(i) {
-    btnRef.current.push(i)
-  }
-  function addPRef(i) {
-    pRef.current.push(i)
+  function addPlaceRef(data) {
+    placeRef.current.push(data)
   }
 
   function addComments(e) { // 메모 남기기
-    console.log(inputRef.current)
-    if (inputRef.current[id].hidden == false) {
-      inputRef.current[id].hidden = true;
-      btnRef.current[id].style.display = 'none';
-      pRef.current[id].style.display = 'inline';
-      divRef.current[id].style.height = '4rem';
+    const nodelist = e.target.parentElement.childNodes
+    const divNode = e.target.parentElement.parentElement;
+    const inputNode = nodelist[1]
+    const btnNode = nodelist[2]
+    const pNode = nodelist[3]
+    if (inputNode.hidden == false) {
+      inputNode.hidden = true;
+      btnNode.style.display = 'none';
+      pNode.style.display = 'inline';
+      divNode.style.height = '4rem';
     } else {
-      inputRef.current[id].hidden = false;
-      inputRef.current[id].focus();
-      divRef.current[id].style.height = '6rem';
-      btnRef.current[id].style.display = 'block';
-      pRef.current[id].style.display = 'none';
+      inputNode.hidden = false;
+      inputNode.focus();
+      btnNode.style.display = 'block';
+      pNode.style.display = 'none';
+      divNode.style.height = '6rem';
     }
   }
   function handleBookmark(e) {
@@ -89,13 +80,14 @@ function BookmarkInfo() {
           <div id={i} onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
             <span>{data.place_name}</span>
           </div>
-          <div>
-            <BsPencilFill className='addComments' id={data.id} onClick={addComments}/>
-            <input hidden type="text" id={i} className='commentsInput' ref={addInputRef(i)} />
-            <button className='commentsBtn' id={i} ref={addBtnRef(i)}>확인</button>
-            <p className='comments' id={i} ref={addPRef(i)}>메모를 입력해 주세요.</p>
+          <div className='commentsContainer' id={data.id}>
+            <BsPencilFill className='addComments' id={data.id} name={i} onClick={addComments}/>
+            <input hidden type="text" id={data.id} className='commentsInput' ref={inputRef} />
+            <button className='commentsBtn' style={{display: 'none'}} id={data.id} ref={btnRef}>확인</button>
+            <p className='comments' id={data.id} ref={pRef}>메모를 입력해 주세요.</p>
           </div>
       </div>
+      
     ))
   }
   return (
