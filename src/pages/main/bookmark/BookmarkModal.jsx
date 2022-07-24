@@ -32,7 +32,7 @@ const BmModalStyle = styled.div`
   opacity: 0.8;
 
   #x {
-    float: right;
+    text-align: end;
     height: 1rem;
     line-height: 1rem;
   }

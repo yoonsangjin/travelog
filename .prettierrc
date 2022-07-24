@@ -4,8 +4,8 @@
   "singleQuote": true,
   "trailingComma": "all",
   "bracketSpacing": true,
-  "semi": false,
-  "useTabs": false,
+  "semi": true,
+  "useTabs": true,
   "arrowParens": "avoid",
   "endOfLine": "lf"
 }
