@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import TitleCard from '../../components/TitleCard';
-import videoBG from './video/background.mp4';
-import SearchbarIntro from '../../components/SearchbarIntro';
-import { useRecoilState } from 'recoil';
-import { loginState } from '../../recoil/Atom';
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import TitleCard from '../../components/TitleCard'
+import videoBG from './video/background.mp4'
+import SearchbarIntro from '../../components/SearchbarIntro'
+import { useRecoilState } from 'recoil'
+import { loginState } from '../../recoil/Atom'
 
 const mockData = [
   {
@@ -89,7 +89,7 @@ function Title() {
   );
 }
 
-export default Title;
+export default Title
 
 const TitleContainer = styled.div`
   width: 100vw;
