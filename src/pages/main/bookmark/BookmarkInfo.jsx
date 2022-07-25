@@ -1,15 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { placeInfoState, bookmarkState, activeState, detailInfoState } from '../../../recoil/Atom';
-import { BsPencilFill } from 'react-icons/bs';
+import {
+	placeInfoState,
+	bookmarkState,
+	bookmarkListState,
+	activeState,
+	detailInfoState,
+	textState,
+	listNumberState,
+} from '../../../recoil/Atom';
 import SetComments from './SetComments';
 
-function BookmarkInfo({ width, height }) {
+function BookmarkInfo() {
 	const [placeInfo, setPlaceInfo] = useRecoilState(placeInfoState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [, setActive] = useRecoilState(activeState);
 	const [detailInfo, setDetailInfo] = useRecoilState(detailInfoState);
+	const [text, setText] = useRecoilState(textState);
+	const [listNumber, setListNumber] = useRecoilState(listNumberState);
+
+	useEffect(() => {
+		let newBookmark = JSON.parse(JSON.stringify(bookmark));
+		let newObj = newBookmark.map(element => {
+			let newObj = {
+				bookmarkMemo: text,
+				placeName: element.place_name,
+				placeUrl: element.place_url,
+				categoryName: element.category_name,
+				addressName: element.address_name,
+				roadAddressName: element.road_address_name,
+				bookmarkId: element.id,
+				phone: element.phone,
+				categoryGroupCode: element.category_group_code,
+				categoryGroupName: element.category_group_name,
+				x: element.x,
+				y: element.y,
+			};
+			return newObj;
+		});
+
+		let newArray = {
+			bookmarkName: bmList[listNumber],
+			data: newObj,
+		};
+
+		console.log(newArray);
+	}, [listNumber]);
 
 	function handleStyle(data) {
 		if (data.category_group_code == 'AT4') {

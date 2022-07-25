@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
-import { bookmarkState, bookmarkSetState, bookmarkListState, listNumberState, viewDetailState } from '../../../recoil/Atom';
+import {
+	bookmarkState,
+	bookmarkSetState,
+	bookmarkListState,
+	listNumberState,
+	viewDetailState,
+} from '../../../recoil/Atom';
 import BookmarkInfoDetail from './BookmarkInfoDetail';
 function BookmarkDetail() {
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
@@ -21,16 +27,21 @@ function BookmarkDetail() {
 		}
 	}
 
+	function convertToJson() {
+		const data = JSON.stringify(bookmarkSet);
+		console.log(data);
+	}
+
 	return (
 		<DetailPageStyle>
 			<div className="folder">
-				{bmList[listNumber]}            
-				<AiOutlineArrowLeft onClick={()=>setViewDetail(true)}/>
+				{bmList[listNumber]}
+				<AiOutlineArrowLeft onClick={() => setViewDetail(true)} />
 			</div>
 			<div className="content">
 				<BookmarkInfoDetail />
 			</div>
-			<button>글쓰기</button>
+			<button onClick={convertToJson}>글쓰기</button>
 		</DetailPageStyle>
 	);
 }

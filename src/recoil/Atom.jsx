@@ -49,11 +49,6 @@ export const bookmarkListState = atom({
 	default: ['내 여행', '부산여행'],
 });
 
-export const handleInputState = atom({
-	key: 'handleInputState',
-	default: '',
-});
-
 export const bookmarkbarState = atom({
 	key: 'bookmarkbarState',
 	default: true,
@@ -67,6 +62,11 @@ export const showBmListState = atom({
 export const listNumberState = atom({
 	key: 'listNumberState',
 	default: false,
+});
+
+export const textState = atom({
+	key: 'textState',
+	default: '메모를 입력해 주세요.',
 });
 
 // bookmark info창 controller

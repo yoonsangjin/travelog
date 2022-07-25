@@ -2,20 +2,41 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BsPencilFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { bookmarkState, bookmarkListState, bookmarkSetState } from '../../../recoil/Atom';
-function SetComments({ data }) {
-	const [text, setText] = useState('메모를 등록해 주세요.');
+import {
+	bookmarkState,
+	bookmarkListState,
+	textState,
+	listNumberState,
+	bookmarkSetState,
+} from '../../../recoil/Atom';
+function SetComments(props) {
+	const [value, setValue] = useState('');
+	const [text, setText] = useRecoilState(textState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
+	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 	const inputRef = useRef();
 	const buttonRef = useRef();
 	const pRef = useRef();
 
-	useEffect(() => {
+	function handleForm(e) {
+		if (inputRef.current.type === 'text') {
+			inputRef.current.type = 'hidden';
+			buttonRef.current.style.display = 'none';
+			pRef.current.style.display = 'inline';
+		} else if (inputRef.current.type === 'hidden') {
+			inputRef.current.type = 'text';
+			buttonRef.current.style.display = 'block';
+			pRef.current.style.display = 'none';
+		}
+	}
+
+	function handleBtn(e) {
+		
 		// 통신을 위한 북마크 양식 변경
-		let newBookmark = JSON.parse(JSON.stringify(bookmark));
-		let newObj = newBookmark.map(element => {
+		let newBookmark = JSON.parse(JSON.stringify(bookmark)); // 새로운 객체 생성
+		let newObj = newBookmark.map(element => { // 프로퍼티 변경
 			let newObj = {
 				bookmarkMemo: text,
 				placeName: element.place_name,
@@ -32,20 +53,20 @@ function SetComments({ data }) {
 			};
 			return newObj;
 		});
-		setBookmarkSet(newObj);
-		console.log(bookmarkSet);
-	}, [text]);
+		newObj[0].bookmarkMemo = value; // input의 value를 특정 배열 내 객체의 프로퍼티에 넣는 작업
 
-	function handleForm(e) {
-		if (inputRef.current.type === 'text') {
-			inputRef.current.type = 'hidden';
-			buttonRef.current.style.display = 'none';
-			pRef.current.style.display = 'inline';
-		} else if (inputRef.current.type === 'hidden') {
-			inputRef.current.type = 'text';
-			buttonRef.current.style.display = 'block';
-			pRef.current.style.display = 'none';
-		}
+		let newArray = {
+			bookmarkName: bmList[listNumber],
+			data: newObj,
+		};
+
+		setBookmarkSet(newArray); // 원하는 배열 완성
+		console.log(bookmarkSet); // 잘 출력됨.
+		
+		inputRef.current.type = 'hidden';
+		buttonRef.current.style.display = 'none';
+		pRef.current.style.display = 'inline';
+		
 	}
 
 	function handleSubmit(e) {
@@ -53,7 +74,7 @@ function SetComments({ data }) {
 	}
 
 	function handleChange(e) {
-		setText(e.target.value);
+		setValue(e.target.value);
 	}
 	return (
 		<SetCommentsStyle>
@@ -65,10 +86,10 @@ function SetComments({ data }) {
 					ref={inputRef}
 					placeholder="메모를 등록해 주세요."
 				/>
-				<button type="submit" onClick={handleForm} ref={buttonRef}>
+				<button type="submit"  onClick={handleBtn} ref={buttonRef}>
 					등록하기
 				</button>
-				<p ref={pRef}>{text}</p>
+				<p ref={pRef}>{value}</p>
 			</form>
 		</SetCommentsStyle>
 	);

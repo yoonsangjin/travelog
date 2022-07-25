@@ -8,6 +8,8 @@ function SelectBmList() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
 	const [showBmList, setShowBmList] = useRecoilState(showBmListState);
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
+
+	
 	function handleList() {
 		setBmClose(false);
 		setShowBmList(false);
