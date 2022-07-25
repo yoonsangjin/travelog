@@ -16,7 +16,7 @@ function Bookmarkbar() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
 	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkbarState);
-  	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState)
+	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 
 	useEffect(() => {
 		renderDetailPage();
