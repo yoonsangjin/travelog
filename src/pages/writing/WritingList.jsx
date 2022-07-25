@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDrag } from 'react-dnd'
-import { toggleState } from '../../recoil/Atom.jsx'
-import { atom, useRecoilState } from 'recoil'
+import { toggleState, checkedState } from '../../recoil/Atom.jsx'
+import { useRecoilState } from 'recoil'
 
 const SidebarList = styled.div`
   padding: 1rem;
@@ -56,7 +56,6 @@ const Input = styled.input`
     background-color: limegreen;
   }
 `
-export const checkedState = atom({ key: 'checkedState', default: [] })
 function WritingList({ id, name, url, memo }) {
   const [toggle, setToggle] = useRecoilState(toggleState)
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -74,7 +73,7 @@ function WritingList({ id, name, url, memo }) {
     }
   }
   return (
-    <SidebarList ref={drag} style={{ border: isDragging ? '3px solid #edf7fa' : '0px' }}>
+    <SidebarList ref={drag}>
       <Label htmlFor={id}>
         {toggle ? (
           <Input

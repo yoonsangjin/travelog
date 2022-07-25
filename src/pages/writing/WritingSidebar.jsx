@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import { TbStar } from 'react-icons/tb';
 import WritingSearchbar from './WritingSearchbar';
 import WritingList from './WritingList';
-import { checkedState } from './WritingList'
 import { atom, useRecoilState } from 'recoil'
-import { toggleState, boardState } from '../../recoil/Atom.jsx'
+import { toggleState, boardState, checkedState } from '../../recoil/Atom.jsx'
 
 const SidebarTitleBox = styled.div`
   margin: 1rem;
@@ -105,7 +104,6 @@ const data = [
     url: 'http://www.foodbank.co.kr/news/photo/202106/61595_18750_5558.jpg',
   },
 ]
-export const dataState = atom({ key: 'dataState', default: data })
 function WritingSidebar() {
   const [list, setList] = useState(data)
   const [selected, setSelected] = useState('최신')

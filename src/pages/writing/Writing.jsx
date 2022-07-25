@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import WritingSidebar from './WritingSidebar';
-import WritingListS from './WritingListS';
+import WritingBoardList from './WritingBoardList'
 // Toast 에디터
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
@@ -77,13 +77,13 @@ function Writing() {
   // 등록 버튼 핸들러
   const handleButton = () => {
     // 입력창에 입력한 내용을 HTML 태그 형태로 취득
-    // ceditorRef.current?.getInstance().getHTML();
+    console.log(editorRef.current?.getInstance().getHTML())
     // 입력창에 입력한 내용을 MarkDown 형태로 취득
+    console.log(editorRef.current?.getInstance().getMarkdown())
     // editorRef.current?.getInstance().getMarkdown();
   }
   //이미지 업로드
   const onUploadImage = async (blob, callback) => {
-
   }
   const data = [
     {
@@ -124,7 +124,6 @@ function Writing() {
     //하나로 바꾸기
     // setBoard([items[0]]);
   }
-
   return (
     <WritingSection>
       <WritingSidebar />
@@ -135,7 +134,7 @@ function Writing() {
         </WritingHeaderBox>
 				<Board ref={dropToAdd}>
 					{[...new Set(board)].map(e => {
-            return <WritingListS id={e.id} name={e.name} url={e.url} memo={e.memo} />
+            return <WritingBoardList id={e.id} name={e.name} url={e.url} memo={e.memo} />
           })}
         </Board>
         <Editor

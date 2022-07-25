@@ -85,3 +85,7 @@ export const boardState = atom({
   key: 'boardState',
   default: [],
 })
+export const checkedState = atom({
+  key: 'checkedState',
+  default: [],
+})

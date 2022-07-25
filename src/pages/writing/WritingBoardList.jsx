@@ -16,7 +16,8 @@ const ListImg = styled.img`
   width: 8rem;
   height: 8rem;
   border-radius: 2px;
-`
+  overflow: hidden;
+`;
 const ListHeader = styled.h2`
   font-size: 1.6rem;
   text-align: center;
@@ -44,7 +45,7 @@ const Closebtn = styled.button`
   }
 `
 
-function WritingListS({ id, name, url }) {
+function WritingBoardList({ id, name, url }) {
   const [board, setBoard] = useRecoilState(boardState)
   const handleButton = () => {
 		const newArr = board.filter(e => id !== e.id);
@@ -62,4 +63,4 @@ function WritingListS({ id, name, url }) {
   )
 }
 
-export default WritingListS
+export default WritingBoardList
