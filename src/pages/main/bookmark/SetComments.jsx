@@ -33,10 +33,10 @@ function SetComments(props) {
 	}
 
 	function handleBtn(e) {
-		
 		// 통신을 위한 북마크 양식 변경
 		let newBookmark = JSON.parse(JSON.stringify(bookmark)); // 새로운 객체 생성
-		let newObj = newBookmark.map(element => { // 프로퍼티 변경
+		let newObj = newBookmark.map(element => {
+			// 프로퍼티 변경
 			let newObj = {
 				bookmarkMemo: text,
 				placeName: element.place_name,
@@ -62,11 +62,10 @@ function SetComments(props) {
 
 		setBookmarkSet(newArray); // 원하는 배열 완성
 		console.log(bookmarkSet); // 잘 출력됨.
-		
+
 		inputRef.current.type = 'hidden';
 		buttonRef.current.style.display = 'none';
 		pRef.current.style.display = 'inline';
-		
 	}
 
 	function handleSubmit(e) {
@@ -79,16 +78,18 @@ function SetComments(props) {
 	return (
 		<SetCommentsStyle>
 			<form onSubmit={handleSubmit}>
-				<BsPencilFill className="addComments" onClick={handleForm} />
-				<input
-					type="hidden"
-					onChange={handleChange}
-					ref={inputRef}
-					placeholder="메모를 등록해 주세요."
-				/>
-				<button type="submit"  onClick={handleBtn} ref={buttonRef}>
-					등록하기
-				</button>
+				<BsPencilFill className="addComments" onClick={handleForm} color="rgb(224, 88, 54)" />
+				<div className="makeFlex">
+					<input
+						type="hidden"
+						onChange={handleChange}
+						ref={inputRef}
+						placeholder="메모를 등록해 주세요."
+					/>
+					<button type="submit" onClick={handleBtn} ref={buttonRef}>
+						등록
+					</button>
+				</div>
 				<p ref={pRef}>{value}</p>
 			</form>
 		</SetCommentsStyle>
@@ -105,5 +106,14 @@ const SetCommentsStyle = styled.div`
 
 	button {
 		display: none;
+		color: white;
+		background-color: #5f6caf;
+		border: none;
+		font-size: 0.75rem;
+	}
+
+	.makeFlex {
+		width: 4rem;
+		height: 1.5rem;
 	}
 `;

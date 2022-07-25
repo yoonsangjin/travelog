@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import handleStyle from '../../function/handleStyle';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import { activeState, detailInfoState } from '../../recoil/Atom';
@@ -11,7 +12,7 @@ function PlaceInfoExtend() {
 	return (
 		<PlaceInfoExtendbar>
 			<div className={active ? 'placeInfoExtend' : 'placeInfoExtend close'}>
-				<div className="detailInfo">
+				<div className="detailInfo" style={handleStyle(detailInfo)}>
 					<div id="x" onClick={() => setActive(false)}>
 						<AiFillCloseCircle className="circleX" color="#5f6caf" />
 					</div>

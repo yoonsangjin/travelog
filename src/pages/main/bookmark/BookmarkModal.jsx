@@ -34,7 +34,7 @@ export default function BookmarkModal() {
 const BmModalStyle = styled.div`
 	position: absolute;
 	top: 1rem;
-	left: 50vw;
+	left: 90vw;
 	background-color: white;
 	border-radius: 4px;
 	display: flex;
