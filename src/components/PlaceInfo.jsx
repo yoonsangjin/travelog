@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import handleStyle from '../function/handleStyle';
 import { AiFillStar } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import {
@@ -25,18 +26,6 @@ function PlaceInfo() {
 		} else if (bookmark.some(data => data.id == e.target.id)) {
 			setBookmark(bookmark.filter(data => data.id != e.target.id));
 			console.log(bookmark);
-		}
-	}
-
-	function handleStyle(data) {
-		if (data.category_group_code == 'AT4') {
-			return { border: '2px solid rgb(3, 155, 0)' };
-		} else if (data.category_group_code == 'FD6') {
-			return { border: '2px solid rgb(0, 41, 254)' };
-		} else if (data.category_group_code == 'CE7') {
-			return { border: '2px solid rgb(224, 88, 54)' };
-		} else if (data.category_group_code == '') {
-			return { border: '2px solid #d9d9d9' };
 		}
 	}
 
@@ -78,12 +67,12 @@ const PlaceInfoStyle = styled.div`
 	font-size: 1rem;
 	margin: auto;
 	position: absolute;
-	overflow: scroll;
 	top: 80px;
-
+	
+	overflow: scroll;
 	overflow-y: auto;
 	&::-webkit-scrollbar {
-		width: 4px;
+		width: 8px;
 	}
 	&::-webkit-scrollbar-thumb {
 		border-radius: 2px;

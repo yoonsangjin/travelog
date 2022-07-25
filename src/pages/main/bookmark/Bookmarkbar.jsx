@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Searchbar from '../Searchbar';
 import { BsCaretLeftSquare } from 'react-icons/bs';
+import { IoMdAirplane } from 'react-icons/io';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import {
@@ -31,7 +32,7 @@ function Bookmarkbar() {
 			<div className={bmClose ? 'bookmarkbar close' : 'bookmarkbar'}>
 				<Searchbar />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setBmClose(true)} />
-				<h1>나의 여정</h1>
+				<h1><IoMdAirplane/> 나의 여정</h1>
 				<div className="contents">{renderDetailPage()}</div>
 			</div>
 		</BookmarkbarStyle>
@@ -51,8 +52,16 @@ const BookmarkbarStyle = styled.div`
 	}
 
 	h1 {
+		margin: 0 1rem;
+		background-color: white;
+		border-radius: 0.5rem;
 		text-align: center;
 	}
+
+	.contents {
+		height: 85vh;
+		margin: 1rem;
+	} 
 
 	.close {
 		display: none;

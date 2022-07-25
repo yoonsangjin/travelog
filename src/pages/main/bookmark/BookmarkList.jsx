@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { MdStars } from 'react-icons/md';
 import { useRecoilState } from 'recoil';
 import { bookmarkListState, viewDetailState, listNumberState } from '../../../recoil/Atom';
 function BookmarkList() {
@@ -37,6 +38,7 @@ function BookmarkList() {
       <div className="listContainer">
         {bmList.map((element, i) => (
           <div key={i} className="folder" id={i} onClick={viewMore}>
+            <MdStars color='#ffb877' id='btnStar' size='32' />
             {element}
           </div>
         ))}
@@ -56,28 +58,76 @@ const BmListStyle = styled.div`
     display: flex;
     width: 18rem;
     height: 2rem;
-    margin: 2rem auto;
+    margin-bottom: 2rem;
+    background-color: #edf7fa;
   }
 
   .listContainer {
     display: flex;
     flex-flow: column;
     width: 18rem;
-    height: 60vh;
+    height: 75vh;
     margin: 0 auto;
+    background-color: white;
+    border-radius: 1rem;
   }
 
   .btnContainer button {
     width: 9rem;
+    height: 3rem;
+    border: none;
+    border-radius: 0.5rem;
+    margin: 1px;
+    background-color: #5f6caf;
+    color: white;
+  }
+
+  .btnContainer button:hover {
+    background-color: #495597;
   }
 
   .folder {
-    height: 3rem;
-    margin: 1rem auto;
+    display: flex;
+    width: 100%;
+    height: 4rem;
+    text-align: center;
+    margin: 0.25rem;
+    margin-left: 0;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .folder:hover {
+    background-color: #edf7fa;
   }
 
+  #btnStar {
+    color: rgb(255, 184, 119);
+    padding: 0.5rem;
+  }
+  
   .hiddenDiv {
     display: none;
+    height: 4rem;
+    border: none;
+    justify-content: center;
+  }
+
+  .hiddenDiv input {
+    width: 80%;
+  }
+
+  .hiddenDiv button {
+    border: none;
+    border-radius: 0.5rem;
+    margin: 1px;
+    background-color: #5f6caf;
+    color: white;
+  }
+
+  .hiddenDiv button:hover {
+    background-color: #edf7fa;
   }
 `;
 

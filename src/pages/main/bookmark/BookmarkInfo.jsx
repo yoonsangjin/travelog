@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import handleStyle from '../../../function/handleStyle';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import {
 	placeInfoState,
@@ -48,18 +50,7 @@ function BookmarkInfo() {
 
 		console.log(newArray);
 	}, [listNumber]);
-
-	function handleStyle(data) {
-		if (data.category_group_code == 'AT4') {
-			return { border: '2px solid rgb(3, 155, 0)' };
-		} else if (data.category_group_code == 'FD6') {
-			return { border: '2px solid rgb(0, 41, 254)' };
-		} else if (data.category_group_code == 'CE7') {
-			return { border: '2px solid rgb(224, 88, 54)' };
-		} else if (data.category_group_code == '') {
-			return { border: '2px solid #d9d9d9' };
-		}
-	}
+	
 	function handleBookmark(e) {
 		// 북마크에 장소 삭제
 		const id = e.target.id;
@@ -75,12 +66,12 @@ function BookmarkInfo() {
 		return bookmark.map((data, i) => (
 			<div key={i} id={data.id} style={handleStyle(data)} className="bookmarkBox">
 				<button id={data.id} className="deleteBtn" onClick={handleBookmark}>
-					x
+					<AiFillCloseCircle className='circleX' color='#5f6caf'/>
 				</button>
 				<div onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
 					<span id={i}>{data.place_name}</span>
 				</div>
-				<SetComments data={data} />
+				<SetComments className='modalInput'/>
 			</div>
 		));
 	}
@@ -91,10 +82,10 @@ export default BookmarkInfo;
 const BookmarkInfoStyle = styled.div`
 	display: flex;
 	flex-flow: column;
-	width: 10rem;
+	width: 12rem;
 	height: 50rem;
 	justify-content: flex-start;
-	font-size: 0.5rem;
+	font-size: 0.75rem;
 	margin: auto;
 	overflow: scroll;
 
@@ -114,19 +105,28 @@ const BookmarkInfoStyle = styled.div`
 		background-color: white;
 		border: none;
 		border-radius: 1rem;
-		margin: 0.5rem 0;
+		margin: 0.5rem auto;
 		line-height: 1.5rem;
 	}
 
 	.deleteBtn {
-		float: right;
+		position: absolute;
+		padding-top: 0.5rem;
+		right: 1rem;
 		font-size: 1rem;
 		border: none;
 		background-color: transparent;
+		cursor: pointer
+	}
+	.addComments {
+		position: absolute;
+		right: 0;
+		margin: 1rem 1rem 0 0;
+		color: #e05836;
+		font-size: 0.75rem;
 	}
 
-	.addComments {
-		float: right;
-		font-size: 1rem;
+	.modalInput {
+		transform: scale(0.8);
 	}
 `;

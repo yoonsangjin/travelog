@@ -19,7 +19,6 @@ function Extendbar() {
 				<Searchbar />
 				<PlaceInfo />
 				<BsCaretLeftSquare id="closeBtn" onClick={() => setClose(true)} />
-				{detailInfo == '' ? null : <PlaceInfoExtend />}
 			</div>
 			{addBookmark && <BookmarkModal />}
 		</ExtendbarStyle>

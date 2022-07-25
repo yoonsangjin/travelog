@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { MdArrowBackIos, MdStars } from 'react-icons/md';
 import { useRecoilState } from 'recoil';
 import {
 	bookmarkState,
@@ -17,16 +17,6 @@ function BookmarkDetail() {
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
 
-	function handleStyle(data) {
-		if (data.category_group_code === 'AT4') {
-			return { border: '2px solid rgb(3, 155, 0)' };
-		} else if (data.category_group_code === 'FD6') {
-			return { border: '2px solid rgb(0, 41, 254)' };
-		} else if (data.category_group_code === 'CE7') {
-			return { border: '2px solid rgb(224, 88, 54)' };
-		}
-	}
-
 	function convertToJson() {
 		const data = JSON.stringify(bookmarkSet);
 		console.log(data);
@@ -35,13 +25,14 @@ function BookmarkDetail() {
 	return (
 		<DetailPageStyle>
 			<div className="folder">
+				<MdStars color='#ffb877' id='btnStar' size='32' />
 				{bmList[listNumber]}
-				<AiOutlineArrowLeft onClick={() => setViewDetail(true)} />
+				<MdArrowBackIos className='backBtn' onClick={() => setViewDetail(true)} />
 			</div>
 			<div className="content">
 				<BookmarkInfoDetail />
 			</div>
-			<button onClick={convertToJson}>글쓰기</button>
+			<button className='redirectTowrite' onClick={convertToJson}>글쓰기</button>
 		</DetailPageStyle>
 	);
 }
@@ -53,26 +44,44 @@ const DetailPageStyle = styled.div`
 	margin: auto;
 
 	.folder {
-		height: 2rem;
-		margin: 1rem auto;
+		display: flex;
+		justify-content: center;
+		height: 3rem;
+		font-size: 1.2rem;
+		text-align: center;
+		background-color: white;
+		border-radius: 0.5rem;
 	}
 	.content {
-		width: 30rem;
+		width: 18rem;
 		height: 70vh;
-		margin: 1rem auto;
+		margin: 1rem 0;
+		text-align: center;
 		overflow: scroll;
 		overflow-y: auto;
 		overflow-x: hidden;
+		background-color: white;
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+		&::-webkit-scrollbar-thumb {
+			border-radius: 2px;
+			background: #ccc;
+		}
 	}
-	overflow-y: auto;
-	overflow-x: hidden;
 
-	&::-webkit-scrollbar {
-		width: 4px;
+	#btnStar {
+		padding: 0.5rem 1rem 0 1rem;
 	}
-	&::-webkit-scrollbar-thumb {
-		border-radius: 2px;
-		background: #ccc;
+	.backBtn {
+		padding: 0.8rem 0 0 4rem;
+		cursor: pointer;
+	}
+
+	.bookmarkBox {
+		margin-left: 1.3rem;
+		font-size: 1rem;
+		
 	}
 
 	.infoBox {
@@ -85,6 +94,14 @@ const DetailPageStyle = styled.div`
 		margin: 1rem auto;
 		padding: 1rem;
 		line-height: 2rem;
+	}
+
+	.redirectTowrite {
+		height: 2rem;
+		border: none;
+		border-radius: 0.5rem;
+		background-color: #5f6caf;
+    	color: white;
 	}
 `;
 
