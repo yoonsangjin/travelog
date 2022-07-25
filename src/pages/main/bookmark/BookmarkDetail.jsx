@@ -1,7 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { useRecoilState } from 'recoil';
+import {
+  bookmarkState,
+	bookmarkSetState,
+} from '../../../recoil/Atom';
+import BookmarkInfoDetail from './BookmarkInfoDetail';
 function BookmarkDetail() {
+  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
   function handleStyle(data) {
     if (data.category_group_code === 'AT4') {
       return { border: '2px solid rgb(3, 155, 0)' }
@@ -15,7 +22,9 @@ function BookmarkDetail() {
   return (
     <DetailPageStyle>
       <div className="folder"></div>
-      <div className="content"></div>
+      <div className="content">
+        <BookmarkInfoDetail/>
+      </div>
       <button>글쓰기</button>
     </DetailPageStyle>
   )
@@ -28,15 +37,20 @@ const DetailPageStyle = styled.div`
   margin: auto;
 
   .folder {
-    height: 3rem;
+    height: 2rem;
     margin: 1rem auto;
   }
   .content {
-    height: 75vh;
+    width: 30rem;
+    height: 70vh;
     margin: 1rem auto;
     overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   overflow-y: auto;
+  overflow-x: hidden;
+
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -48,7 +62,7 @@ const DetailPageStyle = styled.div`
   .infoBox {
     width: 15rem;
     height: 8rem;
-    font-size: 1rem;
+    font-size: 2rem;
     background-color: white;
     border: none;
     border-radius: 1rem;

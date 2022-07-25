@@ -7,10 +7,9 @@ import {
   activeState,
   detailInfoState,
 } from '../../../recoil/Atom'
-import { BsPencilFill } from 'react-icons/bs'
 import SetComments from './SetComments'
 
-function BookmarkInfo({ width, height }) {
+function BookmarkInfoDetail({ width, height }) {
   const [placeInfo, setPlaceInfo] = useRecoilState(placeInfoState)
   const [bookmark, setBookmark] = useRecoilState(bookmarkState)
   const [, setActive] = useRecoilState(activeState)
@@ -38,7 +37,7 @@ function BookmarkInfo({ width, height }) {
     setDetailInfo(placeInfo[e.target.id]);
   }
 
-  function makeBookmarkInfo(bookmark) {
+  function makeBookmarkInfoDetail(bookmark) {
     return bookmark.map((data, i) => (
       <div key={i} id={data.id} style={handleStyle(data)} className="bookmarkBox">
         <button id={data.id} className="deleteBtn" onClick={handleBookmark}>
@@ -53,18 +52,18 @@ function BookmarkInfo({ width, height }) {
     ))
   }
   return (
-    <BookmarkInfoStyle>
-      {makeBookmarkInfo(bookmark)}
-    </BookmarkInfoStyle>
+    <BookmarkInfoDetailStyle>
+      {makeBookmarkInfoDetail(bookmark)}
+    </BookmarkInfoDetailStyle>
   )
 }
-export default BookmarkInfo
+export default BookmarkInfoDetail
 
-const BookmarkInfoStyle = styled.div`
+const BookmarkInfoDetailStyle = styled.div`
   display: flex;
   flex-flow: column;
-  width: 10rem;
-  height: 50rem;
+  width: 30rem;
+  height: 75vh;
   justify-content: flex-start;
   font-size: 0.5rem;
   margin: auto;
@@ -72,7 +71,7 @@ const BookmarkInfoStyle = styled.div`
   
 
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: none;
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -82,8 +81,8 @@ const BookmarkInfoStyle = styled.div`
   }
 
   .bookmarkBox {
-    width: 10rem;
-    height: 4rem;
+    width: 15rem;
+    height: 8rem;
     background-color: white;
     border: none;
     border-radius: 1rem;
@@ -98,8 +97,4 @@ const BookmarkInfoStyle = styled.div`
     background-color:transparent;
   }
 
-  .addComments {
-    float: right;
-    font-size: 1rem;
-  }
 `

@@ -39,6 +39,58 @@ export const bookmarkState = atom({
 	default: [],
 });
 
+export const bookmarkSetState = atom({
+	key: 'bookmarkSetState',
+	default: {
+		"bookmarkName": "대전 여행",
+		"data":
+		[
+			{
+			"bookmarkMemo": "1일차 방문할 관광지",
+			"placeName":"카카오프렌즈 코엑스점",
+			"placeUrl":"http://place.map.kakao.com/26338954",
+			"categoryName":"가정,생활 > 문구,사무용품 > 디자인문구 > 카카오프렌즈",
+			"addressName":"서울 강남구 삼성동 159",
+			"roadAddressName":"서울 강남구 영동대로 513",
+			"bookmarkId":"26338954",
+			"phone":"02-6002-1880",
+			"categoryGroupCode":"",
+			"categoryGroupName":"",
+			"x":"127.05902969025047",
+			"y":"37.51207412593136"
+			},
+			{
+			"bookmarkMemo": "2일차 방문할 관광지",
+			"placeName":"카카오프렌즈 코엑스점",
+			"placeUrl":"http://place.map.kakao.com/26338954",
+			"categoryName":"가정,생활 > 문구,사무용품 > 디자인문구 > 카카오프렌즈",
+			"addressName":"서울 강남구 삼성동 159",
+			"roadAddressName":"서울 강남구 영동대로 513",
+			"bookmarkId":"26338954",
+			"phone":"02-6002-1880",
+			"categoryGroupCode":"",
+			"categoryGroupName":"",
+			"x":"127.05902969025047",
+			"y":"37.51207412593136"
+			},
+			{
+			"bookmarkMemo": "3일차 방문할 관광지",
+			"placeName":"카카오프렌즈 코엑스점",
+			"placeUrl":"http://place.map.kakao.com/26338954",
+			"categoryName":"가정,생활 > 문구,사무용품 > 디자인문구 > 카카오프렌즈",
+			"addressName":"서울 강남구 삼성동 159",
+			"roadAddressName":"서울 강남구 영동대로 513",
+			"bookmarkId":"26338954",
+			"phone":"02-6002-1880",
+			"categoryGroupCode":"",
+			"categoryGroupName":"",
+			"x":"127.05902969025047",
+			"y":"37.51207412593136"
+			}
+		]
+	},
+});
+
 export const bookmarkListState = atom({
 	key: 'bookmarkListState',
 	default: ['내 여행', '부산여행'],
@@ -52,6 +104,11 @@ export const handleInputState = atom({
 export const bookmarkbarState = atom({
 	key: 'bookmarkbarState',
 	default: true,
+});
+
+export const showBmListState = atom({
+	key: 'showBmListState',
+	default: false,
 });
 
 // bookmark info창 controller

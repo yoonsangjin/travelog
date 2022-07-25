@@ -65,6 +65,8 @@ function Sidebar() {
               className="icon"
               style={{ backgroundColor: '#0029fe' }}
               onClick={() => {
+                setBmClose(true)
+                setClose(false)
                 setPlace(mainInputValue + ' 식당')
                 setBtnActive('restaurant')
               }}
@@ -75,6 +77,8 @@ function Sidebar() {
               className="icon"
               style={{ backgroundColor: '#039b00' }}
               onClick={() => {
+                setBmClose(true)
+                setClose(false)
                 setPlace(mainInputValue + ' 관광지')
                 setBtnActive('landmark')
               }}
@@ -85,6 +89,8 @@ function Sidebar() {
               className="icon"
               style={{ backgroundColor: '#e05836' }}
               onClick={() => {
+                setBmClose(true)
+                setClose(false)
                 setPlace(mainInputValue + ' 카페')
                 setBtnActive('cafe')
               }}

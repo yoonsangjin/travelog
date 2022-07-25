@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BookmarkInfo from './BookmarkInfo'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
-import { bookmarkListState, addBookmarkState, handleInputState } from '../../../recoil/Atom'
+import { bookmarkListState,
+  bookmarkSetState, 
+  addBookmarkState, 
+  handleInputState, 
+  showBmListState } from '../../../recoil/Atom'
 
 export default function BookmarkModal() {
   const [bmList, ] = useRecoilState(bookmarkListState)
+  const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
   const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState)
+  const [showBmList, setShowBmList] = useRecoilState(showBmListState);
 
   return (
     <BmModalStyle>
@@ -14,7 +20,7 @@ export default function BookmarkModal() {
         x
       </div>
       <BookmarkInfo/>
-      <button className='redirect'>여정 만들기</button>
+      <button className='makeBookmark' onClick={() => setShowBmList(true)}>여정 만들기</button>
     </BmModalStyle>
   )
 }

@@ -1,65 +1,72 @@
-import React, { useEffect } from 'react'
-import Searchbar from '../Searchbar'
-import { BsCaretLeftSquare } from 'react-icons/bs'
-import styled from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { bookmarkbarState, viewDetailState } from '../../../recoil/Atom'
-import BookmarkList from './BookmarkList'
-import BookmarkDetail from './BookmarkDetail'
+import React, { useEffect } from 'react';
+import Searchbar from '../Searchbar';
+import { BsCaretLeftSquare } from 'react-icons/bs';
+import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import {
+	bookmarkState,
+	bookmarkSetState,
+	bookmarkbarState,
+	viewDetailState,
+} from '../../../recoil/Atom';
+import BookmarkList from './BookmarkList';
+import BookmarkDetail from './BookmarkDetail';
 
 function Bookmarkbar() {
-  const [bmClose, setBmClose] = useRecoilState(bookmarkbarState)
-  const [viewDetail] = useRecoilState(viewDetailState)
+	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
+	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
+	const [bookmark, setBookmark] = useRecoilState(bookmarkbarState);
+  	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState)
 
-  useEffect(() => {
-    renderDetailPage()
-  }, [viewDetail])
+	useEffect(() => {
+		renderDetailPage();
+	}, [viewDetail]);
 
-  function renderDetailPage() {
-    return viewDetail ? <BookmarkList /> : <BookmarkDetail />
-  }
+	function renderDetailPage() {
+		return viewDetail ? <BookmarkList /> : <BookmarkDetail />;
+	}
 
-  return (
-    <BookmarkbarStyle>
-      <div className={bmClose ? 'bookmarkbar close' : 'bookmarkbar'}>
-        <Searchbar />
-        <BsCaretLeftSquare id="closeBtn" onClick={() => setBmClose(true)} />
-        <h1>나의 여정</h1>
-        <div className="contents">{renderDetailPage()}</div>
-      </div>
-    </BookmarkbarStyle>
-  )
+	return (
+		<BookmarkbarStyle>
+			<div className={bmClose ? 'bookmarkbar close' : 'bookmarkbar'}>
+				<Searchbar />
+				<BsCaretLeftSquare id="closeBtn" onClick={() => setBmClose(true)} />
+				<h1>나의 여정</h1>
+				<div className="contents">{renderDetailPage()}</div>
+			</div>
+		</BookmarkbarStyle>
+	);
 }
 
 const BookmarkbarStyle = styled.div`
-  .bookmarkbar {
-    display: flex;
-    flex-flow: column;
-    position: absolute;
-    top: -5rem;
-    left: 4rem;
-    width: 20rem;
-    height: 100vh;
-    background-color: #edf7fa;
-  }
+	.bookmarkbar {
+		display: flex;
+		flex-flow: column;
+		position: absolute;
+		top: -5rem;
+		left: 4rem;
+		width: 20rem;
+		height: 100vh;
+		background-color: #edf7fa;
+	}
 
-  h1 {
-    text-align: center;
-  }
+	h1 {
+		text-align: center;
+	}
 
-  .close {
-    display: none;
-  }
+	.close {
+		display: none;
+	}
 
-  #closeBtn {
-    position: absolute;
-    top: 50vh;
-    transform: scale(1.5);
-    color: #5f6caf;
-    opacity: 0.9;
-    padding: 0;
-    left: 260px;
-  }
-`
+	#closeBtn {
+		position: absolute;
+		top: 50vh;
+		transform: scale(1.5);
+		color: #5f6caf;
+		opacity: 0.9;
+		padding: 0;
+		left: 260px;
+	}
+`;
 
-export default Bookmarkbar
+export default Bookmarkbar;
