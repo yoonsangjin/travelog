@@ -36,6 +36,7 @@ const cityObj = {
   제주특별자치도: { posts: [], color: '' },
   세종특별자치시: { posts: [], color: '' },
 }
+
 mockData.forEach(i => {
   const cityName = i.address_name.split(' ')[0]
   cityObj[cityName].posts.push(i)
