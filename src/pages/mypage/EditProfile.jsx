@@ -1,28 +1,29 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import axios from 'axios'
-import DaumPostcodeEmbed from 'react-daum-postcode'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import DaumPostcodeEmbed from 'react-daum-postcode';
+import { NavLink, useNavigate } from 'react-router-dom';
+import S3 from '../../components/S3';
 
 const SignupSection = styled.section`
   width: 100vw;
   height: 100vw;
   background-color: white;
-`
+`;
 const SignupContainer = styled.article`
   width: 30rem;
   height: 48rem;
   margin: 6rem auto;
   box-shadow: 1px 1px 22px 2px rgba(0, 0, 0, 0.25);
   border-radius: 38px;
-`
+`;
 const SignupHeader = styled.h2`
   color: #5f6caf;
   font-size: 2rem;
   position: relative;
   top: 3rem;
   left: 8rem;
-`
+`;
 const SignupInput = styled.input`
   width: 18rem;
   height: 2.5rem;
@@ -36,7 +37,7 @@ const SignupInput = styled.input`
   background-color: #edf7fa;
   border-radius: 10px;
   border: none;
-`
+`;
 const SignupButton = styled.button`
   display: block;
   width: 18rem;
@@ -52,7 +53,7 @@ const SignupButton = styled.button`
   color: #fff;
   border: none;
   border-radius: 22px;
-`
+`;
 
 const AddressButton = styled.button`
   width: 6rem;
@@ -68,16 +69,16 @@ const AddressButton = styled.button`
   color: #fff;
   border: none;
   border-radius: 22px;
-`
+`;
 const NavUl = styled.ul`
   display: flex;
   align-items: center;
   margin-right: 3rem;
-`
+`;
 const NavLi = styled.li`
   margin: 0 2rem;
   color: #5f6caf;
-`
+`;
 const MenuUl = styled(NavUl)`
   display: flex;
   flex-direction: column;
@@ -88,7 +89,7 @@ const MenuUl = styled(NavUl)`
   left: -0.5rem;
   top: 11rem;
   background-color: #edf7fa;
-`
+`;
 const MenuLi = styled(NavLi)`
   color: #5f6caf;
   margin: 0;
@@ -102,62 +103,90 @@ const MenuLi = styled(NavLi)`
     background-color: #5f6caf;
     color: #ffffff;
   }
-`
+`;
+
 function EditProfile() {
-  const [name, setName] = useState('')
-  const [nickname, setNickname] = useState('')
-  const [phonenumber, setPhoneNumber] = useState('')
-  const [popup, setPopup] = useState('false')
-  const [address, setAddress] = useState('')
-  const [address2, setAddress2] = useState('')
-  const [profileImage, setProfileImage] = useState('')
-  const formData = new FormData()
+  const [editname, setEditName] = useState('');
+  const [editnickname, setEditNickname] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [popup, setPopup] = useState('false');
+  const [address, setAddress] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+  const navigate = useNavigate();
+
+  //axios bearer token
+  const token = window.localStorage.getItem('token');
+  let config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   const handleSubmit = async e => {
-    e.preventDefault()
-    const token = window.localStorage.getItem('token')
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-      params: { password: token },
-    }
+    e.preventDefault();
+    let userData = {};
 
+    //기존 데이터 불러오기
     try {
-      const data = await axios.get('http://localhost:8000/api/users', config)
-      console.log(data)
+      userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
     } catch (err) {}
+    console.log(userData);
+    let resultData = { ...userData, phoneNumber, address };
+    editname && (resultData.name = editname);
+    editnickname && (resultData.nickname = editnickname);
 
-    // 회원 정보 수정 변경된 값 다시 post -> 아직 미구현
-    //모든 유효성 검사를 통과한다면 백에 회원가입 요청
-    // try {
-    //   const data = { name, nickname, phonenumber, address, address2, formData }
-    //   await axios({
-    //     method: 'post',
-    //     url: 'http://localhost:8000/api/users/register',
-    //     data: data,
-    //   })
-    //   window.location.href = '/login'
-    // } catch (err) {
-    //   console.error(err.stack)
-    //   alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`)
-    // }
-  }
+    //변경된 값으로 수정
+    try {
+      await axios({
+        method: 'patch',
+        url: `http://localhost:8000/api/users/${resultData.id}`,
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          name: resultData.name,
+          nickname: resultData.nickname,
+          phoneNumber: resultData.phoneNumber,
+          address: resultData.address,
+          age: resultData.age,
+
+          profileImg: '',
+        },
+        // {
+
+        // },
+      });
+    } catch (err) {
+      alert(err.stack);
+    }
+  };
 
   //DaumPostcode
   const handleComplete = data => {
-    let fullAddress = data.address
-    let extraAddress = ''
+    let fullAddress = data.address;
+    let extraAddress = '';
 
     if (data.addressType === 'R') {
       if (data.bname !== '') {
-        extraAddress += data.bname
+        extraAddress += data.bname;
       }
       if (data.buildingName !== '') {
-        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
       }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : ''
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setAddress(fullAddress)
-  }
+    setAddress(fullAddress);
+  };
+  //회원 탈퇴 처리
+  const deleteUser = async () => {
+    if (window.confirm('회원 탈퇴하시겠습니까?')) {
+      try {
+        await axios.delete(`http://localhost:8000/api/users/9`, config);
+        navigate('/login');
+      } catch (err) {
+        alert(err);
+      }
+    } else {
+      return;
+    }
+  };
 
   const postCodeStyle = {
     display: 'block',
@@ -168,7 +197,7 @@ function EditProfile() {
     padding: '7px',
     left: '30%',
     zIndex: 100,
-  }
+  };
 
   return (
     <>
@@ -180,17 +209,7 @@ function EditProfile() {
           <NavLink to="#">비밀번호 변경</NavLink>
         </MenuLi>
 
-        <MenuLi
-          onclick={() => {
-            if (window.confirm('회원 탈퇴하시겠습니까?')) {
-              //axios.active:false? 처리 -> 미구현
-            } else {
-              return
-            }
-          }}
-        >
-          회원탈퇴
-        </MenuLi>
+        <MenuLi onClick={deleteUser}>회원탈퇴</MenuLi>
       </MenuUl>
       <SignupSection>
         <SignupContainer>
@@ -198,31 +217,33 @@ function EditProfile() {
           <form>
             <SignupInput
               name="name"
-              value={name}
+              value={editname}
               onChange={e => {
-                setName(e.target.value)
+                setEditName(e.target.value);
               }}
               placeholder="이름을 입력해 주세요."
             />
             <SignupInput
               name="nickname"
+              value={editnickname}
               onChange={e => {
-                setNickname(e.target.value)
+                setEditNickname(e.target.value);
               }}
               placeholder="닉네임을 입력해 주세요."
             />
             <SignupInput
               name="phonenumber"
+              value={phoneNumber}
               placeholder="휴대폰 번호를 입력해 주세요."
               onChange={e => {
-                setPhoneNumber(e.target.value)
+                setPhoneNumber(e.target.value);
               }}
             />
             <SignupInput name="address" placeholder="주소를 입력해 주세요." value={address} />
             <AddressButton
               onClick={e => {
-                e.preventDefault()
-                setPopup(!popup)
+                e.preventDefault();
+                setPopup(!popup);
               }}
             >
               주소 찾기
@@ -232,9 +253,10 @@ function EditProfile() {
             </AddressButton>
             <SignupInput
               type="text"
+              value={address2}
               name="address2"
               onChange={e => {
-                setAddress2(e.target.value)
+                setAddress2(e.target.value);
               }}
               placeholder="상세 주소를 입력해 주세요."
             />
@@ -242,7 +264,8 @@ function EditProfile() {
               type="file"
               name="image"
               onChange={e => {
-                formData.append('images', e.target.files[0])
+                //formData.append('images', e.target.files[0])
+                setProfileImage(e.target.files[0]);
               }}
             />
             <SignupButton onClick={handleSubmit}>변경</SignupButton>
@@ -250,7 +273,7 @@ function EditProfile() {
         </SignupContainer>
       </SignupSection>
     </>
-  )
+  );
 }
 
-export default EditProfile
+export default EditProfile;

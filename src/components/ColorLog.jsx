@@ -15,7 +15,6 @@ function ColorLog() {
   });
 
   const clickHandler = e => {
-    // console.log(cityObj[isClick.id]);
     setIsClick({
       state: true,
       id: e.target.id,
@@ -31,8 +30,6 @@ function ColorLog() {
     setIsHover({
       state: false,
       id: '',
-      mouseX: 0,
-      mouseY: 0,
     });
   };
 
