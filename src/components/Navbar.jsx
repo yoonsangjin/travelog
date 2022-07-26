@@ -79,8 +79,9 @@ function Navbar() {
   const modalMenu = useRef();
 
   const handleModalOutside = event => {
-    if (isOpen && !modalMenu.current.contains(event.target)) setisOpen(!isOpen);
-    console.log(modalMenu.current.contains(event.target));
+    if (isOpen && !modalMenu.current.contains(event.target)) {
+      setisOpen(false);
+    }
   };
   useEffect(() => {
     if (localStorage.getItem('token')) setIsLoggedIn(true);
@@ -118,31 +119,33 @@ function Navbar() {
                 setisOpen(!isOpen);
               }}
             />
-            {isOpen && (
-              <MenuUl ref={modalMenu}>
-                <MenuLi>
-                  <NavLink to="/passwordcheck">회원 정보 수정</NavLink>
-                </MenuLi>
-                <MenuLi>여행 페이지 이동</MenuLi>
-                <MenuLi>
-                  <NavLink to="/mypage">마이페이지</NavLink>
-                </MenuLi>
-                <MenuLi>글쓰기</MenuLi>
-                <MenuLi
-                  onClick={() => {
-                    if (window.confirm('로그아웃 하시겠습니까?')) {
-                      localStorage.clear();
-                      navigate('/login');
-                    } else {
-                      return;
-                    }
-                  }}
-                >
-                  로그아웃
-                </MenuLi>
-              </MenuUl>
-            )}
           </NavLi>
+        )}
+        {isOpen && (
+          <div ref={modalMenu}>
+            <MenuUl>
+              <MenuLi>
+                <NavLink to="/passwordcheck">회원 정보 수정</NavLink>
+              </MenuLi>
+              <MenuLi>여행 페이지 이동</MenuLi>
+              <MenuLi>
+                <NavLink to="/mypage">마이페이지</NavLink>
+              </MenuLi>
+              <MenuLi>글쓰기</MenuLi>
+              <MenuLi
+                onClick={() => {
+                  if (window.confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.clear();
+                    navigate('/login');
+                  } else {
+                    return;
+                  }
+                }}
+              >
+                로그아웃
+              </MenuLi>
+            </MenuUl>
+          </div>
         )}
       </NavUl>
     </Nav>

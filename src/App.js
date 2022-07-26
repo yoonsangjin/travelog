@@ -15,7 +15,7 @@ import EditProfile from './pages/mypage/EditProfile';
 import PasswordCheck from './pages/mypage/PasswordCheck';
 import ColorLog from './components/ColorLog';
 import Kakao from './pages/login/Kakao.jsx';
-import S3 from './components/S3';
+
 import Community from './pages/community/Community';
 import CompanionWriting from './pages/community/CompanionWriting';
 import QnAWriting from './pages/community/QnAWriting';
@@ -39,7 +39,6 @@ function App() {
           <Route path="/passwordcheck" element={<PasswordCheck />} />
           <Route path="/colorlog" element={<ColorLog />} />
           <Route path="/auth" element={<Kakao />} />
-          <Route path="/aws" element={<S3 />} />
           <Route path="/community" element={<Community />} />
           <Route path="/companion" element={<CompanionWriting />} />
           <Route path="/qna" element={<QnAWriting />} />

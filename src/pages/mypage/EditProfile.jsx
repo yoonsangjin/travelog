@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { NavLink, useNavigate } from 'react-router-dom';
-import S3 from '../../components/S3';
+import { S3Upload, S3getFileURL } from '../../components/S3';
 
 const SignupSection = styled.section`
   width: 100vw;
@@ -105,20 +105,7 @@ const MenuLi = styled(NavLi)`
     color: #ffffff;
   }
 `;
-const S3Container = styled.div`
-  width: 18rem;
-  height: 2.5rem;
-  padding: 0.8rem;
-  box-sizing: border-box;
-  position: relative;
-  top: 6rem;
-  left: 6rem;
-  margin-bottom: 1.8rem;
-  color: black;
-  background-color: #edf7fa;
-  border-radius: 10px;
-  border: none;
-`;
+
 function EditProfile() {
   const [editname, setEditName] = useState('');
   const [editnickname, setEditNickname] = useState('');
@@ -127,10 +114,7 @@ function EditProfile() {
   const [address, setAddress] = useState('');
   const [address2, setAddress2] = useState('');
   const [profileImage, setProfileImage] = useState('');
-  const [fileKey, setFileKey] = useState('');
   const navigate = useNavigate();
-  const region = process.env.REACT_APP_AWS_BUCKET_REGION;
-  const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
 
   //axios bearer token
   const token = window.localStorage.getItem('token');
@@ -141,16 +125,17 @@ function EditProfile() {
   const handleSubmit = async e => {
     e.preventDefault();
     let userData = {};
-
+    const fileKey = profileImage.name;
+    S3Upload(profileImage);
+    const profileImg = S3getFileURL(`upload/${fileKey}`);
     //기존 데이터 불러오기
     try {
       userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
-      console.log(userData);
     } catch (err) {}
     let resultData = { ...userData, phoneNumber, address };
     editname && (resultData.name = editname);
     editnickname && (resultData.nickname = editnickname);
-    console.log(userData);
+
     //변경된 값으로 수정
     try {
       await axios({
@@ -163,11 +148,11 @@ function EditProfile() {
           phoneNumber: resultData.phoneNumber,
           address: resultData.address,
           age: resultData.age,
-          profileImg: `https://${bucketName}.s3.${region}.amazonaws.com/upload/`,
+          profileImg,
         },
       });
-      //alert('정보가 변경되었습니다.');
-      //navigate('/mypage');
+      alert('정보가 변경되었습니다.');
+      navigate('/mypage');
     } catch (err) {
       alert(err.stack);
     }
@@ -269,9 +254,14 @@ function EditProfile() {
               placeholder="상세 주소를 입력해 주세요."
             />
 
-            <S3Container>
-              <S3 />
-            </S3Container>
+            <SignupInput
+              type="file"
+              name="profileImage"
+              onChange={e => {
+                const file = e.target.files[0];
+                setProfileImage(file);
+              }}
+            />
 
             <SignupButton onClick={handleSubmit}>변경</SignupButton>
           </form>
