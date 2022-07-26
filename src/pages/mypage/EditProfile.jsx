@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { S3Upload, S3getFileURL } from '../../components/S3';
+import { S3Upload, S3getFileURL, S3deleteObject } from '../../components/S3';
 
 const SignupSection = styled.section`
   width: 100vw;
@@ -126,8 +126,11 @@ function EditProfile() {
     e.preventDefault();
     let userData = {};
     const fileKey = profileImage.name;
-    S3Upload(profileImage);
+    //S3Upload(profileImage);
     const profileImg = S3getFileURL(`upload/${fileKey}`);
+    console.log(`이 값은 받아온 url 입니다 ${profileImg}`);
+    //S3deleteObject(fileKey);
+
     //기존 데이터 불러오기
     try {
       userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
@@ -148,11 +151,11 @@ function EditProfile() {
           phoneNumber: resultData.phoneNumber,
           address: resultData.address,
           age: resultData.age,
-          profileImg,
+          //          profileImg:profileImg,
         },
       });
-      alert('정보가 변경되었습니다.');
-      navigate('/mypage');
+      //  alert('정보가 변경되었습니다.');
+      //navigate('/mypage');
     } catch (err) {
       alert(err.stack);
     }
