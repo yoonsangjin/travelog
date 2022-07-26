@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { loginState, iconMenuState } from '../recoil/Atom';
 import styled from 'styled-components';
@@ -44,6 +44,7 @@ const MenuUl = styled(NavUl)`
   right: -2.5rem;
   background-color: #5f6caf;
   color: #fff;
+  z-index: 999;
 `;
 const MenuLi = styled(NavLi)`
   color: #5f6caf;
@@ -73,11 +74,22 @@ const NavbarIcon = styled.img`
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [style, setStyle] = useRecoilState(iconMenuState);
+  const [isOpen, setisOpen] = useRecoilState(iconMenuState);
   const navigate = useNavigate();
+  const modalMenu = useRef();
+
+  const handleModalOutside = event => {
+    if (isOpen && !modalMenu.current.contains(event.target)) setisOpen(!isOpen);
+    console.log(modalMenu.current.contains(event.target));
+  };
   useEffect(() => {
     if (localStorage.getItem('token')) setIsLoggedIn(true);
+    window.addEventListener('click', handleModalOutside);
+    return () => {
+      window.removeEventListener('click', handleModalOutside);
+    };
   }, []);
+
   return (
     <Nav>
       <LogoContainer
@@ -103,13 +115,13 @@ function Navbar() {
             <NavbarIcon
               src="img/default.png"
               onClick={() => {
-                setStyle(!style);
+                setisOpen(!isOpen);
               }}
             />
-            {style ? (
-              <MenuUl>
+            {isOpen && (
+              <MenuUl ref={modalMenu}>
                 <MenuLi>
-                  <NavLink to="/editprofile">회원 정보 수정</NavLink>
+                  <NavLink to="/passwordcheck">회원 정보 수정</NavLink>
                 </MenuLi>
                 <MenuLi>여행 페이지 이동</MenuLi>
                 <MenuLi>
@@ -129,8 +141,6 @@ function Navbar() {
                   로그아웃
                 </MenuLi>
               </MenuUl>
-            ) : (
-              ''
             )}
           </NavLi>
         )}
