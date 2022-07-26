@@ -36,7 +36,7 @@ function PlaceInfo() {
 
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map((data, i) => (
-			<div key={i} id={data.id} name={i} style={handleStyle(data)} className="infoBox">
+			<div key={data.id} id={data.id} name={i} style={handleStyle(data)} className="infoBox">
 				<button
 					id={data.id}
 					name={i}
@@ -54,7 +54,7 @@ function PlaceInfo() {
 			</div>
 		));
 	}
-	return <PlaceInfoStyle>{placeInfo == '' ? '' : makePlaceInfo(placeInfo)}</PlaceInfoStyle>;
+	return <PlaceInfoStyle>{placeInfo == '' ? null : makePlaceInfo(placeInfo)}</PlaceInfoStyle>;
 }
 export default PlaceInfo;
 
@@ -62,12 +62,12 @@ const PlaceInfoStyle = styled.div`
 	display: flex;
 	flex-flow: column;
 	width: 20rem;
-	height: 90vh;
+	height: 80vh;
 	justify-content: flex-start;
 	font-size: 1rem;
 	margin: auto;
 	position: absolute;
-	top: 80px;
+	top: 5rem;
 	
 	overflow: scroll;
 	overflow-y: auto;

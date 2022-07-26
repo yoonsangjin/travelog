@@ -1,5 +1,6 @@
 import React from 'react';
 import Sidebar from './Sidebar.jsx';
+import Extendbar from './Extendbar.jsx';
 import Map from '../../components/Map.jsx';
 import SelectBmList from './bookmark/SelectBmList.jsx';
 import { useRecoilState } from 'recoil';
@@ -11,7 +12,7 @@ function Main() {
 		<>
 			<Sidebar />
 			<Map />
-
+			<Extendbar />
 			{showBmList && <SelectBmList setShowBmList={showBmList} />}
 		</>
 	);

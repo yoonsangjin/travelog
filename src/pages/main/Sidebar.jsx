@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Extendbar from './Extendbar';
 import Bookmarkbar from './bookmark/Bookmarkbar';
 import PlaceInfoExtend from './PlaceInfoExtend.jsx';
 import { BiRestaurant } from 'react-icons/bi';
@@ -14,6 +13,7 @@ import {
 	placeState,
 	mainInputValueState,
 	detailInfoState,
+	activeState,
 } from '../../recoil/Atom';
 
 function Sidebar() {
@@ -23,6 +23,7 @@ function Sidebar() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
 	const [btnActive, setBtnActive] = useState('');
 	const [detailInfo] = useRecoilState(detailInfoState);
+	const [active, setActive] = useRecoilState(activeState);
 	// 리팩토링 요망
 	const search = useRef();
 	const restaurant = useRef();
@@ -50,71 +51,70 @@ function Sidebar() {
 
 	return (
 		<SidebarStyle>
-			<div className="sidebar">
-				<div className="filterBox">
-					<div className="search" ref={search}>
-						<ImSearch
-							className="icon"
-							style={{ marginTop: '30px', backgroundColor: '#d9d9d9' }}
-							onClick={() => {
-								setBmClose(true);
-								setClose(!close);
-								setBtnActive('search');
-							}}
-						/>
-					</div>
-					<div className="restaurant" ref={restaurant}>
-						<BiRestaurant
-							className="icon"
-							style={{ backgroundColor: '#0029fe' }}
-							onClick={() => {
-								setBmClose(true);
-								setClose(false);
-								setPlace(mainInputValue + ' 식당');
-								setBtnActive('restaurant');
-							}}
-						/>
-					</div>
-					<div className="landmark" ref={landmark}>
-						<ImLibrary
-							className="icon"
-							style={{ backgroundColor: '#039b00' }}
-							onClick={() => {
-								setBmClose(true);
-								setClose(false);
-								setPlace(mainInputValue + ' 관광지');
-								setBtnActive('landmark');
-							}}
-						/>
-					</div>
-					<div className="cafe" ref={cafe}>
-						<IoMdCafe
-							className="icon"
-							style={{ backgroundColor: '#e05836' }}
-							onClick={() => {
-								setBmClose(true);
-								setClose(false);
-								setPlace(mainInputValue + ' 카페');
-								setBtnActive('cafe');
-							}}
-						/>
-					</div>
-					<div className="bookmark" ref={bookmark}>
-						<BsFillStarFill
-							className="icon"
-							style={{ backgroundColor: '#ffb877' }}
-							onClick={() => {
-								setClose(true);
-								setBmClose(!bmClose);
-								setBtnActive('bookmark');
-							}}
-						/>
-					</div>
+			<div className="filterBox">
+				<div className="search" ref={search}>
+					<ImSearch
+						className="icon"
+						style={{ marginTop: '30px', backgroundColor: '#d9d9d9' }}
+						onClick={() => {
+							setBmClose(true);
+							setClose(!close);
+							setBtnActive('search');
+							setActive(false);
+						}}
+					/>
 				</div>
-				<Extendbar />
-				<Bookmarkbar />
-				{detailInfo == '' ? null : <PlaceInfoExtend />}
+				<div className="restaurant" ref={restaurant}>
+					<BiRestaurant
+						className="icon"
+						style={{ backgroundColor: '#0029fe' }}
+						onClick={() => {
+							setBmClose(true);
+							setClose(false);
+							setPlace(mainInputValue + ' 식당');
+							setBtnActive('restaurant');
+						}}
+					/>
+				</div>
+				<div className="landmark" ref={landmark}>
+					<ImLibrary
+						className="icon"
+						style={{ backgroundColor: '#039b00' }}
+						onClick={() => {
+							setBmClose(true);
+							setClose(false);
+							setPlace(mainInputValue + ' 관광지');
+							setBtnActive('landmark');
+						}}
+					/>
+				</div>
+				<div className="cafe" ref={cafe}>
+					<IoMdCafe
+						className="icon"
+						style={{ backgroundColor: '#e05836' }}
+						onClick={() => {
+							setBmClose(true);
+							setClose(false);
+							setPlace(mainInputValue + ' 카페');
+							setBtnActive('cafe');
+						}}
+					/>
+				</div>
+				<div className="bookmark" ref={bookmark}>
+					<BsFillStarFill
+						className="icon"
+						style={{ backgroundColor: '#ffb877' }}
+						onClick={() => {
+							setClose(true);
+							setBmClose(!bmClose);
+							setBtnActive('bookmark');
+							setActive(false);
+						}}
+					/>
+				</div>
 			</div>
+			<Bookmarkbar />
+			{detailInfo == '' ? null : <PlaceInfoExtend />}
 		</SidebarStyle>
 	);
 }
@@ -122,18 +122,14 @@ function Sidebar() {
 const SidebarStyle = styled.div`
 	left: 0;
 	width: 70px;
-
-	.sidebar {
-		float: left;
-		position: relative;
-		background-color: #ffffff;
-		font-size: 1.5rem;
-		line-height: 48px;
-		transition: 0.3s ease-in-out;
-		height: calc(100vh - 80px);
-		z-index: 5;
-	}
-
+	float: left;
+	position: relative;
+	background-color: #ffffff;
+	font-size: 1.5rem;
+	line-height: 48px;
+	transition: 0.3s ease-in-out;
+	height: calc(100vh - 80px);
+	z-index: 10;
 	.filterBox {
 		display: flex;
 		flex-flow: column;
@@ -152,7 +148,7 @@ const SidebarStyle = styled.div`
 	}
 
 	.icon:active {
-		filter: invert(80%);
+		filter: brightness(50%);
 	}
 `;
 

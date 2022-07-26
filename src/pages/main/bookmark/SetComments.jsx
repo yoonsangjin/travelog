@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BsPencilFill } from 'react-icons/bs';
 import styled from 'styled-components';
+import { BsPencilFill } from 'react-icons/bs';
 import { useRecoilState } from 'recoil';
 import {
 	bookmarkState,
@@ -11,87 +11,81 @@ import {
 } from '../../../recoil/Atom';
 function SetComments(props) {
 	const [value, setValue] = useState('');
-	const [text, setText] = useRecoilState(textState);
+	const [number, setNumber] = useState(null);
+	const [comment, setComment] = useState([]);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
+	
 	const inputRef = useRef();
 	const buttonRef = useRef();
 	const pRef = useRef();
+
+	useEffect(() => {
+		console.log(comment);
+	},[comment])
+
+	const newObject = bookmark.map((element) =>{
+		let newObj = {
+			placeName: element.place_name,
+			placeUrl: element.place_url,
+			categoryName: element.category_name,
+			addressName: element.address_name,
+			roadAddressName: element.road_address_name,
+			bookmarkId: element.id,
+			phone: element.phone,
+			categoryGroupCode: element.category_group_code,
+			categoryGroupName: element.category_group_name,
+			x: element.x,
+			y: element.y,
+			}
+		return newObj;
+	});
 
 	function handleForm(e) {
 		if (inputRef.current.type === 'text') {
 			inputRef.current.type = 'hidden';
 			buttonRef.current.style.display = 'none';
 			pRef.current.style.display = 'inline';
-		} else if (inputRef.current.type === 'hidden') {
+		} else {
 			inputRef.current.type = 'text';
-			buttonRef.current.style.display = 'block';
+			buttonRef.current.style.display = 'inline';
 			pRef.current.style.display = 'none';
 		}
 	}
 
 	function handleBtn(e) {
-		// 통신을 위한 북마크 양식 변경
-		let newBookmark = JSON.parse(JSON.stringify(bookmark)); // 새로운 객체 생성
-		let newObj = newBookmark.map(element => {
-			// 프로퍼티 변경
-			let newObj = {
-				bookmarkMemo: text,
-				placeName: element.place_name,
-				placeUrl: element.place_url,
-				categoryName: element.category_name,
-				addressName: element.address_name,
-				roadAddressName: element.road_address_name,
-				bookmarkId: element.id,
-				phone: element.phone,
-				categoryGroupCode: element.category_group_code,
-				categoryGroupName: element.category_group_name,
-				x: element.x,
-				y: element.y,
-			};
-			return newObj;
-		});
-		newObj[0].bookmarkMemo = value; // input의 value를 특정 배열 내 객체의 프로퍼티에 넣는 작업
-
-		let newArray = {
-			bookmarkName: bmList[listNumber],
-			data: newObj,
-		};
-
-		setBookmarkSet(newArray); // 원하는 배열 완성
-		console.log(bookmarkSet); // 잘 출력됨.
-
+		// input의 value를 특정 배열 내 객체의 프로퍼티에 넣는 작업
+		e.preventDefault();
+		let bmObj = {};
+		bmObj[props.number] = value;
+		setNumber(bmObj);
+		console.log(number);
 		inputRef.current.type = 'hidden';
 		buttonRef.current.style.display = 'none';
 		pRef.current.style.display = 'inline';
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault();
-	}
-
 	function handleChange(e) {
+		e.preventDefault();
 		setValue(e.target.value);
 	}
 	return (
 		<SetCommentsStyle>
-			<form onSubmit={handleSubmit}>
-				<BsPencilFill className="addComments" onClick={handleForm} color="rgb(224, 88, 54)" />
-				<div className="makeFlex">
-					<input
-						type="hidden"
-						onChange={handleChange}
-						ref={inputRef}
-						placeholder="메모를 등록해 주세요."
-					/>
-					<button type="submit" onClick={handleBtn} ref={buttonRef}>
-						등록
-					</button>
-				</div>
-				<p ref={pRef}>{value}</p>
-			</form>
+			<BsPencilFill className="addComments" onClick={handleForm} color="rgb(224, 88, 54)" />
+			<div className="makeFlex">
+				<input
+					type='hidden'
+					onChange={handleChange}
+					ref={inputRef}
+					placeholder="메모를 등록해 주세요."
+				/>
+				<button onClick={handleBtn} ref={buttonRef}>
+					등록
+				</button>
+			</div>
+			<p ref={pRef}>{value}</p>
 		</SetCommentsStyle>
 	);
 }
@@ -99,11 +93,6 @@ function SetComments(props) {
 export default SetComments;
 
 const SetCommentsStyle = styled.div`
-	.addComments {
-		float: right;
-		font-size: 1rem;
-	}
-
 	button {
 		display: none;
 		color: white;
@@ -116,4 +105,10 @@ const SetCommentsStyle = styled.div`
 		width: 4rem;
 		height: 1.5rem;
 	}
+
+	.addComments {
+		float: right;
+		font-size: 1rem;
+	}
+
 `;

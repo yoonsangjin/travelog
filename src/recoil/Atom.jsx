@@ -41,12 +41,12 @@ export const bookmarkState = atom({
 
 export const bookmarkSetState = atom({
 	key: 'bookmarkSetState',
-	default: '',
+	default: null,
 });
 
 export const bookmarkListState = atom({
 	key: 'bookmarkListState',
-	default: ['내 여행', '부산여행'],
+	default: ['내 여행'],
 });
 
 export const bookmarkbarState = atom({

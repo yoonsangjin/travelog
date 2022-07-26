@@ -27,6 +27,7 @@ function SelectBmList() {
 			{bmList.map((data, i) => (
 				<div key={data.id} className="selectBmListContainer">
 					<button 
+					key={data.id}
 					name={i}
 					className={ listNumber == i ? 'listBtn on' : 'listBtn' } 
 					onClick={handleClick}>

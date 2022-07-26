@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import { MdArrowBackIos, MdStars } from 'react-icons/md';
 import { useRecoilState } from 'recoil';
 import {
@@ -8,6 +9,7 @@ import {
 	bookmarkListState,
 	listNumberState,
 	viewDetailState,
+	textState,
 } from '../../../recoil/Atom';
 import BookmarkInfoDetail from './BookmarkInfoDetail';
 function BookmarkDetail() {
@@ -16,26 +18,43 @@ function BookmarkDetail() {
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
+	const [text, setText] = useRecoilState(textState);
 
-	function convertToJson() {
-		const data = JSON.stringify(bookmarkSet);
-		console.log(data);
+	async function convertToJson() {
+		console.log(bookmarkSet);
+		const token = localStorage.getItem('token');
+		await axios({ 
+			method: 'post', 
+			url: 'http://localhost:8000/api/bookmarks/registers', 
+			headers: { 
+				Authorization: `Bearer ${token}`,
+			},
+			data: bookmarkSet, 
+		})
+		.then((res) => {
+			console.log(res.status);
+			console.log(res.data)
+		})
+		.catch((err) => console.log(err.toJSON()))
 	}
 
 	return (
 		<DetailPageStyle>
 			<div className="folder">
-				<MdStars color='#ffb877' id='btnStar' size='32' />
+				<MdStars color="#ffb877" id="btnStar" size="32" />
 				{bmList[listNumber]}
-				<MdArrowBackIos className='backBtn' onClick={() => setViewDetail(true)} />
+				<MdArrowBackIos className="backBtn" onClick={() => setViewDetail(true)} />
 			</div>
 			<div className="content">
 				<BookmarkInfoDetail />
 			</div>
-			<button className='redirectTowrite' onClick={convertToJson}>글쓰기</button>
+			<button className="redirectTowrite" onClick={convertToJson}>
+				글쓰기
+			</button>
 		</DetailPageStyle>
 	);
 }
+
 
 const DetailPageStyle = styled.div`
 	display: flex;
@@ -81,7 +100,6 @@ const DetailPageStyle = styled.div`
 	.bookmarkBox {
 		margin-left: 1.3rem;
 		font-size: 1rem;
-		
 	}
 
 	.infoBox {
@@ -101,7 +119,7 @@ const DetailPageStyle = styled.div`
 		border: none;
 		border-radius: 0.5rem;
 		background-color: #5f6caf;
-    	color: white;
+		color: white;
 	}
 `;
 

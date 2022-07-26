@@ -9,12 +9,7 @@ function Searchbar() {
   const [, setPlace] = useRecoilState(placeState)
 
   useEffect(() => {
-    const url = new URL(window.location.href)
-    const params = url.searchParams
-    if (params.get('place') !== null) {
-      setMainInputValue(params.get('place'))
-      setPlace(mainInputValue)
-    }
+   
   }, [])
 
   const onChange = e => {

@@ -18,10 +18,9 @@ function PlaceInfoExtend() {
 					</div>
 					<h1>{detailInfo.place_name}</h1>
 					<h3>{detailInfo.category_group_name}</h3>
-					<h2>지번주소 : {detailInfo.address_name}</h2>
 					<h2>
 						{detailInfo.road_address_name === ''
-							? ''
+							? `지번주소 : ${detailInfo.address_name}`
 							: `도로명주소 : ${detailInfo.road_address_name}`}
 					</h2>
 					<p>{detailInfo.phone}</p>

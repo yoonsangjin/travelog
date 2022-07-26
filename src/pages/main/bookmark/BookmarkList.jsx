@@ -1,134 +1,145 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { MdStars } from 'react-icons/md';
+import { BsPlusCircle } from 'react-icons/bs';
 import { useRecoilState } from 'recoil';
 import { bookmarkListState, viewDetailState, listNumberState } from '../../../recoil/Atom';
+import EditBookmark from './EditBookmark';
 function BookmarkList() {
-  const [bmList, setBmList] = useRecoilState(bookmarkListState);
-  const [, setViewDetail] = useRecoilState(viewDetailState);
-  const [listNumber, setListNumber] = useRecoilState(listNumberState);
+	const [bmList, setBmList] = useRecoilState(bookmarkListState);
+	const [, setViewDetail] = useRecoilState(viewDetailState);
+	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 
-  const inputRef = useRef();
-  const hiddenDivRef = useRef();
-  const btnRef = useRef();
+	const [edit, setEdit] = useState(false);
 
-  function addFolder(e) {
-    console.log(hiddenDivRef.current);
-    hiddenDivRef.current.style.display = 'flex';
-    inputRef.current.value;
-  }
-  function viewMore(e) {
-    setViewDetail(false);
-    setListNumber(e.target.id);
-  }
+	const inputRef = useRef();
+	const hiddenDivRef = useRef();
+	const btnRef = useRef();
 
-  function handleSubmit() {
-    setBmList([...bmList, inputRef.current.value]);
-    hiddenDivRef.current.style.display = 'none';
-  }
+	function addFolder() {
+		console.log(hiddenDivRef.current);
+		hiddenDivRef.current.style.display = 'flex';
+		inputRef.current.value;
+	}
 
-  return (
-    <BmListStyle>
-      <div className="btnContainer">
-        <button className="addFolder" onClick={addFolder}>
-          폴더 추가
-        </button>
-        <button className="editFolder">폴더 편집</button>
-      </div>
-      <div className="listContainer">
-        {bmList.map((element, i) => (
-          <div key={i} className="folder" id={i} onClick={viewMore}>
-            <MdStars color='#ffb877' id='btnStar' size='32' />
-            {element}
-          </div>
-        ))}
-        <div className="hiddenDiv" ref={hiddenDivRef}>
-          <input type="text" placeholder="새 리스트" ref={inputRef} />
-          <button className="submitNewList" onClick={handleSubmit} ref={btnRef}>
-            완료
-          </button>
-        </div>
-      </div>
-    </BmListStyle>
-  );
+	function viewMore(e) {
+		setViewDetail(false);
+		setListNumber(e.target.id);
+	}
+
+	function handleSubmit() {
+		setBmList([...bmList, inputRef.current.value]);
+		hiddenDivRef.current.style.display = 'none';
+	}
+
+	return (
+		<BmListStyle>
+			<div className="listContainer">
+				<div className="folder" onClick={addFolder} id="addListBtn">
+					<BsPlusCircle color="#ddd" className="btnStar" size="26" />
+					<p>새 폴더</p>
+				</div>
+				{bmList.map((element, i) => (
+					<div key={i} className="folder" >
+						<MdStars color="#ffb877" className="btnStar" size="32" />
+						<p id={i} onClick={viewMore}>{element}</p>
+						<EditBookmark setEdit={setEdit} edit={edit} />
+					</div>
+				))}
+
+				<div className="hiddenDiv" ref={hiddenDivRef}>
+					<input type="text" placeholder="새 리스트" ref={inputRef} />
+					<button className="submitNewList" onClick={handleSubmit} ref={btnRef}>
+						완료
+					</button>
+				</div>
+			</div>
+		</BmListStyle>
+	);
 }
 
 const BmListStyle = styled.div`
-  .btnContainer {
-    display: flex;
-    width: 18rem;
-    height: 2rem;
-    margin-bottom: 2rem;
-    background-color: #edf7fa;
-  }
+	.btnContainer {
+		display: flex;
+		width: 18rem;
+		height: 2rem;
+		margin-bottom: 2rem;
+		background-color: #edf7fa;
+	}
 
-  .listContainer {
-    display: flex;
-    flex-flow: column;
-    width: 18rem;
-    height: 75vh;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 1rem;
-  }
+	.listContainer {
+		display: flex;
+		flex-flow: column;
+		width: 18rem;
+		height: 65vh;
+		margin: 0 auto;
+		background-color: white;
+		border-radius: 0.25rem;
+	}
 
-  .btnContainer button {
-    width: 9rem;
-    height: 3rem;
-    border: none;
-    border-radius: 0.5rem;
-    margin: 1px;
-    background-color: #5f6caf;
-    color: white;
-  }
+	.folder {
+		display: flex;
+		width: 100%;
+		height: 4rem;
+		text-align: center;
+		align-items: center;
+		border-radius: 0.25rem;
+		font-size: 1.2rem;
+		border: 1px solid #eee;
+	}
+	.folder:hover {
+		background-color: #edf7fa;
+	}
+	.folder p {
+		cursor: pointer;
+		flex-basis: 5rem;
+	}
 
-  .btnContainer button:hover {
-    background-color: #495597;
-  }
+	#addListBtn {
+		justify-content: center;
+	}
 
-  .folder {
-    display: flex;
-    width: 100%;
-    height: 4rem;
-    text-align: center;
-    margin: 0.25rem;
-    margin-left: 0;
-    padding-top: 1rem;
-    padding-left: 1rem;
-    border-radius: 0.5rem;
-    font-size: 1.2rem;
-  }
-  .folder:hover {
-    background-color: #edf7fa;
-  }
+	#addListBtn:active {
+		background-color: #eee;
+	}
 
-  #btnStar {
-    color: rgb(255, 184, 119);
-    padding: 0.5rem;
-  }
-  
-  .hiddenDiv {
-    display: none;
-    height: 4rem;
-    border: none;
-    justify-content: center;
-  }
+	.btnStar {
+		color: rgb(255, 184, 119);
+		padding: 0.5rem;
+	}
 
-  .hiddenDiv input {
-    width: 80%;
-  }
+	.hiddenDiv {
+		display: none;
+		height: 4rem;
+		border: none;
+		justify-content: center;
+	}
 
-  .hiddenDiv button {
-    border: none;
-    border-radius: 0.5rem;
-    margin: 1px;
-    background-color: #5f6caf;
-    color: white;
-  }
+	.hiddenDiv input {
+		width: 80%;
+	}
 
-  .hiddenDiv button:hover {
-    background-color: #edf7fa;
-  }
+	.hiddenDiv button {
+		border: none;
+		border-radius: 0.5rem;
+		margin: 1px;
+		background-color: #5f6caf;
+		color: white;
+	}
+
+	.hiddenDiv button:hover {
+		background-color: #edf7fa;
+	}
+
+	.editBtn {
+		position: absolute;
+		right: 3rem;
+		cursor: pointer;
+		opacity: 0.5;
+	}
+	.editBtn:hover {
+		opacity: 1;
+	}
 `;
 
 export default BookmarkList;

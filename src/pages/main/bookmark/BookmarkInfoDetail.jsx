@@ -11,6 +11,7 @@ function BookmarkInfoDetail({ width, height }) {
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [, setActive] = useRecoilState(activeState);
 	const [detailInfo, setDetailInfo] = useRecoilState(detailInfoState);
+
 	function handleBookmark(e) {
 		// 북마크에 장소 삭제
 		const id = e.target.id;
@@ -31,7 +32,7 @@ function BookmarkInfoDetail({ width, height }) {
 				<div onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
 					<span id={i}>{data.place_name}</span>
 				</div>
-				<SetComments />
+				<SetComments number={i} />
 			</div>
 		));
 	}
