@@ -1,16 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import ColorLogPost from './ColorLogPost'
+import React from 'react';
+import styled from 'styled-components';
+import ColorLogPost from './ColorLogPost';
 
 function PostContainerForColorlog({ data }) {
   return (
     <PostContainer>
-      {data && data.posts.map(i => <ColorLogPost address={i.address_name} />)}
+      {data && data.posts.map((i, idx) => <ColorLogPost key={idx} address={i.address_name} />)}
     </PostContainer>
-  )
+  );
 }
 
-export default PostContainerForColorlog
+export default PostContainerForColorlog;
 
 const PostContainer = styled.section`
   width: 25rem;
@@ -23,4 +23,7 @@ const PostContainer = styled.section`
   left: 35rem;
   overflow: scroll;
   overflow-x: hidden;
-`
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;

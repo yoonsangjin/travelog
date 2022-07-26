@@ -36,7 +36,16 @@ function ColorLog() {
   return (
     <div>
       <SvgContainer>
-        <svg width="40rem" height="40rem" viewBox="0 0 600 900">
+        <svg
+          width="40rem"
+          height="30rem"
+          viewBox="200 0 400 900"
+          style={{
+            position: 'absolute',
+            top: '5rem',
+            left: isClick.state ? '' : 'calc(50vw - 10rem)',
+          }}
+        >
           <g>
             <Path
               style={{ fill: `${cityObj['서울'].color}` }}
@@ -219,7 +228,7 @@ function ColorLog() {
           getContent={dataTip => `${isHover.id}`}
         />
       )}
-      {isClick && <PostContainerForColorlog data={cityObj[isClick.id]} />}
+      {isClick.state && <PostContainerForColorlog data={cityObj[isClick.id]} />}
     </div>
   );
 }
