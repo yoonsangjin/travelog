@@ -70,17 +70,27 @@ function PasswordCheck() {
       alert('비밀번호를 확인해 주세요.');
     }
     try {
-      await axios({
+      const isPassword = await axios({
         method: 'post',
         url: `http://localhost:8000/api/users/user/check`,
         headers: { Authorization: `Bearer ${token}` },
         data: {
-          password: 12341234,
+          password,
         },
+<<<<<<< HEAD
       });
     } catch (err) {
       //navigate('/editprofile')
       console.error(err.stack);
+=======
+      }).then(e => e.data.isPassword);
+      if (isPassword) {
+        navigate('/editprofile');
+      } else {
+        alert('비밀번호가 틀립니다');
+      }
+    } catch (err) {
+>>>>>>> 5d2ae1f9ce382623f3e532551e93d38f94a276e0
       //alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`)
     }
   };

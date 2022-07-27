@@ -1,11 +1,15 @@
 import AWS from 'aws-sdk';
+<<<<<<< HEAD
 import { useState } from 'react';
+=======
+>>>>>>> 5d2ae1f9ce382623f3e532551e93d38f94a276e0
 
 const region = process.env.REACT_APP_AWS_BUCKET_REGION;
 const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
 const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
 
+<<<<<<< HEAD
 //S3에 이미지 업로드 되는지 테스트
 function S3(file) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -73,3 +77,44 @@ function S3(file) {
 }
 
 export default S3;
+=======
+AWS.config.update({
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+});
+const myBucket = new AWS.S3({
+  params: { Bucket: bucketName },
+  region: region,
+});
+
+export function S3Upload(file) {
+  const params = {
+    ACL: 'public-read',
+    Body: file,
+    Bucket: bucketName,
+    Key: `upload/${file.name}`,
+  };
+  myBucket
+    .putObject(params)
+    .on('httpUploadProgress')
+    .send((err, data) => {
+      if (err) alert(err);
+    });
+}
+
+export function S3getFileURL(fileKey) {
+  const params = {
+    Bucket: bucketName,
+    Key: fileKey,
+  };
+  const url = myBucket.getSignedUrl('getObject', params);
+  return url;
+}
+
+export function S3deleteObject(fileKey) {
+  myBucket.deleteObject('deleteObject', {
+    Bucket: bucketName,
+    Key: fileKey,
+  });
+}
+>>>>>>> 5d2ae1f9ce382623f3e532551e93d38f94a276e0

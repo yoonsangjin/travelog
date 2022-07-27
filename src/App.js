@@ -15,11 +15,19 @@ import EditProfile from './pages/mypage/EditProfile';
 import PasswordCheck from './pages/mypage/PasswordCheck';
 import ColorLog from './components/ColorLog';
 import Kakao from './pages/login/Kakao.jsx';
+<<<<<<< HEAD
 import S3 from './components/S3';
+=======
+
+>>>>>>> 5d2ae1f9ce382623f3e532551e93d38f94a276e0
 import Community from './pages/community/Community';
 import CompanionWriting from './pages/community/CompanionWriting';
 import QnAWriting from './pages/community/QnAWriting';
 import ChangePassword from './pages/mypage/ChangePassword';
+<<<<<<< HEAD
+=======
+import DeleteUser from './pages/mypage/DeleteUser';
+>>>>>>> 5d2ae1f9ce382623f3e532551e93d38f94a276e0
 function App() {
   return (
     <div>
@@ -38,11 +46,11 @@ function App() {
           <Route path="/passwordcheck" element={<PasswordCheck />} />
           <Route path="/colorlog" element={<ColorLog />} />
           <Route path="/auth" element={<Kakao />} />
-          <Route path="/aws" element={<S3 />} />
           <Route path="/community" element={<Community />} />
           <Route path="/companion" element={<CompanionWriting />} />
           <Route path="/qna" element={<QnAWriting />} />
           <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/deleteuser" element={<DeleteUser />} />
         </Routes>
       </RecoilRoot>
     </div>
