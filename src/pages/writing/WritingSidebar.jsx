@@ -15,7 +15,7 @@ const SidebarTitleBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-`
+`;
 const FavoriteBox = styled.div`
   .icon {
     width: 3rem;
@@ -25,11 +25,11 @@ const FavoriteBox = styled.div`
     color: white;
     border-radius: 5px;
   }
-`
+`;
 const SidebarHeader = styled.h1`
   font-size: 1.8rem;
   text-align: center;
-`
+`;
 
 const WritingsidebarContainer = styled.div`
   width: 30rem;
@@ -47,7 +47,7 @@ const SidebarListBox = styled.div`
   padding: 1rem;
   background-color: #fff;
   border-radius: 5px;
-`
+`;
 
 const ListFilterBox = styled.div`
   margin: 1rem;
@@ -72,7 +72,7 @@ const EditBtn = styled.button`
   border: none;
   background-color: #fff;
   cursor: pointer;
-`
+`;
 const Select = styled.select`
   border: none;
   background-color: #fff;
@@ -193,4 +193,4 @@ function WritingSidebar() {
   );
 }
 
-export default WritingSidebar
+export default WritingSidebar;

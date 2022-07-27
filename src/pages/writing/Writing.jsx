@@ -24,7 +24,7 @@ const WritingSection = styled.section`
   height: 93vh;
   margion-top: 7vh;
   gap: 2rem;
-`
+`;
 const WritingContainer = styled.div`
   width: 70vw;
   margin-left: 35rem;
@@ -97,7 +97,7 @@ const Button = styled.button`
   border: none;
   border-radius: 22px;
   cursor: pointer;
-`
+`;
 const Board = styled.div`
   height: 10rem;
   background-color: #fafafa;
@@ -300,4 +300,4 @@ function Writing() {
   );
 }
 
-export default Writing
+export default Writing;

@@ -40,15 +40,16 @@ function App() {
           <Route path="/passwordcheck" element={<PasswordCheck />} />
           <Route path="/colorlog" element={<ColorLog />} />
           <Route path="/auth" element={<Kakao />} />
-          <Route path="/aws" element={<S3 />} />
           <Route path="/community" element={<Community />} />
           <Route path="/companion" element={<CompanionWriting />} />
           <Route path="/qna" element={<QnAWriting />} />
           <Route path="/changepassword" element={<ChangePassword />} />
-        </Routes>
-      </RecoilRoot>
+          <Route path="/deleteuser" element={<DeleteUser />} />
+        </Route>
+        <Route path="/" element={<Title />} />
+      </Routes>
     </div>
   );
 }
 
-export default App
+export default App;

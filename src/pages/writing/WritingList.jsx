@@ -26,7 +26,7 @@ const SidebarList = styled.div`
 const ListHeader = styled.h2`
   font-size: 1.2rem;
   text-align: center;
-`
+`;
 const ListTextBox = styled.div`
   display: flex;
   width: 18rem;
@@ -120,4 +120,4 @@ function WritingList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGr
   );
 }
 
-export default WritingList
+export default WritingList;
