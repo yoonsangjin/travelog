@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import SearchbarIntro from '../../components/SearchbarIntro'
-import PostBox from '../../components/PostBox'
+import React, { useState } from 'react';
+import SearchbarIntro from '../../components/SearchbarIntro';
+import PostBox from '../../components/PostBox';
 
 function Companion() {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState('');
 
   const handleChange = e => {
-    setInputValue(e.target.value)
-  }
-  const handleClick = () => {}
+    setInputValue(e.target.value);
+  };
+  const handleClick = () => {};
   return (
     <div>
       <SearchbarIntro
@@ -25,9 +25,9 @@ function Companion() {
         changeMethod={handleChange}
         clickMethod={handleClick}
       />
-      <PostBox name="sojeong" content=" 같이 갈사람 괌" />
+      <PostBox title="testtesttest" name="sojeong" content=" 같이 갈사람 괌" />
     </div>
-  )
+  );
 }
 
-export default Companion
+export default Companion;
