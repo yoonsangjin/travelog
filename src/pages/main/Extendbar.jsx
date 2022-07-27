@@ -2,27 +2,25 @@ import React from 'react';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import Searchbar from './Searchbar';
 import PlaceInfo from '../../components/PlaceInfo';
+import SetModalBtn from '../../components/SetModalBtn';
 import BookmarkModal from './bookmark/BookmarkModal';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { activeState, extendbarState, detailInfoState, addBookmarkState } from '../../recoil/Atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { extendbarState, addBookmarkState } from '../../recoil/Atom';
 
 function Extendbar() {
 	const [close, setClose] = useRecoilState(extendbarState);
-	const [,setActive] = useRecoilState(activeState);
-	const [,addBookmark] = useRecoilState(addBookmarkState);
-
+	const addBookmark = useRecoilValue(addBookmarkState);
 	function handleExtendbar() {
-		setClose(true)
-		setActive(false)
+			setClose(!close);
 	}
-
+	
 	return (
 		<ExtendbarStyle>
 			<div className={close ? 'extendbar close' : 'extendbar'}>
 				<Searchbar />
-					<PlaceInfo />
-				<BsCaretLeftSquare id="closeBtn" onClick={handleExtendbar} />
+				<PlaceInfo />
+				<SetModalBtn function={handleExtendbar}/>
 			</div>
 			{addBookmark && <BookmarkModal />}
 		</ExtendbarStyle>
@@ -32,32 +30,24 @@ function Extendbar() {
 const ExtendbarStyle = styled.div`
 	position: absolute;
 	z-index: 6;
+	border-right: 1px solid rgb(219,219,219);
 	.extendbar {
 		display: flex;
 		flex-flow: column;
 		position: absolute;
 		top: 0;
 		left: 4rem;
-		width: 20rem;
+		width: 25rem;
 		height: 91.5vh;
-		background-color: #edf7fa;
-		transition: 0.3s ease-in-out;
+		background-color: #fafafa;
+		transition: 0.5s ease-in-out;
 	}
 
 	.close {
-		left: -24rem;
+		left: -20.6rem;
 		transition: 0.3s ease-in-out;
 	}
 
-	#closeBtn {
-		position: absolute;
-		top: 50vh;
-		transform: scale(1.5);
-		color: #5f6caf;
-		opacity: 0.9;
-		padding: 0;
-		left: 260px;
-	}
 `;
 
 export default Extendbar;

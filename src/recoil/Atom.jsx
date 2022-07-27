@@ -25,7 +25,7 @@ export const mainInputValueState = atom({
 
 export const extendbarState = atom({
 	key: 'extendbarState',
-	default: false,
+	default: true,
 });
 
 export const addBookmarkState = atom({

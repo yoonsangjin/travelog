@@ -20,7 +20,7 @@ function BookmarkDetail() {
 	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
 	const [text, setText] = useRecoilState(textState);
 
-	async function convertToJson() {
+	async function sendToWriting() {
 		console.log(bookmarkSet);
 		const token = localStorage.getItem('token');
 		await axios({ 
@@ -46,9 +46,9 @@ function BookmarkDetail() {
 				<MdArrowBackIos className="backBtn" onClick={() => setViewDetail(true)} />
 			</div>
 			<div className="content">
-				<BookmarkInfoDetail />
+				{<BookmarkInfoDetail />}
 			</div>
-			<button className="redirectTowrite" onClick={convertToJson}>
+			<button className="redirectTowrite" onClick={sendToWriting}>
 				글쓰기
 			</button>
 		</DetailPageStyle>

@@ -8,7 +8,6 @@ import EditBookmark from './EditBookmark';
 function BookmarkList() {
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [, setViewDetail] = useRecoilState(viewDetailState);
-	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 
 	const [edit, setEdit] = useState(false);
 
@@ -24,7 +23,6 @@ function BookmarkList() {
 
 	function viewMore(e) {
 		setViewDetail(false);
-		setListNumber(e.target.id);
 	}
 
 	function handleSubmit() {
@@ -36,14 +34,14 @@ function BookmarkList() {
 		<BmListStyle>
 			<div className="listContainer">
 				<div className="folder" onClick={addFolder} id="addListBtn">
-					<BsPlusCircle color="#ddd" className="btnStar" size="26" />
+					<BsPlusCircle color="#ddd" className="btnPlus" size="26" />
 					<p>새 폴더</p>
 				</div>
 				{bmList.map((element, i) => (
 					<div key={i} className="folder" >
 						<MdStars color="#ffb877" className="btnStar" size="32" />
 						<p id={i} onClick={viewMore}>{element}</p>
-						<EditBookmark setEdit={setEdit} edit={edit} />
+						<EditBookmark  i={i} setEdit={setEdit} edit={edit}/>
 					</div>
 				))}
 
@@ -61,19 +59,20 @@ function BookmarkList() {
 const BmListStyle = styled.div`
 	.btnContainer {
 		display: flex;
-		width: 18rem;
+		width: 23rem;
 		height: 2rem;
 		margin-bottom: 2rem;
-		background-color: #edf7fa;
+		background-color: #fafafa;
 	}
 
 	.listContainer {
 		display: flex;
 		flex-flow: column;
-		width: 18rem;
+		width: 21rem;
 		height: 65vh;
 		margin: 0 auto;
 		background-color: white;
+		border: 1px solid rgb(219,219,219);
 		border-radius: 0.25rem;
 	}
 
@@ -84,15 +83,13 @@ const BmListStyle = styled.div`
 		text-align: center;
 		align-items: center;
 		border-radius: 0.25rem;
-		font-size: 1.2rem;
-		border: 1px solid #eee;
-	}
-	.folder:hover {
-		background-color: #edf7fa;
+		font-size: 1rem;
+		box-shadow: 0 2px 2px -2px rgb(0 0 0 / 20%);
 	}
 	.folder p {
 		cursor: pointer;
-		flex-basis: 5rem;
+		flex-basis: 17rem;
+		line-height: 2rem;
 	}
 
 	#addListBtn {
@@ -103,9 +100,18 @@ const BmListStyle = styled.div`
 		background-color: #eee;
 	}
 
+	.btnPlus {
+		position: absolute;
+		color: rgb(255,184,119);
+		padding-top: 0.1rem;
+		left: 8rem;
+	}
+
 	.btnStar {
-		color: rgb(255, 184, 119);
+		color: rgb(255,184,119);
 		padding: 0.5rem;
+		position: absolute;
+		left: 4rem;
 	}
 
 	.hiddenDiv {
@@ -125,10 +131,6 @@ const BmListStyle = styled.div`
 		margin: 1px;
 		background-color: #5f6caf;
 		color: white;
-	}
-
-	.hiddenDiv button:hover {
-		background-color: #edf7fa;
 	}
 
 	.editBtn {

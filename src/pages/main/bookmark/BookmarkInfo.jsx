@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import handleStyle from '../../../function/handleStyle';
-import { AiFillCloseCircle } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
+import { MdOutlineClose } from 'react-icons/md';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
 	placeInfoState,
 	bookmarkState,
@@ -15,15 +15,14 @@ import {
 import SetComments from './SetComments';
 
 function BookmarkInfo() {
-	const [placeInfo, setPlaceInfo] = useRecoilState(placeInfoState);
+	const placeInfo = useRecoilValue(placeInfoState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
-	const [bmList, setBmList] = useRecoilState(bookmarkListState);
-	const [, setActive] = useRecoilState(activeState);
-	const [detailInfo, setDetailInfo] = useRecoilState(detailInfoState);
-	const [text, setText] = useRecoilState(textState);
-	const [listNumber, setListNumber] = useRecoilState(listNumberState);
+	const bmList = useRecoilValue(bookmarkListState);
+	const text = useRecoilValue(textState);
+	const listNumber = useRecoilValue(listNumberState);
 
 	useEffect(() => {
+		console.log(bookmark);
 		let newBookmark = JSON.parse(JSON.stringify(bookmark));
 		let newObj = newBookmark.map(element => {
 			let newObj = {
@@ -48,9 +47,9 @@ function BookmarkInfo() {
 			data: newObj,
 		};
 
-		console.log(newArray);
+		// console.log(newArray);
 	}, [listNumber]);
-	
+
 	function handleBookmark(e) {
 		// 북마크에 장소 삭제
 		const id = e.target.id;
@@ -64,14 +63,17 @@ function BookmarkInfo() {
 
 	function makeBookmarkInfo(bookmark) {
 		return bookmark.map((data, i) => (
-			<div key={i} id={data.id} style={handleStyle(data)} className="bookmarkBox">
-				<button id={data.id} className="deleteBtn" onClick={handleBookmark}>
-					<AiFillCloseCircle className='circleX' color='#5f6caf'/>
-				</button>
-				<div onClick={ActivateExtend} style={{ color: '#5f6caf', cursor: 'pointer' }}>
-					<span id={i}>{data.place_name}</span>
+			<div key={Math.random()} id={data.id} className="bookmarkBox">
+				<div key={Math.random()}>{handleStyle(data)}</div>
+				<div className="bookmarkInfoBox">
+					<button id={data.id} name={i} className="deleteBtn" onClick={handleBookmark}>
+						<MdOutlineClose />
+					</button>
+					<p onClick={ActivateExtend} className="bookmarkInfoName">
+						{data.place_name}
+					</p>
+					<SetComments className="modalInput" />
 				</div>
-				<SetComments className='modalInput'/>
 			</div>
 		));
 	}
@@ -82,13 +84,12 @@ export default BookmarkInfo;
 const BookmarkInfoStyle = styled.div`
 	display: flex;
 	flex-flow: column;
-	width: 12rem;
+	width: 19rem;
 	height: 50rem;
 	justify-content: flex-start;
 	font-size: 0.75rem;
 	margin: auto;
 	overflow: scroll;
-
 	overflow-y: auto;
 	overflow-x: hidden;
 	&::-webkit-scrollbar {
@@ -100,13 +101,32 @@ const BookmarkInfoStyle = styled.div`
 	}
 
 	.bookmarkBox {
-		width: 10rem;
-		height: 4rem;
+		display:flex;
+		width: 18rem;
+		height: 6rem;
 		background-color: white;
-		border: none;
+		border: 1px solid rgb(219, 219, 219);
 		border-radius: 1rem;
 		margin: 0.5rem auto;
 		line-height: 1.5rem;
+	}
+
+	.placeInfoIcon {
+		width: 2rem;
+		display: inline-block;
+		height: 2rem;
+		float: left;
+		padding: 0.25rem;
+		margin: 1.6rem 0 0 1rem;
+		border-radius: 0.25rem;
+		color: white;
+	}
+
+	.bookmarkInfoName {
+		color: #5f6caf;
+		cursor: pointer;
+		font-size: 0.9rem;
+		margin: 0.2rem 0.3rem;
 	}
 
 	.deleteBtn {
@@ -115,14 +135,15 @@ const BookmarkInfoStyle = styled.div`
 		right: 1rem;
 		font-size: 1rem;
 		border: none;
+		color: #5f6caf;
 		background-color: transparent;
-		cursor: pointer
+		cursor: pointer;
 	}
 	.addComments {
 		position: absolute;
 		right: 0;
-		margin: 1rem 1rem 0 0;
-		color: #e05836;
+		margin: 1rem 1.5rem 0 0;
+		color: #edf7fa;
 		font-size: 0.75rem;
 	}
 

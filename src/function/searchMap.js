@@ -27,7 +27,6 @@ export default function searchMap(kakaoMap, place, setPlaceInfo, searchOptions) 
         bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x))
       }
       
-
       kakaoMap.setBounds(bounds)
     }
   }

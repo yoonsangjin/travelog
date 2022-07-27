@@ -17,16 +17,16 @@ function SetComments(props) {
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
-	
+
 	const inputRef = useRef();
 	const buttonRef = useRef();
 	const pRef = useRef();
 
 	useEffect(() => {
 		console.log(comment);
-	},[comment])
+	}, [comment]);
 
-	const newObject = bookmark.map((element) =>{
+	const newObject = bookmark.map(element => {
 		let newObj = {
 			placeName: element.place_name,
 			placeUrl: element.place_url,
@@ -39,7 +39,7 @@ function SetComments(props) {
 			categoryGroupName: element.category_group_name,
 			x: element.x,
 			y: element.y,
-			}
+		};
 		return newObj;
 	});
 
@@ -47,7 +47,7 @@ function SetComments(props) {
 		if (inputRef.current.type === 'text') {
 			inputRef.current.type = 'hidden';
 			buttonRef.current.style.display = 'none';
-			pRef.current.style.display = 'inline';
+			pRef.current.style.display = 'inline-block';
 		} else {
 			inputRef.current.type = 'text';
 			buttonRef.current.style.display = 'inline';
@@ -58,13 +58,10 @@ function SetComments(props) {
 	function handleBtn(e) {
 		// input의 value를 특정 배열 내 객체의 프로퍼티에 넣는 작업
 		e.preventDefault();
-		let bmObj = {};
-		bmObj[props.number] = value;
-		setNumber(bmObj);
-		console.log(number);
 		inputRef.current.type = 'hidden';
 		buttonRef.current.style.display = 'none';
-		pRef.current.style.display = 'inline';
+		pRef.current.style.display = 'inline-block';
+		pRef.current.style.width = '12rem';
 	}
 
 	function handleChange(e) {
@@ -73,19 +70,21 @@ function SetComments(props) {
 	}
 	return (
 		<SetCommentsStyle>
-			<BsPencilFill className="addComments" onClick={handleForm} color="rgb(224, 88, 54)" />
+			<BsPencilFill className="addComments" onClick={handleForm} color="#5f6caf" />
 			<div className="makeFlex">
 				<input
-					type='hidden'
+					type="hidden"
 					onChange={handleChange}
 					ref={inputRef}
+					value={value}
 					placeholder="메모를 등록해 주세요."
 				/>
+				<p ref={pRef}>{value}</p>
 				<button onClick={handleBtn} ref={buttonRef}>
 					등록
 				</button>
 			</div>
-			<p ref={pRef}>{value}</p>
+	
 		</SetCommentsStyle>
 	);
 }
@@ -101,6 +100,16 @@ const SetCommentsStyle = styled.div`
 		font-size: 0.75rem;
 	}
 
+	input {
+		background-color: #edf7fa;
+		margin-left:0.1rem;
+		height: 1.5rem;
+	}
+
+	input:focus { 
+		outline: none; 
+	}
+
 	.makeFlex {
 		width: 4rem;
 		height: 1.5rem;
@@ -110,5 +119,4 @@ const SetCommentsStyle = styled.div`
 		float: right;
 		font-size: 1rem;
 	}
-
 `;

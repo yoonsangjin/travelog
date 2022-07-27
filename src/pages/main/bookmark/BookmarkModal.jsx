@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import BookmarkInfo from './BookmarkInfo';
+import MessageBox from '../../../components/MessageBox';
 import { BsFillStarFill } from 'react-icons/bs';
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { MdOutlineClose } from 'react-icons/md'
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
+	bookmarkState,
 	bookmarkListState,
 	bookmarkSetState,
 	addBookmarkState,
@@ -12,19 +14,23 @@ import {
 } from '../../../recoil/Atom';
 
 export default function BookmarkModal() {
-	const [bmList] = useRecoilState(bookmarkListState);
-	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
+	const bookmark = useRecoilValue(bookmarkState);
 	const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState);
-	const [showBmList, setShowBmList] = useRecoilState(showBmListState);
+	const setShowBmList = useSetRecoilState(showBmListState);
+	
+	function handleMakeBookmark() {
+		console.log(bookmark);
+		bookmark !== [] ? setShowBmList(true) : <MessageBox message='북마크를 추가해주세요.' top='50vh' left='50vw'/>
+	}
 
 	return (
 		<BmModalStyle>
 			<div className='title'><BsFillStarFill className='staricon' color='#ffb877' />북마크</div>
 			<div id="x" onClick={() => setAddBookmark(!addBookmark)}>
-				<AiFillCloseCircle color='#5f6caf'/>
+				<MdOutlineClose color='#5f6caf'/>
 			</div>
 			<BookmarkInfo />
-			<button className="makeBookmark" onClick={() => setShowBmList(true)}>
+			<button className="makeBookmark" onClick={handleMakeBookmark}>
 				여정 만들기
 			</button>
 		</BmModalStyle>
@@ -34,15 +40,14 @@ export default function BookmarkModal() {
 const BmModalStyle = styled.div`
 	position: absolute;
 	top: 1rem;
-	left: 90vw;
-	background-color: white;
+	left: 83vw;
+	background-color: rgba(255,255,255,0.8);
 	border-radius: 4px;
 	display: flex;
 	flex-flow: column;
-	width: 12rem;	
+	width: 20rem;	
 	height: 50rem;
 	text-align: center;
-	opacity: 0.8;
 	
 	.title {
 		display:flex;
@@ -76,5 +81,30 @@ const BmModalStyle = styled.div`
 		background-color: #5f6caf;
 		color: white;
 		border-radius: 0.5rem;
+	}
+
+	.makeBookmark:hover {
+		border: none;
+		width: 10rem;
+		height: 2rem;
+		margin: 0.5rem auto;
+		background-color: #5f6caf;
+		color: white;
+		border-radius: 0.5rem;
+		filter: brightness(1.2);
+		transform: scale(1.05);
+		transition: 0.1s ease-in-out;
+	}
+
+	.makeBookmark:active {
+		border: none;
+		width: 10rem;
+		height: 2rem;
+		margin: 0.5rem auto;
+		background-color: #5f6caf;
+		color: white;
+		border-radius: 0.5rem;
+		transform: scale(0.9);
+		filter: brightness(0.9);
 	}
 `;

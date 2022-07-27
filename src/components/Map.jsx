@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { placeState, placeInfoState, mainInputValueState } from '../recoil/Atom';
 import makeMap from '../function/makeMap';
 import searchMap from '../function/searchMap';
@@ -9,8 +9,8 @@ import customMarker from '../function/customMarker';
 
 function Map() {
 	const [place, setPlace] = useRecoilState(placeState);
-	const [, setPlaceInfo] = useRecoilState(placeInfoState);
-	const [mainInputValue, setMainInputValue] = useRecoilState(mainInputValueState);
+	const setPlaceInfo = useSetRecoilState(placeInfoState);
+	const setMainInputValue = useSetRecoilState(mainInputValueState);
 
 	const location = useLocation();
 
@@ -19,9 +19,9 @@ function Map() {
 		const params = queryArray[1];
 		if (params !== null) {
 			const kakaoMap = makeMap();
-			setPlace(params);
 			searchMap(kakaoMap, params, setPlaceInfo);
 			setMainInputValue(params);
+			setPlace(params);
 		}
 	},[])
 

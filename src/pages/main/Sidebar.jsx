@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Bookmarkbar from './bookmark/Bookmarkbar';
 import PlaceInfoExtend from './PlaceInfoExtend.jsx';
 import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { BsFillStarFill } from 'react-icons/bs';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
 	extendbarState,
 	bookmarkbarState,
@@ -17,36 +16,27 @@ import {
 } from '../../recoil/Atom';
 
 function Sidebar() {
-	const [close, setClose] = useRecoilState(extendbarState);
-	const [, setPlace] = useRecoilState(placeState);
-	const [mainInputValue] = useRecoilState(mainInputValueState);
+	const detailInfo = useRecoilValue(detailInfoState);
+	const setPlace = useSetRecoilState(placeState);
+	const mainInputValue = useRecoilValue(mainInputValueState);
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
+	const [close, setClose] = useRecoilState(extendbarState);
+	const setActive = useSetRecoilState(activeState);
+
 	const [btnActive, setBtnActive] = useState('');
-	const [detailInfo] = useRecoilState(detailInfoState);
-	const [active, setActive] = useRecoilState(activeState);
-	// 리팩토링 요망
-	const search = useRef();
-	const restaurant = useRef();
-	const landmark = useRef();
-	const cafe = useRef();
-	const bookmark = useRef();
+	const search = useRef(),
+		restaurant = useRef(),
+		landmark = useRef(),
+		cafe = useRef(),
+		bookmark = useRef();
 
 	useEffect(() => {
-		search.current.className === btnActive
-			? (search.current.style = 'background: #edf7fa;')
-			: (search.current.style = 'background: white;');
-		restaurant.current.className === btnActive
-			? (restaurant.current.style = 'background: #edf7fa;')
-			: (restaurant.current.style = 'background: white;');
-		landmark.current.className === btnActive
-			? (landmark.current.style = 'background: #edf7fa;')
-			: (landmark.current.style = 'background: white;');
-		cafe.current.className === btnActive
-			? (cafe.current.style = 'background: #edf7fa;')
-			: (cafe.current.style = 'background: white;');
-		bookmark.current.className === btnActive
-			? (bookmark.current.style = 'background: #edf7fa;')
-			: (bookmark.current.style = 'background: white;');
+		const activeArray = [search, restaurant, landmark, cafe, bookmark];
+		activeArray.map(element => {
+			element.current.className === btnActive
+				? (element.current.style = 'background: #fafafa;')
+				: (element.current.style = 'background: white;');
+		});
 	}, [btnActive]);
 
 	return (
@@ -113,8 +103,6 @@ function Sidebar() {
 					/>
 				</div>
 			</div>
-			<Bookmarkbar />
-			{detailInfo == '' ? null : <PlaceInfoExtend />}
 		</SidebarStyle>
 	);
 }

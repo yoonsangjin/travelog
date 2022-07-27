@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import handleStyle from '../function/handleStyle';
-import { AiFillStar } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
+
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
 	placeInfoState,
 	addBookmarkState,
@@ -10,43 +10,45 @@ import {
 	activeState,
 	detailInfoState,
 } from '../recoil/Atom';
+import { BsStarFill } from 'react-icons/bs';
 
 function PlaceInfo() {
-	const [placeInfo, ] = useRecoilState(placeInfoState);
+	const placeInfo = useRecoilValue(placeInfoState);
+	const setActive = useSetRecoilState(activeState);
+	const setDetailInfo = useSetRecoilState(detailInfoState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
-	const [, setActive] = useRecoilState(activeState);
-	const [, setDetailInfo] = useRecoilState(detailInfoState);
-	const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState);
+	const setAddBookmark = useSetRecoilState(addBookmarkState);
 
 	function handleBookmark(e) {
 		setAddBookmark(true);
-		const targetObj = placeInfo[e.target.name];
-		if (!bookmark.some(data => data.id == e.target.id)) {
+		const id = e.currentTarget.id
+		const targetObj = placeInfo[e.currentTarget.name];
+		if (!bookmark.some(data => data.id == id)) {
 			setBookmark([...bookmark, targetObj]);
-		} else if (bookmark.some(data => data.id == e.target.id)) {
-			setBookmark(bookmark.filter(data => data.id != e.target.id));
+		} else if (bookmark.some(data => data.id == id)) {
+			setBookmark(bookmark.filter(data => data.id != id));
 			console.log(bookmark);
 		}
 	}
 
+
 	function ActivateExtend(e) {
 		setActive(true);
-		setDetailInfo(placeInfo[e.target.id]);
+		setDetailInfo(placeInfo[e.currentTarget.id]);
 	}
 
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map((data, i) => (
-			<div key={data.id} id={data.id} name={i} style={handleStyle(data)} className="infoBox">
-				<button
-					id={data.id}
-					name={i}
-					className={bookmark.includes(data) ? 'bookmarkBtn on' : 'bookmarkBtn'}
-					onClick={handleBookmark}
-				>
-					★
+			<div key={Math.random()} id={data.id} name={i} className="infoBox">
+				<div key={Math.random()}>{handleStyle(data)}</div>
+				<button id={data.id} 
+				name={i} 
+				className={bookmark.includes(data) ? 'bookmarkBtn on' : 'bookmarkBtn'}
+				onClick={handleBookmark}>
+					<BsStarFill/>
 				</button>
-				<ul>
-					<li onClick={ActivateExtend} id={i} style={{ color: '#5f6caf', cursor: 'pointer' }}>
+				<ul id='placeInfoBox'>
+					<li onClick={ActivateExtend} id={i} className="placeInfoName">
 						{data.place_name}
 					</li>
 					<li>{data.address_name}</li>
@@ -61,14 +63,14 @@ export default PlaceInfo;
 const PlaceInfoStyle = styled.div`
 	display: flex;
 	flex-flow: column;
-	width: 20rem;
+	width: 25rem;
 	height: 80vh;
 	justify-content: flex-start;
-	font-size: 1rem;
+	font-size: 0.5rem;
 	margin: auto;
 	position: absolute;
 	top: 5rem;
-	
+
 	overflow: scroll;
 	overflow-y: auto;
 	&::-webkit-scrollbar {
@@ -80,14 +82,34 @@ const PlaceInfoStyle = styled.div`
 	}
 
 	.infoBox {
-		width: 15rem;
+		width: 20rem;
 		height: 8rem;
 		background-color: white;
-		border: none;
+		border: 1px solid rgb(219, 219, 219);
 		border-radius: 1rem;
 		margin: 1rem auto;
 		padding: 1rem;
 		line-height: 2rem;
+	}
+
+	#placeInfoBox {
+		width: 18rem;
+	}
+
+	.placeInfoIcon {
+		width: 1.5rem;
+		height: 1.5rem;
+		float: left;
+		padding: 0.5rem;
+		margin: 1rem;
+		border-radius: 0.25rem;
+		color: white;
+	}
+
+	.placeInfoName {
+		color: #5f6caf;
+		cursor: pointer;
+		font-size: 1rem;
 	}
 
 	.bookmarkBtn {
@@ -98,7 +120,30 @@ const PlaceInfoStyle = styled.div`
 		background: transparent;
 	}
 
-  .on {
-    color: #ffb877;
-  }
+	.bookmarkBtn:hover {
+		float: right;
+		font-size: 1.5rem;
+		border: none;
+		color: #ffb877;
+		background: transparent;
+		transition: all 0.5s ease-in-out;
+	}
+
+	.bookmarkBtn:active {
+		float: right;
+		font-size: 1.5rem;
+		transform: scale(1.5);
+		border: none;
+		color: #ffb877;
+		filter: brightness(1.2);
+		background: transparent;
+		transition: all 0.1s;
+	}
+
+	.on {
+		color: #ffb877;
+		transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+	}
+
+
 `;

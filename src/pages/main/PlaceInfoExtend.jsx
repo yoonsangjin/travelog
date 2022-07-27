@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import handleStyle from '../../function/handleStyle';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { TiArrowLeft } from 'react-icons/ti';
 import { useRecoilState } from 'recoil';
 import { activeState, detailInfoState } from '../../recoil/Atom';
 
@@ -9,19 +9,24 @@ function PlaceInfoExtend() {
 	const [active, setActive] = useRecoilState(activeState);
 	const [detailInfo] = useRecoilState(detailInfoState);
 
+	function handleExtendInfo() {
+		setActive(false)
+	}
+
 	return (
 		<PlaceInfoExtendbar>
 			<div className={active ? 'placeInfoExtend' : 'placeInfoExtend close'}>
-				<div className="detailInfo" style={handleStyle(detailInfo)}>
-					<div id="x" onClick={() => setActive(false)}>
-						<AiFillCloseCircle className="circleX" color="#5f6caf" />
+				<div className="detailInfo">
+					<div className='detailIcon' key={Math.random()}>{handleStyle(detailInfo)}</div>
+					<div id="x" onClick={handleExtendInfo}>
+						<TiArrowLeft color="rgb(219,219,219)" />
 					</div>
 					<h1>{detailInfo.place_name}</h1>
 					<h3>{detailInfo.category_group_name}</h3>
 					<h2>
 						{detailInfo.road_address_name === ''
-							? `지번주소 : ${detailInfo.address_name}`
-							: `도로명주소 : ${detailInfo.road_address_name}`}
+							? detailInfo.address_name
+							: detailInfo.road_address_name}
 					</h2>
 					<p>{detailInfo.phone}</p>
 					<div className="placeUrl">
@@ -35,18 +40,24 @@ function PlaceInfoExtend() {
 }
 
 const PlaceInfoExtendbar = styled.div`
+	position: absolute;
+	z-index: 5;
+	font-size: 1rem;
 	.placeInfoExtend {
 		display: flex;
 		flex-flow: column;
 		position: absolute;
+		transition: 0.5s ease-in-out;
 		top: 0;
-		left: 24rem;
+		left: 29rem;
 		width: 20rem;
 		height: 90vh;
+		line-height: 3rem;
 		overflow: scroll;
-		background-color: #edf7fa;
+		background-color: #fafafa;
 		overflow: scroll;
 		overflow-y: auto;
+	
 		&::-webkit-scrollbar {
 			width: 8px;
 		}
@@ -56,15 +67,29 @@ const PlaceInfoExtendbar = styled.div`
 		}
 	}
 
+	.detailIcon {
+		display:inline-block;
+		padding-left: 27.2%;
+		text-align: center;
+		margin-top: 1rem;
+		transform: scale(2.5);
+		border-radius: 0.25rem;
+		color: white;
+	}
+
 	.detailInfo {
 		background-color: white;
+		height: 20rem;
 		margin: 1rem;
-		border-radius: 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid rgb(219,219,219);
 	}
 
 	.close {
-		display: none;
+		cursor: pointer;
+		left: -40rem;
 		flex-flow: column;
+		transition: 0.5s ease-in-out;
 	}
 
 	#x {
@@ -73,17 +98,18 @@ const PlaceInfoExtendbar = styled.div`
 	}
 
 	h1 {
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		color: #5f6caf;
 		text-align: center;
 	}
 
 	h2 {
-		font-size: 1rem;
+		text-align: center;
+		font-size: 0.8rem;
 	}
 
 	h3 {
-		font-size: 1rem;
+		font-size: 0.5rem;
 		text-align: center;
 		color: #999;
 	}
@@ -106,6 +132,7 @@ const PlaceInfoExtendbar = styled.div`
 		height: 100%;
 		background-color: white;
 		margin: 1rem;
+		border: 1px solid rgb(219,219,219);
 	}
 `;
 

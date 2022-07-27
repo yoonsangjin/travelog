@@ -3,19 +3,15 @@ import Searchbar from '../Searchbar';
 import { BsCaretLeftSquare } from 'react-icons/bs';
 import { IoMdAirplane } from 'react-icons/io';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import {
-	bookmarkState,
-	bookmarkSetState,
-	bookmarkbarState,
-	viewDetailState,
-} from '../../../recoil/Atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { bookmarkbarState, viewDetailState } from '../../../recoil/Atom';
 import BookmarkList from './BookmarkList';
 import BookmarkDetail from './BookmarkDetail';
+import SetModalBtn from '../../../components/SetModalBtn';
 
 function Bookmarkbar() {
 	const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
-	const [viewDetail] = useRecoilState(viewDetailState);
+	const viewDetail = useSetRecoilState(viewDetailState);
 
 	useEffect(() => {
 		renderDetailPage();
@@ -25,14 +21,18 @@ function Bookmarkbar() {
 		return viewDetail ? <BookmarkList /> : <BookmarkDetail />;
 	}
 
+	function handleBookmarkbar() {
+		setBmClose(!bmClose);
+	}
+
 	return (
 		<BookmarkbarStyle>
 			<div className={bmClose ? 'bookmarkbar close' : 'bookmarkbar'}>
 				<Searchbar />
-				<BsCaretLeftSquare id="closeBtn" onClick={() => setBmClose(true)} />
-				<h1>
+				<SetModalBtn function={handleBookmarkbar} />
+				<p className="myTravel">
 					<IoMdAirplane /> 나의 여정
-				</h1>
+				</p>
 				<div className="contents">{renderDetailPage()}</div>
 			</div>
 		</BookmarkbarStyle>
@@ -40,18 +40,27 @@ function Bookmarkbar() {
 }
 
 const BookmarkbarStyle = styled.div`
+	position: absolute;
+	z-index: 6;
+	border-right: 1px solid rgb(219,219,219);
 	.bookmarkbar {
 		display: flex;
 		flex-flow: column;
 		position: absolute;
 		top: 0;
 		left: 4rem;
-		width: 20rem;
+		width: 25rem;
 		height: 91.5vh;
-		background-color: #edf7fa;
+		background-color: #fafafa;
+		transition: 0.5s ease-in-out;
 	}
 
-	h1 {
+	.myTravel {
+		background-color: transparent;
+	}
+
+	p {
+		font-size: 1rem;
 		margin: 0 1rem;
 		background-color: white;
 		border-radius: 0.5rem;
@@ -64,17 +73,8 @@ const BookmarkbarStyle = styled.div`
 	}
 
 	.close {
-		display: none;
-	}
-
-	#closeBtn {
-		position: absolute;
-		top: 50vh;
-		transform: scale(1.5);
-		color: #5f6caf;
-		opacity: 0.9;
-		padding: 0;
-		left: 260px;
+		left: -29rem;
+		transition: 0.5s ease-in-out;
 	}
 `;
 
