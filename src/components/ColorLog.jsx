@@ -41,9 +41,9 @@ function ColorLog() {
           height="30rem"
           viewBox="200 0 400 900"
           style={{
-            position: 'absolute',
-            top: '5rem',
-            left: isClick.state ? '' : 'calc(50vw - 10rem)',
+            position: 'relative',
+            top: '9rem',
+            left: isClick.state ? '0rem' : 'calc(50% - 4rem)',
           }}
         >
           <g>

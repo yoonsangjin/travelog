@@ -13,14 +13,14 @@ function PostContainerForColorlog({ data }) {
 export default PostContainerForColorlog;
 
 const PostContainer = styled.section`
-  width: 25rem;
+  width: 20rem;
   height: 30rem;
   border-radius: 22px;
   background-color: #fff;
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
   position: absolute;
-  top: 8rem;
-  left: 35rem;
+  top: 5rem;
+  left: 27rem;
   overflow: scroll;
   overflow-x: hidden;
   &::-webkit-scrollbar {

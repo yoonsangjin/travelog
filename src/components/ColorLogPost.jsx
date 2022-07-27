@@ -14,7 +14,7 @@ function ColorLogPost({ address }) {
 export default ColorLogPost;
 
 const PostContainer = styled.article`
-  width: 22rem;
+  width: 18rem;
   height: 6.7rem;
   background-color: #edf7fa;
   margin: 1rem auto;
@@ -29,7 +29,7 @@ const PostThumbnail = styled.img`
 `;
 const PostTitle = styled.h2`
   display: block;
-  width: 15rem;
+  width: 10rem;
   position: relative;
   top: -5.2rem;
   left: 6.5rem;
