@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import DaumPostcodeEmbed from 'react-daum-postcode';
@@ -115,6 +115,11 @@ function EditProfile() {
   const [address2, setAddress2] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const navigate = useNavigate();
+  let userData = {};
+  useEffect(() => {
+    getUserData();
+    console.log(userData.data);
+  }, []);
 
   //axios bearer token
   const token = window.localStorage.getItem('token');
@@ -122,19 +127,23 @@ function EditProfile() {
     headers: { Authorization: `Bearer ${token}` },
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    let userData = {};
-    const fileKey = profileImage.name;
-    //S3Upload(profileImage);
-    const profileImg = S3getFileURL(`upload/${fileKey}`);
-    console.log(`이 값은 받아온 url 입니다 ${profileImg}`);
-    //S3deleteObject(fileKey);
-
-    //기존 데이터 불러오기
+  //기존 데이터 불러오기
+  async function getUserData() {
     try {
       userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
-    } catch (err) {}
+    } catch (err) {
+      alert(err);
+    }
+  }
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    const fileKey = profileImage.name;
+    S3Upload(profileImage);
+    const profileImg = S3getFileURL(`upload/${fileKey}`);
+
+    S3deleteObject(fileKey);
+
     let resultData = { ...userData, phoneNumber, address };
     editname && (resultData.name = editname);
     editnickname && (resultData.nickname = editnickname);
@@ -154,8 +163,8 @@ function EditProfile() {
           //          profileImg:profileImg,
         },
       });
-      //  alert('정보가 변경되었습니다.');
-      //navigate('/mypage');
+      alert('정보가 변경되었습니다.');
+      navigate('/mypage');
     } catch (err) {
       alert(err.stack);
     }

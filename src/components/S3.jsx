@@ -38,29 +38,9 @@ export function S3getFileURL(fileKey) {
   return url;
 }
 
-// export function S3getFileURL(fileKey) {
-//   const data = myBucket.getSignedUrl(
-//     'getObject',
-//     { Bucket: bucketName, Key: fileKey },
-//     (err, url) => {
-//       if (err) {
-//         throw err;
-//       }
-//     },
-//   );
-//   return data;
-// }
-// export function S3deleteObject(fileKey) {
-//   myBucket.deleteObject(
-//     {
-//       Bucket: bucketName,
-//       Key: fileKey,
-//     },
-//     (err, data) => {
-//       if (err) {
-//         throw err;
-//       }
-//       console.log(data);
-//     },
-//   );
-// }
+export function S3deleteObject(fileKey) {
+  myBucket.deleteObject('deleteObject', {
+    Bucket: bucketName,
+    Key: fileKey,
+  });
+}
