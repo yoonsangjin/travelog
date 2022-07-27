@@ -1,14 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { TbStar } from 'react-icons/tb'
-import WritingSearchbar from './WritingSearchbar'
 import ViewBoardList from './ViewBoardList'
-import ViewList from './ViewList'
 import Comment from './Comment'
 // Toast-UI Viewer 임포트
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-
+import axios from 'axios';
 const WritingSection = styled.section`
   width: 100vw;
   height: 100vh;
@@ -45,73 +42,6 @@ const WritingHeaderBox = styled.div`
   display: flex;
   justify-content: space-between;
 `
-const SidebarTitleBox = styled.div`
-  margin: 1rem;
-  background-color: #fff;
-  padding: 0.5rem;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-`
-const FavoriteBox = styled.div`
-  .icon {
-    width: 3rem;
-    height: 3rem;
-    padding: 0.5rem;
-    background-color: #ffb877;
-    color: white;
-    border-radius: 5px;
-  }
-`
-const SidebarHeader = styled.h1`
-  font-size: 1.8rem;
-  text-align: center;
-`
-
-const WritingsidebarContainer = styled.div`
-  width: 24vw;
-  height: 100%;
-  background-color: #edf7fa;
-  box-shadow: 0 40px 22px 2px rgba(0, 0, 0, 0.25);
-  overflow: scroll;
-  position: fixed;
-`
-const SidebarListBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin: 1rem;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 5px;
-`
-
-const ListFilterBox = styled.div`
-  margin: 1rem;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  display: flex;
-  justify-content: flex-end;
-  background-color: #fff;
-  .display {
-    display: block;
-  }
-  .displayNone {
-    display: None;
-  }
-  .space-between {
-    display: block;
-  }
-  .flex-end {
-    display: None;
-  }
-`
-const Select = styled.select`
-  border: none;
-  background-color: #fff;
-  cursor: pointer;
-`
 const Board = styled.div`
   width: 100%;
   height: 10rem;
@@ -126,105 +56,29 @@ const ViewerBox = styled.div`
   padding: 2rem;
   margin-top: 1rem;
 `
-const data = [
-  {
-    id: 132,
-    name: '해운대',
-    index: 1,
-    memo: '해운대 바다 멋짐',
-    url: 'https://www.busan.go.kr/resource/img/geopark/sub/busantour/busantour1.jpg',
-  },
-  {
-    id: 286,
-    name: '광안리',
-    index: 2,
-    memo: '카타파~',
-    url: 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191229160530047_oen',
-  },
-  {
-    id: 345,
-    index: 3,
-    name: '스타벅스',
-    memo: '가나 존맛탱',
-    url: 'http://www.foodbank.co.kr/news/photo/202106/61595_18750_5558.jpg',
-  },
-]
-const writing = {
-  writingData: '<p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p><p>여기에 글을 추가하세요!</p><p><br class="ProseMirror-trailingBreak"></p><blockquote><p>어디에</p></blockquote><p><strong>무엇을</strong></p><p><strong><em>어떻게</em></strong></p><p><del>적어야</del></p><p><span style="color: #ab4642">할가용</span></p>v'
-  ,
-  board: [
-    {
-      id: 286,
-      name: '광안리',
-      index: 2,
-      memo: '카타파~',
-      url: 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191229160530047_oen',
-    },
-    {
-      id: 345,
-      index: 3,
-      name: '스타벅스',
-      memo: '가나 존맛탱',
-      url: 'http://www.foodbank.co.kr/news/photo/202106/61595_18750_5558.jpg',
-    },
-  ],
-}
+
 function View() {
-  const [list, setList] = useState(data)
-    const [selected, setSelected] = useState('최신')
-    useEffect(() => {
-      let newlist = []
-      switch (selected) {
-        case '최신':
-          newlist = [...list].sort((a, b) => a.index - b.index)
-          setList(newlist)
-          break
-        case '장소':
-          newlist = [...list].sort(function (a, b) {
-            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-          })
-          setList(newlist)
-          break
-        case '메모':
-          newlist = [...list].sort(function (a, b) {
-            return a.memo < b.memo ? -1 : a.memo > b.memo ? 1 : 0
-          })
-          setList(newlist)
-          break
-      }
-    }, [selected])
-    const handleChange = e => {
-      setSelected(e.target.value)
-  }
-  const html = writing.writingData
-  const view = writing.board
+  const [writing, setWriting] = useState({});
+  //axios bearer token
+  const token = window.localStorage.getItem('token');
+  let config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const getWritingData = async () => {
+    try {
+      await axios
+        .get('http://localhost:8000/api/posts/user/10', config)
+        .then(res => setWriting(res.data))
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getWritingData();
+  }, []);
+  const view = [];
   return (
     <WritingSection>
-      <WritingsidebarContainer>
-        <WritingSearchbar />
-        <SidebarTitleBox>
-          <FavoriteBox>
-            <TbStar className="icon" id="favoriteIcon" />
-          </FavoriteBox>
-          <SidebarHeader>부산 여행</SidebarHeader>
-        </SidebarTitleBox>
-        <ListFilterBox>
-          <Select onClick={e => handleChange(e)}>
-            <option value={'최신'}>최신순</option>
-            <option value={'장소'}>장소명순</option>
-            <option value={'메모'}>메모순</option>
-          </Select>
-        </ListFilterBox>
-        <SidebarListBox>
-          {list.length ? (
-            list.map(e => {
-              return <ViewList id={e.id} name={e.name} url={e.url} memo={e.memo} />
-            })
-          ) : (
-            <p>리스트가 비었습니다.</p>
-          )}
-        </SidebarListBox>
-      </WritingsidebarContainer>
       <WritingContainer>
         <EditContainer>
           <WritingHeaderBox>
@@ -232,17 +86,24 @@ function View() {
           </WritingHeaderBox>
           <Board>
             {view.map(e => {
-              return <ViewBoardList id={e.id} name={e.name} url={e.url} memo={e.memo} />
+              return (
+                <ViewBoardList
+                  bookmarkId={e.bookmarkId}
+                  placeName={e.placeName}
+                  placeUrl={e.placeUrl}
+                  bookmarkMemo={e.bookmarkMemo}
+                />
+              );
             })}
           </Board>
           <ViewerBox>
-            <Viewer initialValue={html} />
+            {writing.content ? <Viewer initialValue={writing.content} /> : ''}
           </ViewerBox>
         </EditContainer>
         <Comment />
       </WritingContainer>
     </WritingSection>
-  )
+  );
 }
 
 export default View

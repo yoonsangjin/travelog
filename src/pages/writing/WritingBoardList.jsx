@@ -2,26 +2,31 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
 import { useRecoilState } from 'recoil';
-import { boardState } from '../../recoil/Atom.jsx'
+import { boardState } from '../../recoil/Atom.jsx';
+import { BiRestaurant } from 'react-icons/bi';
+import { ImLibrary } from 'react-icons/im';
+import { IoMdCafe } from 'react-icons/io';
 const ListBox = styled.div`
+  flex: 0 0 auto;
   padding: 1rem;
   position: relative;
-  border-radius: 5px;
+  border-radius: 1px;
   background-color: #edf7fa;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`
-const ListImg = styled.img`
-  width: 8rem;
-  height: 8rem;
-  border-radius: 2px;
+  align-items: center;
+  cursor: pointer;
   overflow: hidden;
+  .icon {
+    width: 2rem;
+    height: 2rem;
+  }
 `;
 const ListHeader = styled.h2`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   text-align: center;
-`
+`;
 const Closebtn = styled.button`
   position: absolute;
   top: 10px;
@@ -44,23 +49,43 @@ const Closebtn = styled.button`
     height: 1.5rem;
   }
 `
-
-function WritingBoardList({ id, name, url }) {
-  const [board, setBoard] = useRecoilState(boardState)
+const LinkToURL = styled.a`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+`;
+function WritingBoardList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
+  const [board, setBoard] = useRecoilState(boardState);
   const handleButton = () => {
-		const newArr = board.filter(e => id !== e.id);
-		setBoard(newArr);
+    const newArr = board.filter(e => bookmarkId !== e.bookmarkId);
+    setBoard(newArr);
+  };
+  let category;
+  switch (categoryGroupName) {
+    case '카페':
+      category = <IoMdCafe className="icon" />;
+      break;
+    case '음식점':
+      category = <BiRestaurant className="icon" />;
+      break;
+    default:
+      category = <ImLibrary className="icon" />;
   }
-
   return (
     <ListBox>
-      <ListImg src={url} />
-      <ListHeader>{name}</ListHeader>
+      {category}
+      <LinkToURL href={placeUrl} target="_blank">
+        <ListHeader>{placeName.split(' ')[0]}</ListHeader>
+        <p>{bookmarkMemo}</p>
+      </LinkToURL>
       <Closebtn onClick={handleButton}>
         <IoIosClose className="close" />
       </Closebtn>
     </ListBox>
-  )
+  );
 }
 
 export default WritingBoardList

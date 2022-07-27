@@ -85,7 +85,18 @@ export const boardState = atom({
   key: 'boardState',
   default: [],
 })
+
 export const checkedState = atom({
   key: 'checkedState',
   default: [],
 })
+
+export const TagState = atom({
+  key: 'TagState',
+  default: [],
+});
+
+export const CityTagToggleState = atom({
+  key: 'CityTagToggleState',
+  default: false,
+});

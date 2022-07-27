@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import styled, { keyframes } from 'styled-components'
 import CommentList from './CommentList';
 import {
@@ -13,6 +14,7 @@ import {
 const CommentContainer = styled.div`
   display: flex;
   width: 26vw;
+  height: 100vh;
   height: 100%;
   flex-direction: column;
   padding-top: 1.5rem;
@@ -20,8 +22,8 @@ const CommentContainer = styled.div`
   border-left: 1px solid #e9e9e9;
   position: fixed;
   right: 0;
-  overflow: scroll;
   margin-bottm: 5rem;
+  overflow: scroll;
 `
 const CommentStatus = styled.div`
   display: grid;
@@ -187,7 +189,7 @@ const ProfileImg = styled.img`
   }
 `;
 const CommentFormBox = styled.div`
-  padding: 1rem;
+  padding: 1rem 1rem 3rem 1rem;
   border-radius: 12px;
 `;
 const CommentForm = styled.form`
@@ -215,6 +217,22 @@ const CommentSubmitBtn = styled.button`
 `;
 
 function Comment() {
+    // let data = [];
+    // //axios bearer token
+    // const token = window.localStorage.getItem('token');
+    // let config = {
+    //   headers: { Authorization: `Bearer ${token}` },
+    // };
+    // //데이터 불러오기
+    // const getListData = async () => {
+    //   try {
+    //     await axios
+    //       .get('http://localhost:8000/api/bookmarks', config)
+    //       .then(res => (data = res.data));
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
   const inputRef = useRef();
   const [value, setValue] = useState('');
   const [commentList, setCommnetList] = useState([]);
@@ -222,6 +240,9 @@ function Comment() {
   const handleHeart = () => {
     setHeart(!heart);
   };
+    // useEffect(() => {
+    //   getListData();
+    // }, []);
   useEffect(() => {
     inputRef.current.focus();
   }, [value]);

@@ -26,7 +26,7 @@ function App() {
     <div>
       <RecoilRoot>
         <Reset />
-        {window.location.pathname !== '/' && <Navbar />}
+        {window.location.pathname !== '/' && window.location.pathname !== '/View' && <Navbar />}
         <Routes>
           <Route path="/" element={<Title />} />
           <Route path="/main" element={<Main />} />
@@ -48,7 +48,7 @@ function App() {
         </Routes>
       </RecoilRoot>
     </div>
-  )
+  );
 }
 
 export default App

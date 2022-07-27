@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { BiRestaurant } from 'react-icons/bi';
+import { ImLibrary } from 'react-icons/im';
+import { IoMdCafe } from 'react-icons/io';
 
 const ListBox = styled.div`
   padding: 1rem;
@@ -8,26 +11,37 @@ const ListBox = styled.div`
   background-color: #edf7fa;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
+  .icon {
+    width: 2rem;
+    height: 2rem;
+  }
 `;
-const ListImg = styled.img`
-  width: 8rem;
-  height: 8rem;
-  border-radius: 2px;
-  overflow: hidden;
+const LinkToURL = styled.a`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
 `;
 const ListHeader = styled.h2`
   font-size: 1.6rem;
   text-align: center;
 `
 
-function ViewBoardList({ name, url }) {
+function ViewBoardList({ bookmarkId, placeName, placeUrl, bookmarkMemo }) {
   return (
     <ListBox>
-      <ListImg src={url} />
-      <ListHeader>{name}</ListHeader>
+      <IoMdCafe className="icon" />
+      <LinkToURL href={placeUrl} target="_blank">
+        <ListHeader>{placeName.split(' ')[0]}</ListHeader>
+        <p>{bookmarkMemo}</p>
+      </LinkToURL>
     </ListBox>
-  )
+  );
 }
 
 export default ViewBoardList

@@ -3,42 +3,50 @@ import styled from 'styled-components'
 import { useDrag } from 'react-dnd'
 import { toggleState, checkedState } from '../../recoil/Atom.jsx'
 import { useRecoilState } from 'recoil'
+import { BiRestaurant } from 'react-icons/bi';
+import { ImLibrary } from 'react-icons/im';
+import { IoMdCafe } from 'react-icons/io';
 
 const SidebarList = styled.div`
   padding: 1rem;
   border-radius: 5px;
-  background-color: #edf7fa;
+  background-color: #fafafa;
+  box-shadow: rgb(31 38 135 / 10%) 0px 8px 32px 0px;
   cursor: pointer;
-
-    .display{
+  .display {
     display: block;
   }
-  .displayNone{
+  .displayNone {
     display: None;
   }
-`
-const ListImg = styled.img`
-  width: 8rem;
-  height: 8rem;
-`
+  &:hover {
+    color: #5f6caf;
+  }
+`;
 const ListHeader = styled.h2`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   text-align: center;
 `
 const ListTextBox = styled.div`
   display: flex;
-  width: 15rem;
+  width: 18rem;
   gap: 1rem;
   flex-direction: column;
-  justify-content: center;
-  align-content: center;
-`
+  align-items: center;
+
+`;
 const Label = styled.label`
   display: flex;
   align-items: center;
   gap: 1rem;
   user-select: none;
-`
+  justify-content: center;
+  cursor: pointer;
+  .icon{
+    width: 2rem;
+    height: 2rem;
+  }
+`;
 const Input = styled.input`
   appearance: none;
   width: 1.5rem;
@@ -56,43 +64,60 @@ const Input = styled.input`
     background-color: limegreen;
   }
 `
-function WritingList({ id, name, url, memo }) {
-  const [toggle, setToggle] = useRecoilState(toggleState)
+const LinkToURL = styled.a`
+  cursor: pointer;
+`;
+function WritingList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
+  const [toggle, setToggle] = useRecoilState(toggleState);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'card',
-    item: { id: id },
+    item: { id: bookmarkId },
     collect: monitor => ({ isDragging: !!monitor.isDragging() }),
-  }))
-  const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState)
+  }));
+  const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
   function handleSelect(checked, id) {
     if (checked) {
-      setCheckedInputs([...checkedInputs, id])
+      setCheckedInputs([...checkedInputs, id]);
     } else {
       // 체크 해제
-      setCheckedInputs(checkedInputs.filter(el => el !== id))
+      setCheckedInputs(checkedInputs.filter(el => el !== id));
     }
   }
+  let category;
+  switch (categoryGroupName) {
+    case '카페':
+      category = <IoMdCafe className="icon" />;
+      break;
+    case '음식점':
+      category = <BiRestaurant className="icon" />;
+      break;
+    default:
+      category = <ImLibrary className="icon" />;
+  }
+
   return (
     <SidebarList ref={drag}>
-      <Label htmlFor={id}>
-        {toggle ? (
-          <Input
-            id={id}
-            type={'checkbox'}
-            onChange={e => handleSelect(e.currentTarget.checked, id)}
-            className={toggle ? 'display' : 'displayNone'}
-          ></Input>
-        ) : (
-          ''
-        )}
-        <ListImg src={url} />
-        <ListTextBox>
-          <ListHeader>{name}</ListHeader>
-          <p>{memo}</p>
-        </ListTextBox>
-      </Label>
+      <LinkToURL href={placeUrl} target="_blank">
+        <Label htmlFor={bookmarkId}>
+          {toggle ? (
+            <Input
+              id={bookmarkId}
+              type={'checkbox'}
+              onChange={e => handleSelect(e.currentTarget.checked, bookmarkId)}
+              className={toggle ? 'display' : 'displayNone'}
+            ></Input>
+          ) : (
+            ''
+          )}
+          {category}
+          <ListTextBox>
+            <ListHeader>{placeName}</ListHeader>
+            <p>{bookmarkMemo}</p>
+          </ListTextBox>
+        </Label>
+      </LinkToURL>
     </SidebarList>
-  )
+  );
 }
 
 export default WritingList
