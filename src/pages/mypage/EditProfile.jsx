@@ -118,9 +118,18 @@ function EditProfile() {
   let userData = {};
   useEffect(() => {
     getUserData();
-    console.log(userData.data);
   }, []);
 
+  const getUserData = async () => {
+    try {
+      userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
+      setEditName(userData.name || '');
+      setEditNickname(userData.nickname || '');
+      setPhoneNumber(userData.phoneNumber || '');
+    } catch (err) {
+      alert(err);
+    }
+  };
   //axios bearer token
   const token = window.localStorage.getItem('token');
   let config = {
@@ -128,21 +137,13 @@ function EditProfile() {
   };
 
   //기존 데이터 불러오기
-  async function getUserData() {
-    try {
-      userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
-    } catch (err) {
-      alert(err);
-    }
-  }
+
   const handleSubmit = async e => {
     e.preventDefault();
 
     const fileKey = profileImage.name;
     S3Upload(profileImage);
     const profileImg = S3getFileURL(`upload/${fileKey}`);
-
-    S3deleteObject(fileKey);
 
     let resultData = { ...userData, phoneNumber, address };
     editname && (resultData.name = editname);
@@ -160,7 +161,7 @@ function EditProfile() {
           phoneNumber: resultData.phoneNumber,
           address: resultData.address,
           age: resultData.age,
-          //          profileImg:profileImg,
+          profileImg: profileImg,
         },
       });
       alert('정보가 변경되었습니다.');

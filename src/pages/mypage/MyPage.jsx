@@ -1,16 +1,14 @@
 import React from 'react';
-import { useState } from 'react';
 import styled from 'styled-components';
 
 const MyPage = () => {
-  const [Image, setImage] = useState('img/default.png');
   return (
     <Page>
       <MyPageHeader>
         <Profile>
           <ProfileHeader>
             <ProfileImg>
-              <Img src={Image} />
+              <Img src="img/airport.jpg" />
               <UserName>username</UserName>
             </ProfileImg>
             <ProfileInfo>dddd</ProfileInfo>
