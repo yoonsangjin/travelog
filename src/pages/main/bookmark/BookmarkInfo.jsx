@@ -7,6 +7,7 @@ import {
 	placeInfoState,
 	bookmarkState,
 	bookmarkListState,
+	bookmarkSetState,
 	activeState,
 	detailInfoState,
 	textState,
@@ -23,13 +24,13 @@ function BookmarkInfo() {
 	const setActive = useSetRecoilState(activeState);
 	const setDetailInfo = useSetRecoilState(detailInfoState);
 	const [comment, setComment] = useState();
+	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 
 	useEffect(() => {
-		console.log(bookmark);
 		let newBookmark = JSON.parse(JSON.stringify(bookmark));
 		let newObj = newBookmark.map(element => {
 			let newObj = {
-				bookmarkMemo: text,
+				bookmarkMemo: null,
 				placeName: element.place_name,
 				placeUrl: element.place_url,
 				categoryName: element.category_name,
@@ -44,14 +45,18 @@ function BookmarkInfo() {
 			};
 			return newObj;
 		});
+		let textArray = Object.values(text);
+		let textKey = Object.keys(text);
+		textKey.map(key => (newObj[key].bookmarkMemo = textArray[key]));
 
 		let newArray = {
 			bookmarkName: bmList[listNumber],
 			data: newObj,
 		};
 
-		console.log(newArray);
-	}, [bookmark, listNumber]);
+		setBookmarkSet(newArray);
+		console.log(bookmarkSet);
+	}, [bookmark, text]);
 
 	function handleBookmark(e) {
 		// 북마크에 장소 삭제

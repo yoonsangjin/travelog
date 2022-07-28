@@ -66,7 +66,7 @@ export const listNumberState = atom({
 
 export const textState = atom({
 	key: 'textState',
-	default: '메모를 입력해 주세요.',
+	default: [],
 });
 
 // bookmark info창 controller

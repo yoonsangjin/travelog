@@ -15,6 +15,7 @@ function SetComments(props) {
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
+	const [text, setText] = useRecoilState(textState);
 
 	const inputRef = useRef();
 	const buttonRef = useRef();
@@ -52,8 +53,7 @@ function SetComments(props) {
 	function handleBtn(e) {
 		// input의 value를 특정 배열 내 객체의 프로퍼티에 넣는 작업
 		e.preventDefault();
-		props.setComment([...props.comment, { id: props.i, bookmarkMemo: value }]);
-		console.log(props.comment);
+		setText({...text,[props.i]: value })
 		inputRef.current.type = 'hidden';
 		buttonRef.current.style.display = 'none';
 		pRef.current.style.display = 'inline-block';
@@ -61,7 +61,6 @@ function SetComments(props) {
 	}
 
 	function handleChange(e) {
-		e.preventDefault();
 		setValue(e.target.value);
 	}
 	return (
@@ -72,7 +71,6 @@ function SetComments(props) {
 					type="hidden"
 					onChange={handleChange}
 					ref={inputRef}
-					value={value}
 					placeholder="메모를 등록해 주세요."
 				/>
 				<p ref={pRef}>{value}</p>
