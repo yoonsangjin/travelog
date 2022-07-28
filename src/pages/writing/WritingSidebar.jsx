@@ -7,6 +7,8 @@ import { useRecoilState } from 'recoil';
 import { ImSearch } from 'react-icons/im';
 import { toggleState, boardState, checkedState } from '../../recoil/Atom.jsx'
 import axios from 'axios';
+import { useLocation } from 'react-router';
+
 const SidebarTitleBox = styled.div`
   margin: 1rem;
   background-color: #fff;
@@ -104,83 +106,89 @@ const EditBox = styled.div`
   display flex;
 `
 function WritingSidebar() {
-  const [list, setList] = useState([]);
-  //axios bearer token
-  const token = window.localStorage.getItem('token');
-  let config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  //데이터 불러오기
-  const getListData = async () => {
-    try {
-      await axios.get('http://localhost:8000/api/bookmarks', config).then(res => setList(res.data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    getListData();
-  }, []);
-  const [selected, setSelected] = useState('최신');
-  useEffect(() => {
-    let newlist = [];
-    switch (selected) {
-      case '최신':
-        newlist = [...list].sort((a, b) => a.index - b.index);
-        setList(newlist);
-        break;
-      case '장소':
-        newlist = [...list].sort(function (a, b) {
-          return a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0;
-        });
-        setList(newlist);
-        break;
-      case '메모':
-        newlist = [...list].sort(function (a, b) {
-          return a.bookmarkMemo < b.bookmarkMemo ? -1 : a.bookmarkMemo > b.bookmarkMemo ? 1 : 0;
-        });
-        setList(newlist);
-        break;
-    }
-  }, [selected]);
+	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
+	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
+	const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
 
-  const handleChange = e => {
-    setSelected(e.target.value);
-  };
-  // 리스트 편집 토글
-  const [toggle, setToggle] = useRecoilState(toggleState);
-  const clickedToggle = () => {
-    setToggle(prev => !prev);
-  };
-  const [board, setBoard] = useRecoilState(boardState);
-  // 리스트 체크박스 상태관리
-  const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
-  function handleDel() {
-    console.log(checkedInputs);
+	const [list, setList] = useState([]);
+	//axios bearer token
+	const token = window.localStorage.getItem('token');
+	let config = {
+		headers: { Authorization: `Bearer ${token}` },
+	};
+	//데이터 불러오기
+	const getListData = async () => {
+		try {
+			await axios
+				.get(`http://localhost:8000/api/bookmarks/folder/${params}`, config)
+				.then(res => setList(res.data));
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getListData();
+	}, []);
+	const [selected, setSelected] = useState('최신');
+	useEffect(() => {
+		let newlist = [];
+		switch (selected) {
+			case '최신':
+				newlist = [...list].sort((a, b) => a.index - b.index);
+				setList(newlist);
+				break;
+			case '장소':
+				newlist = [...list].sort(function (a, b) {
+					return a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0;
+				});
+				setList(newlist);
+				break;
+			case '메모':
+				newlist = [...list].sort(function (a, b) {
+					return a.bookmarkMemo < b.bookmarkMemo ? -1 : a.bookmarkMemo > b.bookmarkMemo ? 1 : 0;
+				});
+				setList(newlist);
+				break;
+		}
+	}, [selected]);
+
+	const handleChange = e => {
+		setSelected(e.target.value);
+	};
+	// 리스트 편집 토글
+	const [toggle, setToggle] = useRecoilState(toggleState);
+	const clickedToggle = () => {
+		setToggle(prev => !prev);
+	};
+	const [board, setBoard] = useRecoilState(boardState);
+	// 리스트 체크박스 상태관리
+	const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
+	function handleDel() {
+		console.log(checkedInputs);
 		const newList = list.filter(e => {
 			return !checkedInputs.includes(e.bookmarkId);
 		});
 		const checkedList = board.filter(e => {
 			return !checkedInputs.includes(e.bookmarkId);
-    });
+		});
 		setList(newList);
 		setBoard(checkedList);
 		setToggle(false);
 	}
-  const [inputValue, setInputValue] = useState('');
-  const [filtering, setFiltering] = useState([]);
-  const onChange = e => {
-    setInputValue(e.target.value);
-    const filterData = list.filter(i => i.placeName.includes(e.target.value));
+	const [inputValue, setInputValue] = useState('');
+	const [filtering, setFiltering] = useState([]);
+	const onChange = e => {
+		setInputValue(e.target.value);
+		const filterData = list.filter(i => i.placeName.includes(e.target.value));
 		setFiltering(filterData);
-  };
-  const handleSubmit = e => {
-    e.preventDefault();
-    const filterData = list.filter(e => e.placeName.includes(inputValue));
-    setFiltering(filterData);
-  };
-  let filteredList;
-  if (inputValue) {
+	};
+	const handleSubmit = e => {
+		e.preventDefault();
+		const filterData = list.filter(e => e.placeName.includes(inputValue));
+		setFiltering(filterData);
+	};
+	let filteredList;
+	if (inputValue) {
 		filteredList = filtering.map(e => {
 			return (
 				<WritingList
@@ -192,8 +200,8 @@ function WritingSidebar() {
 				/>
 			);
 		});
-  } else {
-    filteredList = list.map(e => {
+	} else {
+		filteredList = list.map(e => {
 			return (
 				<WritingList
 					bookmarkId={e.bookmarkId}
@@ -204,8 +212,8 @@ function WritingSidebar() {
 				/>
 			);
 		});
-  }
-  return (
+	}
+	return (
 		<WritingsidebarContainer>
 			<SearchbarBox>
 				<SearchForm onSubmit={handleSubmit}>
@@ -224,7 +232,7 @@ function WritingSidebar() {
 				<FavoriteBox>
 					<TbStar className="icon" id="favoriteIcon" />
 				</FavoriteBox>
-				<SidebarHeader>부산 여행</SidebarHeader>
+				<SidebarHeader>{params}</SidebarHeader>
 			</SidebarTitleBox>
 			<ListFilterBox>
 				<Select onChange={e => handleChange(e)} className={!toggle ? 'space-between' : 'flex-end'}>

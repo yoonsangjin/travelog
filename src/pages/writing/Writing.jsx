@@ -20,6 +20,8 @@ import axios from 'axios';
 //s3
 import { S3Upload, S3deleteObject } from '../../components/S3';
 import { useBeforeunload } from 'react-beforeunload';
+import { useLocation } from 'react-router';
+
 
 const WritingSection = styled.section`
 	width: 100vw;
@@ -131,117 +133,123 @@ const Select = styled.select`
   height: 2rem;
 `;
 function Writing() {
-  useBeforeunload(e => e.preventDefault());
-  let data = [];
-  //axios bearer token
-  const token = window.localStorage.getItem('token');
-  let config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  //데이터 불러오기
-  const getListData = async () => {
-    try {
-      await axios.get('http://localhost:8000/api/bookmarks', config).then(res => (data = res.data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    getListData();
-  }, []);
+	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
+	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
+  const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+  
+	useBeforeunload(e => e.preventDefault());
+	let data = [];
+	//axios bearer token
+	const token = window.localStorage.getItem('token');
+	let config = {
+		headers: { Authorization: `Bearer ${token}` },
+	};
+	//데이터 불러오기
+	const getListData = async () => {
+		try {
+			await axios
+				.get(`http://localhost:8000/api/bookmarks/folder/${params}`, config)
+				.then(res => (data = res.data));
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getListData();
+	}, []);
 
-  // Editor DOM 선택용
-  const editorRef = useRef();
-  //이미지 배열
-  const [imgList, setImgList] = useState([]);
-  //이미지 업로드
-  const onUploadImage = async (blob, callback) => {
-    S3Upload(blob);
-    setImgList(img => [...img, blob.name]);
-    const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`;
-    setTimeout(() => callback(url, '이미지'), 1000);
-  };
-  // 보드 상태 변경
-  const [board, setBoard] = useRecoilState(boardState);
-  // DnD
-  const [{ isOver }, dropToAdd] = useDrop(() => ({
-    accept: 'card',
-    drop: item => addToBoard(item.id),
-    collect: monitor => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
-  // 보드에 리스트 추가
-  const addToBoard = id => {
-    const items = data.filter(e => id === e.bookmarkId);
-    setBoard(board => [...board, items[0]]);
-    //하나로 바꾸기
-    // setBoard([items[0]]);
-  };
-  //제목 상태관리
-  const [header, setHeader] = useState('');
-  const handleHeader = e => {
-    setHeader(e.target.value);
-  };
-  //도시 카테고리 상태관리
-  const [CityTagToggle, setCityTagToggle] = useState(true);
-    const [cateTag, setCateTag] = useState([]);
-  const handleTagChange = e => {
-    setCityTagToggle(!CityTagToggle);
-    setCateTag([e.target.value]);
-  };
-  //태그 리스트 상태관리
-  const [TagList, setTagList] = useRecoilState(tagState);
-  const [value, setValue] = useState('');
-  const [randomId, setRandomId] = useState(0);
-  //랜덤 아이디 생성
-  useEffect(() => {
-    setRandomId(new Date().getTime());
-  }, [TagList]);
-  // 입력값 상태관리
-  const getValue = e => {
-    setValue(e.target.value);
-  };
-  const tagInputRef = useRef();
-  //태그 상태 관리
-  const handleTag = e => {
-    e.preventDefault();
-    tagInputRef.current.value = '';
-    setTagList([...TagList, { id: randomId, tag: value }]);
-  };
-  // Lift-up
-  const changeCateTag = e => {
-    setCateTag([]);
-  };
-  const changeToggle = e => {
-    setCityTagToggle(!CityTagToggle);
-  };
-  const cityArr = [
-    '도시를 선택하세요!',
-    '서울',
-    '부산',
-    '대구',
-    '인천',
-    '광주',
-    '대전',
-    '울산',
-    '경기',
-    '강원',
-    '충북',
-    '충남',
-    '전북',
-    '전남',
-    '경북',
-    '경남',
-    '제주특별자치도',
-    '세종특별자치시',
-  ];
-  // 등록 버튼 핸들러
-  const handleButton = () => {
-    //데이터 포스팅
-    const newTagList = TagList.map(e => e.tag);
-    const postData = async () => {
-      await axios
+	// Editor DOM 선택용
+	const editorRef = useRef();
+	//이미지 배열
+	const [imgList, setImgList] = useState([]);
+	//이미지 업로드
+	const onUploadImage = async (blob, callback) => {
+		S3Upload(blob);
+		setImgList(img => [...img, blob.name]);
+		const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`;
+		setTimeout(() => callback(url, '이미지'), 1000);
+	};
+	// 보드 상태 변경
+	const [board, setBoard] = useRecoilState(boardState);
+	// DnD
+	const [{ isOver }, dropToAdd] = useDrop(() => ({
+		accept: 'card',
+		drop: item => addToBoard(item.id),
+		collect: monitor => ({
+			isOver: !!monitor.isOver(),
+		}),
+	}));
+	// 보드에 리스트 추가
+	const addToBoard = id => {
+		const items = data.filter(e => id === e.bookmarkId);
+		setBoard(board => [...board, items[0]]);
+		//하나로 바꾸기
+		// setBoard([items[0]]);
+	};
+	//제목 상태관리
+	const [header, setHeader] = useState('');
+	const handleHeader = e => {
+		setHeader(e.target.value);
+	};
+	//도시 카테고리 상태관리
+	const [CityTagToggle, setCityTagToggle] = useState(true);
+	const [cateTag, setCateTag] = useState([]);
+	const handleTagChange = e => {
+		setCityTagToggle(!CityTagToggle);
+		setCateTag([e.target.value]);
+	};
+	//태그 리스트 상태관리
+	const [TagList, setTagList] = useRecoilState(tagState);
+	const [value, setValue] = useState('');
+	const [randomId, setRandomId] = useState(0);
+	//랜덤 아이디 생성
+	useEffect(() => {
+		setRandomId(new Date().getTime());
+	}, [TagList]);
+	// 입력값 상태관리
+	const getValue = e => {
+		setValue(e.target.value);
+	};
+	const tagInputRef = useRef();
+	//태그 상태 관리
+	const handleTag = e => {
+		e.preventDefault();
+		tagInputRef.current.value = '';
+		setTagList([...TagList, { id: randomId, tag: value }]);
+	};
+	// Lift-up
+	const changeCateTag = e => {
+		setCateTag([]);
+	};
+	const changeToggle = e => {
+		setCityTagToggle(!CityTagToggle);
+	};
+	const cityArr = [
+		'도시를 선택하세요!',
+		'서울',
+		'부산',
+		'대구',
+		'인천',
+		'광주',
+		'대전',
+		'울산',
+		'경기',
+		'강원',
+		'충북',
+		'충남',
+		'전북',
+		'전남',
+		'경북',
+		'경남',
+		'제주특별자치도',
+		'세종특별자치시',
+	];
+	// 등록 버튼 핸들러
+	const handleButton = () => {
+		//데이터 포스팅
+		const newTagList = TagList.map(e => e.tag);
+		const postData = async () => {
+			await axios
 				.post(
 					'http://localhost:8000/api/posts/register',
 					{
@@ -261,84 +269,84 @@ function Writing() {
 				.catch(function (err) {
 					console.log(err);
 				});
-    };
-    postData();
-    //안쓰는 이미지 삭제
-    const realImg = editorRef.current
+		};
+		postData();
+		//안쓰는 이미지 삭제
+		const realImg = editorRef.current
 			?.getInstance()
 			.getHTML()
 			.split('https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/')
 			.slice(1)
 			.map(e => e.split(' ')[0])
 			.map(e => e.substring(0, e.length - 1));
-	  const difference = imgList.filter(x => !realImg.includes(x));
-    difference.forEach(e => console.log(e));
-    alert('저장되었습니다.');
-  };
-  return (
-    <WritingSection>
-      <WritingSidebar />
-      <WritingContainer>
-        <Board ref={dropToAdd}>
-          {[...new Set(board)].map(e => {
-            return (
-              <WritingBoardList
-                bookmarkId={e.bookmarkId}
-                placeName={e.placeName}
-                placeUrl={e.placeUrl}
-                bookmarkMemo={e.bookmarkMemo}
-                categoryGroupName={e.categoryGroupName}
-              />
-            );
-          })}
-        </Board>
-        <WritingHeaderBox>
-          <WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
-          <Button onClick={handleButton}>발행</Button>
-        </WritingHeaderBox>
-        <HeaderBar />
-        <TagBox>
-          {cateTag.length
-            ? cateTag.map(e => {
-                return (
-                  <CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
-                );
-              })
-            : ''}
-          <Select
-            className={CityTagToggle ? 'display' : 'displayNone'}
-            onChange={e => handleTagChange(e)}
-          >
-            {cityArr.map(e => {
-              return <option value={e}>{e}</option>;
-            })}
-          </Select>
-          {TagList.map(e => {
-            return <TagBtn id={e.id} tag={e.tag} />;
-          })}
-          <form onSubmit={handleTag}>
-            <TagInput
-              ref={tagInputRef}
-              onChange={getValue}
-              placeholder="태그를 입력하세요"
-              type="text"
-            ></TagInput>
-          </form>
-        </TagBox>
-        <Editor
-          ref={editorRef}
-          initialValue="여기에 이야기를 적어보세요!"
-          previewStyle="vertical"
-          initialEditType="wysiwyg"
-          plugins={[colorSyntax]}
-          height="50rem"
-          hooks={{
-            addImageBlobHook: onUploadImage,
-          }}
-        />
-      </WritingContainer>
-    </WritingSection>
-  );
+		const difference = imgList.filter(x => !realImg.includes(x));
+		difference.forEach(e => console.log(e));
+		alert('저장되었습니다.');
+	};
+	return (
+		<WritingSection>
+			<WritingSidebar />
+			<WritingContainer>
+				<Board ref={dropToAdd}>
+					{[...new Set(board)].map(e => {
+						return (
+							<WritingBoardList
+								bookmarkId={e.bookmarkId}
+								placeName={e.placeName}
+								placeUrl={e.placeUrl}
+								bookmarkMemo={e.bookmarkMemo}
+								categoryGroupName={e.categoryGroupName}
+							/>
+						);
+					})}
+				</Board>
+				<WritingHeaderBox>
+					<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
+					<Button onClick={handleButton}>발행</Button>
+				</WritingHeaderBox>
+				<HeaderBar />
+				<TagBox>
+					{cateTag.length
+						? cateTag.map(e => {
+								return (
+									<CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
+								);
+						  })
+						: ''}
+					<Select
+						className={CityTagToggle ? 'display' : 'displayNone'}
+						onChange={e => handleTagChange(e)}
+					>
+						{cityArr.map(e => {
+							return <option value={e}>{e}</option>;
+						})}
+					</Select>
+					{TagList.map(e => {
+						return <TagBtn id={e.id} tag={e.tag} />;
+					})}
+					<form onSubmit={handleTag}>
+						<TagInput
+							ref={tagInputRef}
+							onChange={getValue}
+							placeholder="태그를 입력하세요"
+							type="text"
+						></TagInput>
+					</form>
+				</TagBox>
+				<Editor
+					ref={editorRef}
+					initialValue="여기에 이야기를 적어보세요!"
+					previewStyle="vertical"
+					initialEditType="wysiwyg"
+					plugins={[colorSyntax]}
+					height="50rem"
+					hooks={{
+						addImageBlobHook: onUploadImage,
+					}}
+				/>
+			</WritingContainer>
+		</WritingSection>
+	);
 }
 
 export default Writing;
