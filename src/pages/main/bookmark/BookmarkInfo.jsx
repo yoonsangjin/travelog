@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import handleStyle from '../../../function/handleStyle';
+import makeBookmark from '../../../function/makeBookmark';
 import { MdOutlineClose } from 'react-icons/md';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -17,42 +18,43 @@ import SetComments from './SetComments';
 
 function BookmarkInfo() {
 	const placeInfo = useRecoilValue(placeInfoState);
-	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const bmList = useRecoilValue(bookmarkListState);
-	const [text, setText] = useRecoilState(textState);
 	const listNumber = useRecoilValue(listNumberState);
+	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+	const [text, setText] = useRecoilState(textState);	
 	const setActive = useSetRecoilState(activeState);
 	const setDetailInfo = useSetRecoilState(detailInfoState);
-	const [comment, setComment] = useState();
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
+	const [comment, setComment] = useState();
 
 	useEffect(() => {
-		let newBookmark = JSON.parse(JSON.stringify(bookmark));
-		let newObj = newBookmark.map(element => {
-			let newObj = {
-				bookmarkMemo: null,
-				placeName: element.place_name,
-				placeUrl: element.place_url,
-				categoryName: element.category_name,
-				addressName: element.address_name,
-				roadAddressName: element.road_address_name,
-				bookmarkId: element.id,
-				phone: element.phone,
-				categoryGroupCode: element.category_group_code,
-				categoryGroupName: element.category_group_name,
-				x: element.x,
-				y: element.y,
-			};
-			return newObj;
-		});
-		let textArray = Object.values(text);
-		let textKey = Object.keys(text);
-		textKey.map(key => (newObj[key].bookmarkMemo = textArray[key]));
+		// let newBookmark = JSON.parse(JSON.stringify(bookmark));
+		// let newObj = newBookmark.map(element => {
+		// 	let newObj = {
+		// 		bookmarkMemo: null,
+		// 		placeName: element.place_name,
+		// 		placeUrl: element.place_url,
+		// 		categoryName: element.category_name,
+		// 		addressName: element.address_name,
+		// 		roadAddressName: element.road_address_name,
+		// 		bookmarkId: element.id,
+		// 		phone: element.phone,
+		// 		categoryGroupCode: element.category_group_code,
+		// 		categoryGroupName: element.category_group_name,
+		// 		x: element.x,
+		// 		y: element.y,
+		// 	};
+		// 	return newObj;
+		// });
+		// let textArray = Object.values(text);
+		// let textKey = Object.keys(text);
+		// textKey.map(key => (newObj[key].bookmarkMemo = textArray[key]));
+		// let newArray = {
+		// 	bookmarkName: bmList[listNumber],
+		// 	data: newObj,
+		// }
 
-		let newArray = {
-			bookmarkName: bmList[listNumber],
-			data: newObj,
-		};
+		let newArray = makeBookmark(bookmark, text, bmList, listNumber);
 
 		setBookmarkSet(newArray);
 		console.log(bookmarkSet);
@@ -81,6 +83,7 @@ function BookmarkInfo() {
 						{data.place_name}
 					</p>
 					<SetComments i={i} className="modalInput" comment={comment} setComment={setComment} />
+					<p>{comment}</p>
 				</div>
 			</div>
 		));

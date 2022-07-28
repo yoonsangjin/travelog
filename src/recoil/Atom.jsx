@@ -64,6 +64,11 @@ export const listNumberState = atom({
 	default: false,
 });
 
+export const currentListState = atom({
+	key: 'currentListState',
+	default: [],
+});
+
 export const textState = atom({
 	key: 'textState',
 	default: [],
