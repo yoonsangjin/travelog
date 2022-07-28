@@ -1,7 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const MyPage = () => {
+  const [usertext, setUserText] = useState('');
+  const [userpost, setUserPost] = useState([]);
+  const [userdata, setUserData] = useState([]);
+  const [editable, setEditable] = useState(false);
+  useEffect(() => {
+    getUserData();
+  }, []);
+  const getUserData = async () => {
+    try {
+      await axios
+        .get('http://localhost:8000/api/users/user', config)
+        .then(e => setUserData(e.data));
+      setUserText(userdata.profileText);
+      await axios
+        .get('http://localhost:8000/api/posts/user', config)
+        .then(e => setUserPost(e.data));
+    } catch (err) {
+      alert(err);
+    }
+  };
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      axios({
+        method: 'patch',
+        url: `http://localhost:8000/api/users/${userdata.id}`,
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          profileText: usertext,
+        },
+      });
+      setEditable(!editable);
+    }
+  };
+  //axios bearer token
+  const token = window.localStorage.getItem('token');
+  let config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const handleProfileText = () => {
+    setEditable(!editable);
+  };
   return (
     <Page>
       <MyPageHeader>
@@ -9,9 +51,24 @@ const MyPage = () => {
           <ProfileHeader>
             <ProfileImg>
               <Img src="img/airport.jpg" />
-              <UserName>username</UserName>
+              <UserName>{userdata.name}</UserName>
             </ProfileImg>
-            <ProfileInfo>dddd</ProfileInfo>
+
+            {!editable ? (
+              <ProfileInfo>{usertext} </ProfileInfo>
+            ) : (
+              <ProfileInfo>
+                <input
+                  type="text"
+                  value={usertext}
+                  onChange={e => {
+                    setUserText(e.target.value);
+                  }}
+                  onKeyDown={handleKeyDown}
+                />
+              </ProfileInfo>
+            )}
+            <button onClick={handleProfileText}>글쓰기</button>
           </ProfileHeader>
           <MyInfo>
             <MyInfoBox>
@@ -20,7 +77,7 @@ const MyPage = () => {
             </MyInfoBox>
             <MyInfoBox>
               <p>여행글</p>
-              <MyLog>3</MyLog>
+              <MyLog>{userpost.length}</MyLog>
             </MyInfoBox>
             <MyInfoBox>
               <p>컬러로그</p>
@@ -28,12 +85,23 @@ const MyPage = () => {
           </MyInfo>
         </Profile>
       </MyPageHeader>
+      <PostMenu>
+        <PostIcon src="img/posticon.png" />
+        <Post>게시물</Post>
+      </PostMenu>
       <Feed>
         <ImgFeed src="img/airport.jpg" />
         <ImgFeed src="img/beach.jpg" />
         <ImgFeed src="img/hamburg.jpg" />
         <ImgFeed src="img/people.jpg" />
         <ImgFeed src="img/avatar.jpg" />
+        {userpost.map(post => (
+          <div key={post.id}>
+            <a href="www.naver.com">
+              <ImgFeed src={post.mainImg} />
+            </a>
+          </div>
+        ))}
       </Feed>
     </Page>
   );
@@ -66,6 +134,28 @@ const Profile = styled.div`
   align-items: center;
 `;
 
+const PostMenu = styled.div`
+  border-top: 1px solid lightgrey;
+  height: 3rem;
+  display: flex;
+  width: 60vw;
+  justify-content: center;
+`;
+
+const PostIcon = styled.img`
+  width: 1rem;
+  display: flex;
+  align-items: center;
+  height: 1rem;
+  padding-top: 1rem;
+  margin-right: 0.5rem;
+`;
+const Post = styled.p`
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.5rem;
+`;
 const ProfileHeader = styled.div`
   display: flex;
   width: 60vw;
@@ -81,8 +171,13 @@ const ProfileImg = styled.div`
 const ProfileInfo = styled.section`
   display: flex;
   align-items: center;
-  width: 60vw;
+  width: 50rem;
   justify-content: flex-start;
+
+  & input {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const Img = styled.img`
@@ -99,7 +194,6 @@ const MyInfo = styled.div`
 `;
 const MyLog = styled.p`
   display: flex;
-
   width: 2rem;
   border-radius: 1rem;
   justify-content: center;
@@ -107,8 +201,8 @@ const MyLog = styled.p`
   position: relative;
 `;
 const UserName = styled.p`
-  font-size: 2rem;
-  margin-top: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
 `;
 const MyInfoBox = styled.div`
   display: flex;
@@ -119,7 +213,7 @@ const MyInfoBox = styled.div`
   background-color: #edf7fa;
   line-height: 5vh;
   border-radius: 1rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   border: 1px solid grey;
 `;
 
@@ -127,8 +221,6 @@ const Feed = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, auto));
   gap: 25px 25px;
-  border-top: 1px solid grey;
-  padding-top: 3rem;
   width: 60vw;
 `;
 
@@ -138,4 +230,8 @@ const ImgFeed = styled.img`
   align-items: stretch;
   box-sizing: border-box;
   object-fit: fill;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(20%);
+  }
 `;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { S3Upload, S3getFileURL, S3deleteObject } from '../../components/S3';
+import { S3Upload, S3getFileURL } from '../../components/S3';
 
 const SignupSection = styled.section`
   width: 100vw;
@@ -107,25 +107,27 @@ const MenuLi = styled(NavLi)`
 `;
 
 function EditProfile() {
-  const [editname, setEditName] = useState('');
-  const [editnickname, setEditNickname] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userNickname, setUserNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [popup, setPopup] = useState('false');
   const [address, setAddress] = useState('');
+  const [userId, setUserId] = useState('');
   const [address2, setAddress2] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const navigate = useNavigate();
   let userData = {};
   useEffect(() => {
     getUserData();
-  }, []);
+  });
 
   const getUserData = async () => {
     try {
       userData = await axios.get('http://localhost:8000/api/users/user', config).then(e => e.data);
-      setEditName(userData.name || '');
-      setEditNickname(userData.nickname || '');
+      setUserName(userData.name || '');
+      setUserNickname(userData.nickname || '');
       setPhoneNumber(userData.phoneNumber || '');
+      setUserId(userData.id || '');
     } catch (err) {
       alert(err);
     }
@@ -140,27 +142,23 @@ function EditProfile() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
     const fileKey = profileImage.name;
     S3Upload(profileImage);
     const profileImg = S3getFileURL(`upload/${fileKey}`);
 
-    let resultData = { ...userData, phoneNumber, address };
-    editname && (resultData.name = editname);
-    editnickname && (resultData.nickname = editnickname);
+    let resultData = { userName, userNickname, phoneNumber, address, profileImg };
 
     //변경된 값으로 수정
     try {
       await axios({
         method: 'patch',
-        url: `http://localhost:8000/api/users/${resultData.id}`,
+        url: `http://localhost:8000/api/users/${userId}`,
         headers: { Authorization: `Bearer ${token}` },
         data: {
-          name: resultData.name,
+          name: resultData.userName,
           nickname: resultData.nickname,
           phoneNumber: resultData.phoneNumber,
           address: resultData.address,
-          age: resultData.age,
           profileImg: profileImg,
         },
       });
@@ -219,17 +217,17 @@ function EditProfile() {
           <form>
             <SignupInput
               name="name"
-              value={editname}
+              value={userName}
               onChange={e => {
-                setEditName(e.target.value);
+                setUserName(e.target.value);
               }}
               placeholder="이름을 입력해 주세요."
             />
             <SignupInput
               name="nickname"
-              value={editnickname}
+              value={userNickname}
               onChange={e => {
-                setEditNickname(e.target.value);
+                setUserNickname(e.target.value);
               }}
               placeholder="닉네임을 입력해 주세요."
             />
