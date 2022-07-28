@@ -11,15 +11,17 @@ const MyPage = () => {
 	const [userdata, setUserData] = useState([]);
 	const [editable, setEditable] = useState(false);
 	const [buttonClick, setButtonClick] = useRecoilState(colorLogState);
+
 	useEffect(() => {
 		getUserData();
 	}, []);
+
+	//user,post 데이터 가져오기
 	const getUserData = async () => {
 		try {
 			await axios
 				.get('http://localhost:8000/api/users/user', config)
 				.then(e => setUserData(e.data));
-			setUserText(userdata.profileText);
 			await axios
 				.get('http://localhost:8000/api/posts/user', config)
 				.then(e => setUserPost(e.data));
@@ -27,30 +29,37 @@ const MyPage = () => {
 			alert(err);
 		}
 	};
-	const handleKeyDown = e => {
+
+	//소개글 작성 enter 누르면 내용 저장 후 수정 종료
+	const handleKeyDown = async e => {
 		if (e.key === 'Enter') {
-			axios({
+			const userId = userdata.id;
+			await axios({
 				method: 'patch',
-				url: `http://localhost:8000/api/users/${userdata.id}`,
+				url: `http://localhost:8000/api/users/${userId}`,
 				headers: { Authorization: `Bearer ${token}` },
 				data: {
 					profileText: usertext,
 				},
 			});
 			setEditable(!editable);
+			setUserText(usertext);
 		}
 	};
+
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
 		headers: { Authorization: `Bearer ${token}` },
 	};
+
 	const handleProfileText = () => {
 		setEditable(!editable);
 	};
 	const handleButtonClick = () => {
 		setButtonClick(true);
 	};
+
 	return (
 		<Page>
 			<MyPageHeader>
@@ -62,12 +71,13 @@ const MyPage = () => {
 						</ProfileImg>
 
 						{!editable ? (
-							<ProfileInfo>{usertext} </ProfileInfo>
+							<ProfileInfo>{!usertext ? userdata.profileText : usertext} </ProfileInfo>
 						) : (
 							<ProfileInfo>
-								<input
-									type="text"
-									value={usertext}
+								<ProfileText
+									name="profileText"
+									type="textarea"
+									value={!usertext ? userdata.profileText : usertext}
 									onChange={e => {
 										setUserText(e.target.value);
 									}}
@@ -75,15 +85,15 @@ const MyPage = () => {
 								/>
 							</ProfileInfo>
 						)}
-						<button onClick={handleProfileText}>글쓰기</button>
+						<button onClick={handleProfileText}>수정</button>
 					</ProfileHeader>
 					<MyInfo>
 						<MyInfoBox>
-							<p>내 여행</p>
+							<a href="#">내 여행</a>
 							<MyLog>3</MyLog>
 						</MyInfoBox>
 						<MyInfoBox>
-							<p>여행글</p>
+							<a href="#">여행글</a>
 							<MyLog>{userpost.length}</MyLog>
 						</MyInfoBox>
 						<MyInfoBox onClick={handleButtonClick}>
@@ -176,17 +186,24 @@ const ProfileImg = styled.div`
 	align-items: center;
 `;
 const ProfileInfo = styled.section`
-	display: flex;
+	display: inline-block;
 	align-items: center;
 	width: 50rem;
 	justify-content: flex-start;
-
 	& input {
 		width: 100%;
 		height: 100%;
 	}
 `;
-
+const ProfileText = styled.textarea`
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+	wrap: physical;
+	white-space: pre-wrap;
+	caret-color: grey;
+`;
 const Img = styled.img`
 	border-radius: 50%;
 	width: 10rem;
