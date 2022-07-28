@@ -22,7 +22,6 @@ import { S3Upload, S3deleteObject } from '../../components/S3';
 import { useBeforeunload } from 'react-beforeunload';
 import { useLocation } from 'react-router';
 
-
 const WritingSection = styled.section`
 	width: 100vw;
 	height: calc(100vh - 5rem);
@@ -138,7 +137,8 @@ function Writing() {
   const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
   
 	useBeforeunload(e => e.preventDefault());
-	let data = [];
+
+  const [data, setData] = useState([]);
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
@@ -149,7 +149,7 @@ function Writing() {
 		try {
 			await axios
 				.get(`http://localhost:8000/api/bookmarks/folder/${params}`, config)
-				.then(res => (data = res.data));
+				.then(res => setData(res.data));
 		} catch (err) {
 			console.log(err);
 		}
@@ -157,7 +157,6 @@ function Writing() {
 	useEffect(() => {
 		getListData();
 	}, []);
-
 	// Editor DOM 선택용
 	const editorRef = useRef();
 	//이미지 배열
@@ -170,18 +169,20 @@ function Writing() {
 		setTimeout(() => callback(url, '이미지'), 1000);
 	};
 	// 보드 상태 변경
-	const [board, setBoard] = useRecoilState(boardState);
+  const [board, setBoard] = useRecoilState(boardState);
+    console.log(data);
 	// DnD
 	const [{ isOver }, dropToAdd] = useDrop(() => ({
 		accept: 'card',
-		drop: item => addToBoard(item.id),
+		drop: item => addToBoard(item),
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),
 	}));
-	// 보드에 리스트 추가
-	const addToBoard = id => {
-		const items = data.filter(e => id === e.bookmarkId);
+
+  // 보드에 리스트 추가
+  const addToBoard = id => {
+    const items = data.filter(e => id === e.id);
 		setBoard(board => [...board, items[0]]);
 		//하나로 바꾸기
 		// setBoard([items[0]]);
@@ -284,68 +285,68 @@ function Writing() {
 		alert('저장되었습니다.');
 	};
 	return (
-		<WritingSection>
-			<WritingSidebar />
-			<WritingContainer>
-				<Board ref={dropToAdd}>
-					{[...new Set(board)].map(e => {
-						return (
-							<WritingBoardList
-								bookmarkId={e.bookmarkId}
-								placeName={e.placeName}
-								placeUrl={e.placeUrl}
-								bookmarkMemo={e.bookmarkMemo}
-								categoryGroupName={e.categoryGroupName}
-							/>
-						);
-					})}
-				</Board>
-				<WritingHeaderBox>
-					<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
-					<Button onClick={handleButton}>발행</Button>
-				</WritingHeaderBox>
-				<HeaderBar />
-				<TagBox>
-					{cateTag.length
-						? cateTag.map(e => {
-								return (
-									<CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
-								);
-						  })
-						: ''}
-					<Select
-						className={CityTagToggle ? 'display' : 'displayNone'}
-						onChange={e => handleTagChange(e)}
-					>
-						{cityArr.map(e => {
-							return <option value={e}>{e}</option>;
+			<WritingSection>
+				<WritingSidebar />
+				<WritingContainer>
+					<Board ref={dropToAdd}>
+						{[...new Set(board)].map(e => {
+							return (
+								<WritingBoardList
+									id={e.id}
+									placeName={e.placeName}
+									placeUrl={e.placeUrl}
+									bookmarkMemo={e.bookmarkMemo}
+									categoryGroupName={e.categoryGroupName}
+								/>
+							);
 						})}
-					</Select>
-					{TagList.map(e => {
-						return <TagBtn id={e.id} tag={e.tag} />;
-					})}
-					<form onSubmit={handleTag}>
-						<TagInput
-							ref={tagInputRef}
-							onChange={getValue}
-							placeholder="태그를 입력하세요"
-							type="text"
-						></TagInput>
-					</form>
-				</TagBox>
-				<Editor
-					ref={editorRef}
-					initialValue="여기에 이야기를 적어보세요!"
-					previewStyle="vertical"
-					initialEditType="wysiwyg"
-					plugins={[colorSyntax]}
-					height="50rem"
-					hooks={{
-						addImageBlobHook: onUploadImage,
-					}}
-				/>
-			</WritingContainer>
-		</WritingSection>
+					</Board>
+					<WritingHeaderBox>
+						<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
+						<Button onClick={handleButton}>발행</Button>
+					</WritingHeaderBox>
+					<HeaderBar />
+					<TagBox>
+						{cateTag.length
+							? cateTag.map(e => {
+									return (
+										<CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
+									);
+							  })
+							: ''}
+						<Select
+							className={CityTagToggle ? 'display' : 'displayNone'}
+							onChange={e => handleTagChange(e)}
+						>
+							{cityArr.map(e => {
+								return <option value={e}>{e}</option>;
+							})}
+						</Select>
+						{TagList.map(e => {
+							return <TagBtn id={e.id} tag={e.tag} />;
+						})}
+						<form onSubmit={handleTag}>
+							<TagInput
+								ref={tagInputRef}
+								onChange={getValue}
+								placeholder="태그를 입력하세요"
+								type="text"
+							></TagInput>
+						</form>
+					</TagBox>
+					<Editor
+						ref={editorRef}
+						initialValue="여기에 이야기를 적어보세요!"
+						previewStyle="vertical"
+						initialEditType="wysiwyg"
+						plugins={[colorSyntax]}
+						height="50rem"
+						hooks={{
+							addImageBlobHook: onUploadImage,
+						}}
+					/>
+				</WritingContainer>
+			</WritingSection>
 	);
 }
 

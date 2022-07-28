@@ -67,14 +67,16 @@ const Input = styled.input`
 const LinkToURL = styled.a`
   cursor: pointer;
 `;
-function WritingList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
+function WritingList({ id, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
   const [toggle, setToggle] = useRecoilState(toggleState);
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'card',
-    item: { id: bookmarkId },
-    collect: monitor => ({ isDragging: !!monitor.isDragging() }),
-  }));
+  const [{ isDragging }, drag, previewRef] = useDrag(() => ({
+		type: 'card',
+		item: { id: id },
+    collect: monitor => (
+      { isDragging: monitor.isDragging() }),
+	}));
   const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
+  
   function handleSelect(checked, id) {
     if (checked) {
       setCheckedInputs([...checkedInputs, id]);
@@ -96,28 +98,28 @@ function WritingList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGr
   }
 
   return (
-    <SidebarList ref={drag}>
-      <LinkToURL href={placeUrl} target="_blank">
-        <Label htmlFor={bookmarkId}>
-          {toggle ? (
-            <Input
-              id={bookmarkId}
-              type={'checkbox'}
-              onChange={e => handleSelect(e.currentTarget.checked, bookmarkId)}
-              className={toggle ? 'display' : 'displayNone'}
-            ></Input>
-          ) : (
-            ''
-          )}
-          {category}
-          <ListTextBox>
-            <ListHeader>{placeName}</ListHeader>
-            <p>{bookmarkMemo}</p>
-          </ListTextBox>
-        </Label>
-      </LinkToURL>
-    </SidebarList>
-  );
+		<SidebarList ref={previewRef}>
+			<LinkToURL ref={drag} href={placeUrl} target="_blank">
+				<Label htmlFor={id}>
+					{toggle ? (
+						<Input
+							id={id}
+							type={'checkbox'}
+							onChange={e => handleSelect(e.currentTarget.checked, id)}
+							className={toggle ? 'display' : 'displayNone'}
+						></Input>
+					) : (
+						''
+					)}
+					{category}
+					<ListTextBox>
+						<ListHeader>{placeName}</ListHeader>
+						<p>{bookmarkMemo}</p>
+					</ListTextBox>
+				</Label>
+			</LinkToURL>
+		</SidebarList>
+	);
 }
 
 export default WritingList;

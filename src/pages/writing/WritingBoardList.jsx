@@ -64,10 +64,10 @@ const LinkToURL = styled.a`
   align-items: center;
   cursor: pointer;
 `;
-function WritingBoardList({ bookmarkId, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
+function WritingBoardList({ id, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
   const [board, setBoard] = useRecoilState(boardState);
   const handleButton = () => {
-    const newArr = board.filter(e => bookmarkId !== e.bookmarkId);
+    const newArr = board.filter(e => id !== e.id);
     setBoard(newArr);
   };
   let category;

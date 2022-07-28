@@ -128,7 +128,7 @@ function WritingSidebar() {
 	};
 	useEffect(() => {
 		getListData();
-	}, []);
+  }, []);
 	const [selected, setSelected] = useState('최신');
 	useEffect(() => {
 		let newlist = [];
@@ -164,12 +164,11 @@ function WritingSidebar() {
 	// 리스트 체크박스 상태관리
 	const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
 	function handleDel() {
-		console.log(checkedInputs);
 		const newList = list.filter(e => {
-			return !checkedInputs.includes(e.bookmarkId);
+			return !checkedInputs.includes(e.id);
 		});
 		const checkedList = board.filter(e => {
-			return !checkedInputs.includes(e.bookmarkId);
+			return !checkedInputs.includes(e.id);
 		});
 		setList(newList);
 		setBoard(checkedList);
@@ -192,7 +191,7 @@ function WritingSidebar() {
 		filteredList = filtering.map(e => {
 			return (
 				<WritingList
-					bookmarkId={e.bookmarkId}
+					id={e.id}
 					placeName={e.placeName}
 					placeUrl={e.placeUrl}
 					bookmarkMemo={e.bookmarkMemo}
@@ -204,7 +203,7 @@ function WritingSidebar() {
 		filteredList = list.map(e => {
 			return (
 				<WritingList
-					bookmarkId={e.bookmarkId}
+					id={e.id}
 					placeName={e.placeName}
 					placeUrl={e.placeUrl}
 					bookmarkMemo={e.bookmarkMemo}
