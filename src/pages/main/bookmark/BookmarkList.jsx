@@ -5,10 +5,9 @@ import { BsPlusCircle } from 'react-icons/bs';
 import { useRecoilState } from 'recoil';
 import { bookmarkListState, viewDetailState, listNumberState } from '../../../recoil/Atom';
 import EditBookmark from './EditBookmark';
-function BookmarkList() {
+function BookmarkList(props) {
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
 	const [, setViewDetail] = useRecoilState(viewDetailState);
-
 	const [edit, setEdit] = useState(false);
 
 	const inputRef = useRef();
@@ -23,6 +22,8 @@ function BookmarkList() {
 
 	function viewMore(e) {
 		setViewDetail(false);
+		props.setGetNumber(e.target.id);
+		console.log(props.getNumber);
 	}
 
 	function handleSubmit() {

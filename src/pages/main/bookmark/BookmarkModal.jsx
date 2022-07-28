@@ -19,7 +19,6 @@ export default function BookmarkModal() {
 	const setShowBmList = useSetRecoilState(showBmListState);
 
 	function handleMakeBookmark() {
-		console.log(bookmark);
 		bookmark !== [] ? (
 			setShowBmList(true)
 		) : (
