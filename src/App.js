@@ -7,28 +7,24 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/login/Login.jsx';
 import LoginForEmail from './pages/login/LoginForEmail.jsx';
 import Writing from './pages/writing/Writing';
-import Navbar from './components/Navbar.jsx';
 import Signup from './pages/login/Signup.jsx';
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import Title from './pages/title/Title.jsx';
 import EditProfile from './pages/mypage/EditProfile';
 import PasswordCheck from './pages/mypage/PasswordCheck';
 import ColorLog from './components/ColorLog';
 import Kakao from './pages/login/Kakao.jsx';
-
 import Community from './pages/community/Community';
 import CompanionWriting from './pages/community/CompanionWriting';
 import QnAWriting from './pages/community/QnAWriting';
 import ChangePassword from './pages/mypage/ChangePassword';
 import DeleteUser from './pages/mypage/DeleteUser';
+import Layout from './Layout';
+import Title from './pages/title/Title';
 function App() {
   return (
     <div>
-      <RecoilRoot>
-        <Reset />
-        {window.location.pathname !== '/' && <Navbar />}
-        <Routes>
-          <Route path="/" element={<Title />} />
+      <Reset />
+      <Routes>
+        <Route element={<Layout />}>
           <Route path="/main" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/loginForEmail" element={<LoginForEmail />} />
@@ -44,8 +40,9 @@ function App() {
           <Route path="/qna" element={<QnAWriting />} />
           <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/deleteuser" element={<DeleteUser />} />
-        </Routes>
-      </RecoilRoot>
+        </Route>
+        <Route path="/" element={<Title />} />
+      </Routes>
     </div>
   );
 }

@@ -38,7 +38,6 @@ const SignupInput = styled.input`
   border-radius: 10px;
   border: none;
 `;
-
 const SignupButton = styled.button`
   display: block;
   width: 18rem;
