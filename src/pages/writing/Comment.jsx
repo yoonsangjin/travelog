@@ -17,7 +17,7 @@ const CommentContainer = styled.div`
   height: calc(100vh - 5rem);
   flex-direction: column;
   padding-top: 1.5rem;
-  gap: 1rem;
+  gap: 2rem;
   border-left: 1px solid #e9e9e9;
   position: fixed;
   right: 0;
@@ -65,7 +65,7 @@ const CommentBtn = styled.button`
     width: 1.5rem;
     height: 1.5rem;
     }
-    .Heart {
+  .Heart {
   width: 1.5rem;
   height: 1.5rem;
   animation: ${MovingHeart} 0.3s linear ;
@@ -158,97 +158,133 @@ const CommentSubmitBtn = styled.button`
 `;
 
 function Comment() {
-    // let data = [];
-    // //axios bearer token
-    // const token = window.localStorage.getItem('token');
-    // let config = {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // };
-    // //데이터 불러오기
-    // const getListData = async () => {
-    //   try {
-    //     await axios
-    //       .get('http://localhost:8000/api/bookmarks', config)
-    //       .then(res => (data = res.data));
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-  const inputRef = useRef();
-  const [value, setValue] = useState('');
-  const [commentList, setCommnetList] = useState([]);
-  const [heart, setHeart] = useState(false);
-  const [isValid, setIsValid] = useState(false);
-  const handleHeart = () => {
-    setHeart(!heart);
+  const [commentData, setCommentData] = useState([]);
+	//axios bearer token
+	const token = window.localStorage.getItem('token');
+	let config = {
+		headers: { Authorization: `Bearer ${token}` },
+	};
+	const getCommnetData = async () => {
+    try {
+      let postId = 32;
+			await axios.get(`http://localhost:8000/api/comments/${postId}`, config).then(res => {
+        setCommentData(res.data);
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getCommnetData();
+	}, []);
+  console.log(commentData);
+	const inputRef = useRef();
+	const [value, setValue] = useState('');
+	const [heart, setHeart] = useState(false);
+	const [isValid, setIsValid] = useState(false);
+	const handleHeart = () => {
+		setHeart(!heart);
   };
-    // useEffect(() => {
-    //   getListData();
-    // }, []);
-  // 댓글 버튼
-  const handleComent = () => {
-    inputRef.current.focus();
-  };
-  // 사용자로 부터 받아오는 값을 value에 업데이트 
-  const getValue = e => {
-    setValue(e.target.value);
-    e.target.value ? setIsValid(true) : null;
-  };
-// 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
+	// 댓글 버튼
+	const handleComent = () => {
+		inputRef.current.focus();
+	};
+	// 사용자로 부터 받아오는 값을 value에 업데이트
+	const getValue = e => {
+		setValue(e.target.value);
+		e.target.value ? setIsValid(true) : null;
+	};
+	//랜덤 아이디 생성
+	const [randomId, setRandomId] = useState(0);
+	useEffect(() => {
+		setRandomId(new Date().getTime());
+	}, [value]);
+	  const [commentList, setCommentList] = useState([]);
+  // 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
   const addComment = e => {
-    e.preventDefault();
-    inputRef.current.value = '';
-    setCommnetList([...commentList, value]);
-    setValue('');
+    const addCommnetData = async () => {
+			await axios
+				.post(
+					'http://localhost:8000/api/comments/register/32',
+					{
+						id: randomId,
+						content: value,
+						like: 0,
+						createAt: new Date(),
+						postId: 32,
+						userId: 2,
+					},
+					config,
+				)
+				.then(res => {
+					console.log(res);
+				})
+				.catch(function (err) {
+					console.log(err);
+				});
+		};
+		e.preventDefault();
+		inputRef.current.value = '';
+    addCommnetData();
+		setValue('');
     setIsValid(false);
-  };
-  let heartStatus = heart ? (
-    <IoHeartSharp heart={heart} className="redHeart" />
-  ) : (
-    <IoHeartOutline heart={heart} className="Heart" />
-  );
-  return (
-    <CommentContainer>
-      <ProfileBox>
-        <ProfilInfo>
-          <ProfileImgBox>
-            <ProfileImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></ProfileImg>
-          </ProfileImgBox>
-          <InfoBox>
-            <UserName>관리자</UserName>
-            <DateNTime> 2022년 7월 25일</DateNTime>
-          </InfoBox>
-        </ProfilInfo>
-        <MoreBtn>
-          <IoEllipsisHorizontalSharp></IoEllipsisHorizontalSharp>
-        </MoreBtn>
-      </ProfileBox>
-      <Like>좋아요 {heart ? 1 : 0}개</Like>
-      <CommentStatus>
-        <CommentBtn onClick={handleHeart}>
-          {heartStatus}
-          <p>LIKE</p>
-        </CommentBtn>
-        <CommentBtn onClick={handleComent}>
-          <IoChatbubbleEllipsesOutline className="icon" />
-          <p>COMMNET</p>
-        </CommentBtn>
-        <CommentBtn>
-          <IoArrowRedoOutline className="icon" />
-          <p>SHARE</p>
-        </CommentBtn>
-      </CommentStatus>
-      {commentList.map((e, index) => {
-        return <CommentList comment={e} index={index} />;
-      })}
-      <CommentFormBox>
-        <CommentForm onSubmit={addComment}>
-          <CommentInput ref={inputRef} onChange={getValue} type="text" />
-          <CommentSubmitBtn disabled={isValid ? false : true}>게시</CommentSubmitBtn>
-        </CommentForm>
-      </CommentFormBox>
-    </CommentContainer>
-  );
+	};
+	let heartStatus = heart ? (
+		<IoHeartSharp heart={heart} className="redHeart" />
+	) : (
+		<IoHeartOutline heart={heart} className="Heart" />
+	);
+	return (
+		<CommentContainer>
+			<ProfileBox>
+				<ProfilInfo>
+					<ProfileImgBox>
+						<ProfileImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></ProfileImg>
+					</ProfileImgBox>
+					<InfoBox>
+						<UserName>관리자</UserName>
+						<DateNTime> 2022년 7월 25일</DateNTime>
+					</InfoBox>
+				</ProfilInfo>
+				<MoreBtn>
+					<IoEllipsisHorizontalSharp></IoEllipsisHorizontalSharp>
+				</MoreBtn>
+			</ProfileBox>
+			<Like>좋아요 {heart ? 1 : 0}개</Like>
+			<CommentStatus>
+				<CommentBtn onClick={handleHeart}>
+					{heartStatus}
+					<p>LIKE</p>
+				</CommentBtn>
+				<CommentBtn onClick={handleComent}>
+					<IoChatbubbleEllipsesOutline className="icon" />
+					<p>COMMNET</p>
+				</CommentBtn>
+				<CommentBtn>
+					<IoArrowRedoOutline className="icon" />
+					<p>SHARE</p>
+				</CommentBtn>
+			</CommentStatus>
+			{commentData.map(e => {
+				return (
+					<CommentList
+						id={e.id}
+						content={e.content}
+						createAt={e.createAt}
+						like={e.like}
+						userName={e.User.nickname}
+						userprofile={e.User.profileImg}
+					/>
+				);
+			})}
+			<CommentFormBox>
+				<CommentForm onSubmit={addComment}>
+					<CommentInput ref={inputRef} onChange={getValue} type="text" />
+					<CommentSubmitBtn disabled={isValid ? false : true}>게시</CommentSubmitBtn>
+				</CommentForm>
+			</CommentFormBox>
+		</CommentContainer>
+	);
 }
 
 export default Comment

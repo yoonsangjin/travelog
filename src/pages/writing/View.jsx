@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components';
 import ViewBoardList from './ViewBoardList'
 import Comment from './Comment'
 import { IoMapOutline, IoFlagSharp } from 'react-icons/io5';
@@ -24,7 +24,7 @@ const EditContainer = styled.div`
   width: 46vw;
   margin-right: 22vw;
   padding-right: 2vw;
-  padding-left: 4vw;
+  padding-left: 2vw;
   flex-direction: column;
   padding-top: 3rem;
   gap: 2rem;
@@ -39,24 +39,58 @@ const EditContainer = styled.div`
   }
 `;
 const WritingHeader = styled.h1`
-  font-size: 2rem;
-`
+	font-size: 3rem;
+	line-height: 1.5;
+	letter-spacing: -0.004em;
+	padding-left: 1rem;
+	font-weight: 800;
+`;
 const WritingHeaderBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
+	display: flex;
+	flex-direction: column;
+  gap 2rem;
+`;
+const TagBox = styled.div`
+	display: flex;
+	gap: 1rem;
+	padding-left: 1rem;
+	align-items: center;
+`;
+const Tag = styled.a`
+	height: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	background-color: #f1f1f1;
+	color: #5f6caf;
+	cursor: pointer;
+	border-radius: 1rem;
+	border: 0;
+	font-weight: bold;
+	font-size: 1rem;
+	line-height: 2rem;
+`;
+const City = styled.a`
+	height: 2.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	background-color: #5f6caf;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 1rem;
+	border: 0;
+	font-weight: bold;
+	font-size: 1.2rem;
+	line-height: 2.5rem;
+`;
 const Board = styled.div`
   width: 100%;
-  height: 10rem;
-  box-shadow: 1px 1px 22px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 1rem;
+  height: 18rem;
   display: flex;
   gap: 1rem;
   overflow: scroll;
 `;
 const ViewerBox = styled.div`
-  padding: 2rem;
-  margin-top: 1rem;
+  padding-left: 1 rem;
 `
 //메뉴 버튼
 const BtnInfo = styled.span`
@@ -111,7 +145,7 @@ const MenuBox = styled.div`
   flex-direction: column;
   position: fixed;
   left: 13vw;
-  top: 15.5vh;
+  top: 28vh;
   justify-content: flex-end;
   padding: 0.5rem;
   gap 1rem;
@@ -124,6 +158,8 @@ const MenuBox = styled.div`
 
 function View() {
   const [writing, setWriting] = useState({});
+  const [board, setBoard] = useState([]);
+  const [tag, setTag] = useState([]);
   //axios bearer token
   const token = window.localStorage.getItem('token');
   let config = {
@@ -132,8 +168,12 @@ function View() {
   const getWritingData = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/posts/user/17', config)
-        .then(res => setWriting(res.data));
+        .get('http://localhost:8000/api/posts/user/32', config)
+        .then(res => {
+          setWriting(res.data);
+          setBoard(JSON.parse(res.data.markedData));
+          setTag(JSON.parse(res.data.tag));
+        });
     } catch (err) {
       console.log(err);
     }
@@ -141,48 +181,49 @@ function View() {
   useEffect(() => {
     getWritingData();
   }, []);
-  const view = [];
-  console.log(JSON.stringify(writing.markedData));
-  console.log(typeof JSON.stringify(writing));
   return (
-    <WritingSection>
-      <WritingContainer>
-        <MenuBox>
-          <MenuBtnBox>
-            <MenuBtn href="/main">
-              <IoMapOutline className="munuImg" />
-              <BtnInfo className="map">MAP</BtnInfo>
-            </MenuBtn>
-          </MenuBtnBox>
-          <MenuBtnBox>
-            <MenuBtn href="/community">
-              <IoFlagSharp className="munuImg" />
-              <BtnInfo className="log">COLORLOG</BtnInfo>
-            </MenuBtn>
-          </MenuBtnBox>
-        </MenuBox>
-        <EditContainer>
-          <WritingHeaderBox>
-            <WritingHeader>부산여행</WritingHeader>
-          </WritingHeaderBox>
-          <Board>
-            {view.map(e => {
-              return (
-                <ViewBoardList
-                  bookmarkId={e.bookmarkId}
-                  placeName={e.placeName}
-                  placeUrl={e.placeUrl}
-                  bookmarkMemo={e.bookmarkMemo}
-                />
-              );
-            })}
-          </Board>
-          <ViewerBox>{writing ? <Viewer initialValue={writing.content} /> : ''}</ViewerBox>
-        </EditContainer>
-        <Comment />
-      </WritingContainer>
-    </WritingSection>
-  );
+		<WritingSection>
+			<WritingContainer>
+				<MenuBox>
+					<MenuBtnBox>
+						<MenuBtn href="/main">
+							<IoMapOutline className="munuImg" />
+							<BtnInfo className="map">MAP</BtnInfo>
+						</MenuBtn>
+					</MenuBtnBox>
+					<MenuBtnBox>
+						<MenuBtn href="/community">
+							<IoFlagSharp className="munuImg" />
+							<BtnInfo className="log">COLORLOG</BtnInfo>
+						</MenuBtn>
+					</MenuBtnBox>
+				</MenuBox>
+				<EditContainer>
+					<WritingHeaderBox>
+						<WritingHeader>{writing.title}</WritingHeader>
+						<TagBox>
+              {writing.cateCity ? <City>{writing.cateCity}</City> : ''}
+							{tag ? tag.map(e => <Tag>{e}</Tag>) : ''}
+						</TagBox>
+					</WritingHeaderBox>
+					<Board>
+						{board.map(e => {
+							return (
+								<ViewBoardList
+									bookmarkId={e.bookmarkId}
+									placeName={e.placeName}
+									placeUrl={e.placeUrl}
+									bookmarkMemo={e.bookmarkMemo}
+								/>
+							);
+						})}
+					</Board>
+					<ViewerBox>{writing.id ? <Viewer initialValue={writing.content} /> : ''}</ViewerBox>
+				</EditContainer>
+				<Comment/>
+			</WritingContainer>
+		</WritingSection>
+	);
 }
 
 export default View

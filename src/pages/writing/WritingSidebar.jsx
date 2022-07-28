@@ -4,6 +4,7 @@ import { TbStar } from 'react-icons/tb';
 import WritingSearchbar from './WritingSearchbar';
 import WritingList from './WritingList';
 import { useRecoilState } from 'recoil';
+import { ImSearch } from 'react-icons/im';
 import { toggleState, boardState, checkedState } from '../../recoil/Atom.jsx'
 import axios from 'axios';
 const SidebarTitleBox = styled.div`
@@ -15,6 +16,27 @@ const SidebarTitleBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+`;
+const SearchbarBox = styled.div`
+	background-color: #fff;
+	margin: 2rem 1rem 1rem 1rem;
+	padding: 0.5rem;
+	border-radius: 12px;
+`;
+
+const SearchButton = styled.button`
+	border: 0;
+	outline: 0;
+	padding: 0.5rem;
+	background-color: #fff;
+`;
+const SearchInput = styled.input`
+	border: 0;
+	outline: 0;
+`;
+const SearchForm = styled.form`
+	display: grid;
+	grid-template-columns: 3fr 1fr;
 `;
 const FavoriteBox = styled.div`
   .icon {
@@ -133,64 +155,99 @@ function WritingSidebar() {
   const [board, setBoard] = useRecoilState(boardState);
   // 리스트 체크박스 상태관리
   const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
-  function handle() {
-    const newList = list.filter(e => {
-      return !checkedInputs.includes(e.id);
+  function handleDel() {
+    console.log(checkedInputs);
+		const newList = list.filter(e => {
+			return !checkedInputs.includes(e.bookmarkId);
+		});
+		const checkedList = board.filter(e => {
+			return !checkedInputs.includes(e.bookmarkId);
     });
-    const checkedList = board.filter(e => {
-      return !checkedInputs.includes(e.id);
-    });
-    setList(newList);
-    setBoard(checkedList);
-    setToggle(false);
+		setList(newList);
+		setBoard(checkedList);
+		setToggle(false);
+	}
+  const [inputValue, setInputValue] = useState('');
+  const [filtering, setFiltering] = useState([]);
+  const onChange = e => {
+    setInputValue(e.target.value);
+    const filterData = list.filter(i => i.placeName.includes(e.target.value));
+		setFiltering(filterData);
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    const filterData = list.filter(e => e.placeName.includes(inputValue));
+    setFiltering(filterData);
+  };
+  let filteredList;
+  if (inputValue) {
+		filteredList = filtering.map(e => {
+			return (
+				<WritingList
+					bookmarkId={e.bookmarkId}
+					placeName={e.placeName}
+					placeUrl={e.placeUrl}
+					bookmarkMemo={e.bookmarkMemo}
+					categoryGroupName={e.categoryGroupName}
+				/>
+			);
+		});
+  } else {
+    filteredList = list.map(e => {
+			return (
+				<WritingList
+					bookmarkId={e.bookmarkId}
+					placeName={e.placeName}
+					placeUrl={e.placeUrl}
+					bookmarkMemo={e.bookmarkMemo}
+					categoryGroupName={e.categoryGroupName}
+				/>
+			);
+		});
   }
   return (
-    <WritingsidebarContainer>
-      <WritingSearchbar />
-      <SidebarTitleBox>
-        <FavoriteBox>
-          <TbStar className="icon" id="favoriteIcon" />
-        </FavoriteBox>
-        <SidebarHeader>부산 여행</SidebarHeader>
-      </SidebarTitleBox>
-      <ListFilterBox>
-        <Select onChange={e => handleChange(e)} className={!toggle ? 'space-between' : 'flex-end'}>
-          <option value={'최신'}>최신순</option>
-          <option value={'장소'}>장소명순</option>
-          <option value={'메모'}>메모순</option>
-        </Select>
-        <EditBox>
-          <EditBtn
-            className={toggle ? 'display' : 'displayNone'}
-            onClick={handle}
-            style={{ color: 'red' }}
-          >
-            삭제
-          </EditBtn>
-          <EditBtn className="editBtn" onClick={clickedToggle} toggle={toggle}>
-            {!toggle ? '편집' : '취소'}
-          </EditBtn>
-        </EditBox>
-      </ListFilterBox>
-      <SidebarListBox>
-        {list.length ? (
-          list.map(e => {
-            return (
-              <WritingList
-                bookmarkId={e.bookmarkId}
-                placeName={e.placeName}
-                placeUrl={e.placeUrl}
-                bookmarkMemo={e.bookmarkMemo}
-                categoryGroupName={e.categoryGroupName}
-              />
-            );
-          })
-        ) : (
-          <p>리스트가 비었습니다.</p>
-        )}
-      </SidebarListBox>
-    </WritingsidebarContainer>
-  );
+		<WritingsidebarContainer>
+			<SearchbarBox>
+				<SearchForm onSubmit={handleSubmit}>
+					<SearchInput
+						className="search"
+						placeholder="Search"
+						onChange={onChange}
+						value={inputValue}
+					/>
+					<SearchButton type="submit" className="searchBtn">
+						<ImSearch />
+					</SearchButton>
+				</SearchForm>
+			</SearchbarBox>
+			<SidebarTitleBox>
+				<FavoriteBox>
+					<TbStar className="icon" id="favoriteIcon" />
+				</FavoriteBox>
+				<SidebarHeader>부산 여행</SidebarHeader>
+			</SidebarTitleBox>
+			<ListFilterBox>
+				<Select onChange={e => handleChange(e)} className={!toggle ? 'space-between' : 'flex-end'}>
+					<option value={'최신'}>최신순</option>
+					<option value={'장소'}>장소명순</option>
+					<option value={'메모'}>메모순</option>
+				</Select>
+				<EditBox>
+					<EditBtn
+						className={toggle ? 'display' : 'displayNone'}
+						onClick={handleDel}
+						style={{ color: 'red' }}
+					>
+						삭제
+					</EditBtn>
+					<EditBtn className="editBtn" onClick={clickedToggle} toggle={toggle}>
+						{!toggle ? '편집' : '취소'}
+					</EditBtn>
+				</EditBox>
+			</ListFilterBox>
+			<SidebarListBox>{list.length ? filteredList : <p>리스트가 비었습니다.</p>}</SidebarListBox>
+		</WritingsidebarContainer>
+	);
 }
 
 export default WritingSidebar;

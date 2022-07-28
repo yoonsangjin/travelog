@@ -18,14 +18,14 @@ import { boardState, tagState, CityTagToggleState } from '../../recoil/Atom.jsx'
 import { useDrop } from 'react-dnd';
 import axios from 'axios';
 //s3
-import { S3Upload } from '../../components/S3';
+import { S3Upload, S3deleteObject } from '../../components/S3';
 import { useBeforeunload } from 'react-beforeunload';
 
 const WritingSection = styled.section`
-  width: 100vw;
-  height: 93vh;
-  margion-top: 7vh;
-  gap: 2rem;
+	width: 100vw;
+	height: calc(100vh - 5rem);
+	gap: 2rem;
+	overflow: scroll;
 `;
 const WritingContainer = styled.div`
   width: 70vw;
@@ -101,15 +101,15 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const Board = styled.div`
-  height: 10rem;
-  background-color: #fafafa;
-  box-shadow: 1px 1px 22px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 1rem;
-  display: flex;
-  gap: 1rem;
-  overflow: auto;
-  width: 70vw;
-  flex-wrap: nowrap;
+	height: 18rem;
+	background-color: #fafafa;
+	border-radius: 1rem;
+	display: flex;
+	gap: 1rem;
+	overflow: auto;
+	width: 70vw;
+	flex-wrap: nowrap;
+	align-items: center;
 `;
 const TagBox = styled.div`
   display: flex;
@@ -240,32 +240,40 @@ function Writing() {
   const handleButton = () => {
     //데이터 포스팅
     const newTagList = TagList.map(e => e.tag);
-    let newBoard = {};
-    board.forEach((e, index) => (newBoard[index] = e));
-    console.log(newBoard);
     const postData = async () => {
       await axios
-        .post(
-          'http://localhost:8000/api/posts/register',
-          {
-            title: header,
-            content: editorRef.current?.getInstance().getHTML(),
-            mainImg: imgList[0],
-            flagHideYN: 'Y',
-            markedData: JSON.stringify(board),
-            cateCity: cateTag[0],
-            tag: JSON.stringify(newTagList),
-          },
-          config,
-        )
-        .then(function (res) {
-          console.log(res);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+				.post(
+					'http://localhost:8000/api/posts/register',
+					{
+						title: header,
+						content: editorRef.current?.getInstance().getHTML(),
+						mainImg: imgList[0],
+						flagHideYN: 'Y',
+						markedData: JSON.stringify(board),
+						cateCity: cateTag[0],
+						tag: JSON.stringify(newTagList),
+					},
+					config,
+				)
+				.then(function (res) {
+					console.log(res);
+				})
+				.catch(function (err) {
+					console.log(err);
+				});
     };
     postData();
+    //안쓰는 이미지 삭제
+    const realImg = editorRef.current
+			?.getInstance()
+			.getHTML()
+			.split('https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/')
+			.slice(1)
+			.map(e => e.split(' ')[0])
+			.map(e => e.substring(0, e.length - 1));
+	  const difference = imgList.filter(x => !realImg.includes(x));
+    difference.forEach(e => console.log(e));
+    alert('저장되었습니다.');
   };
   return (
     <WritingSection>

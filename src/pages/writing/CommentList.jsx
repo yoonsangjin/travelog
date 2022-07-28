@@ -108,35 +108,46 @@ const LikeBtn = styled.div`
     color: red;
     animation: ${MovingHeart} 0.3s linear ;
 `;
-function CommentList({ comment, index }) {
+function CommentList({ id, content, createAt, like, userName, userprofile }) {
   const [heart, setHeart] = useState(false);
+  const [likeCount, setLikeCount] = useState(like);
   const handleHeart = () => {
-    setHeart(!heart)
-  }
+    if (!heart) {
+      setLikeCount(likeCount + 1);
+    } else {
+      setLikeCount(likeCount - 1);
+    }
+    setHeart(!heart);
+  };
   let heartStatus = heart ? (
     <IoHeartSharp heart={heart} className="redHeart" />
   ) : (
     <IoHeartOutline heart={heart} className="Heart" />
   );
-  let heartNumber = heart ? (
-    <p>좋아요 1개</p>
-  ) : ('');
+  let korea = new Date(createAt);
+  let now = new Date();
+  let ago = Math.ceil((now.getTime() - korea.getTime()) / 60000);
+  let time = 0;
+  if (ago > 60) {
+    let hour = Math.ceil(ago / 60);
+    time = `${hour}시간 전`
+  } else { time = `${ago}분 전` }
   return (
-    <CommentSection>
-      <MenuBtn>
-        <ProfileImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></ProfileImg>
-      </MenuBtn>
-      <CommentBox>
-        <UserName>관리자</UserName>
-        <Content>{comment}</Content>
-        <LikeBtn onClick={handleHeart}>{heartStatus}</LikeBtn>
-        <DateNLIke>
-          <p>Just Now</p>
-          {heartNumber}
-        </DateNLIke>
-      </CommentBox>
-    </CommentSection>
-  );
+		<CommentSection>
+			<MenuBtn>
+				<ProfileImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></ProfileImg>
+			</MenuBtn>
+			<CommentBox>
+				<UserName>{userName}</UserName>
+				<Content>{content}</Content>
+				<LikeBtn onClick={handleHeart}>{heartStatus}</LikeBtn>
+				<DateNLIke>
+					<p>{time}</p>
+					{likeCount ? '좋아요 1개' : ''}
+				</DateNLIke>
+			</CommentBox>
+		</CommentSection>
+	);
 }
 
 export default CommentList
