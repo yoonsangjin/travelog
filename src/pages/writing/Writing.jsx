@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import WritingSidebar from './WritingSidebar';
+import TagBtn from './TagBtn';
+import CityTag from './CityTag';
 import WritingBoardList from './WritingBoardList'
 // Toast 에디터
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -11,13 +13,13 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // recoil
 import { useRecoilState } from 'recoil';
-import { boardState, TagState, CityTagToggleState } from '../../recoil/Atom.jsx';
+import { boardState, tagState, CityTagToggleState } from '../../recoil/Atom.jsx';
 //react dnd
 import { useDrop } from 'react-dnd';
 import axios from 'axios';
 //s3
 import { S3Upload } from '../../components/S3';
-
+import { useBeforeunload } from 'react-beforeunload';
 
 const WritingSection = styled.section`
   width: 100vw;
@@ -119,13 +121,9 @@ const TagBox = styled.div`
     display: block;
   }
   .displayNone {
-    display: None;
+    display: none;
   }
 `;
-const CityTag = styled.button`
-  width: 3rem;
-  height: 2rem;
-`
 const Select = styled.select`
   border: none;
   background-color: #fff;
@@ -133,10 +131,7 @@ const Select = styled.select`
   height: 2rem;
 `;
 function Writing() {
-  const preventClose = window.addEventListener('beforeunload', (event) => {
-    event.preventDefault();
-    event.returnValue = '';
-  });
+  useBeforeunload(e => e.preventDefault());
   let data = [];
   //axios bearer token
   const token = window.localStorage.getItem('token');
@@ -146,59 +141,30 @@ function Writing() {
   //데이터 불러오기
   const getListData = async () => {
     try {
-      await axios.get('http://localhost:8000/api/bookmarks', config).then(res => data = res.data);
+      await axios.get('http://localhost:8000/api/bookmarks', config).then(res => (data = res.data));
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
-    useEffect(() => {
-      getListData();
-      (() => {
-        window.addEventListener('beforeunload', preventClose);
-      })();
-      return () => {
-        window.removeEventListener('beforeunload', preventClose);
-      };
-    }, []);
+  useEffect(() => {
+    getListData();
+  }, []);
+
   // Editor DOM 선택용
   const editorRef = useRef();
-  // 등록 버튼 핸들러
-  const handleButton = () => {
-    //데이터 포스팅
-    const postData = async () => {
-    const data = await axios
-        .post(
-          'http://localhost:8000/api/posts/register',
-          {
-            title: '부산여행',
-            content: editorRef.current?.getInstance().getHTML(),
-          },
-          config,
-        )
-        .then(function (res) {
-          console.log(res);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-    };
-    postData();
-    // 입력창에 입력한 내용을 HTML 태그 형태로 취득
-    console.log(data);
-    console.log(editorRef.current?.getInstance().getHTML());
-  };
   //임시 이미지 배열
   let imgArr = [];
   //이미지 업로드
   const onUploadImage = async (blob, callback) => {
     S3Upload(blob);
     imgArr.push(blob.name);
-    const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`
-    callback(url, "이미지");
+    const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`;
+    setTimeout(() => callback(url, '이미지'), 1000);
   };
-
+  // 보드 상태 변경
   const [board, setBoard] = useRecoilState(boardState);
+  // DnD
   const [{ isOver }, dropToAdd] = useDrop(() => ({
     accept: 'card',
     drop: item => addToBoard(item.id),
@@ -206,31 +172,51 @@ function Writing() {
       isOver: !!monitor.isOver(),
     }),
   }));
-
+  // 보드에 리스트 추가
   const addToBoard = id => {
     const items = data.filter(e => id === e.bookmarkId);
     setBoard(board => [...board, items[0]]);
     //하나로 바꾸기
     // setBoard([items[0]]);
   };
+  //제목 상태관리
+  let header = '';
+  const handleHeader = e => {
+    header = e.target.value;
+  };
   //도시 카테고리 상태관리
-  const [CityTagToggle, setCityTagToggle] = useState(false);
-  let currentCity = '';
+  const [CityTagToggle, setCityTagToggle] = useState(true);
   const handleTagChange = e => {
     setCityTagToggle(!CityTagToggle);
-    console.log(e.target.value);
-    currentCity = e.target.value;
-    console.log(currentCity);
-    };
+    setCateTag([e.target.value]);
+  };
   //태그 리스트 상태관리
-  const [TagList, setTagList] = useRecoilState(TagState);
-  // setTagList(oldList => [...oldList, e.target.value]);
-    const handleCityTag = () => {
-      setCityTagToggle(!CityTagToggle);
-    };
+  const [TagList, setTagList] = useRecoilState(tagState);
+  const [value, setValue] = useState('');
+  const [randomId, setRandomId] = useState(0);
+  //랜덤 아이디 생성
+  useEffect(() => {
+    setRandomId(new Date().getTime());
+  }, [TagList]);
+  // 입력값 상태관리
+  const getValue = e => {
+    setValue(e.target.value);
+  };
+  const tagInputRef = useRef();
+  //태그 상태 관리
   const handleTag = e => {
-
-  }
+    e.preventDefault();
+    tagInputRef.current.value = '';
+    setTagList([...TagList, { id: randomId, tag: value }]);
+  };
+  // Lift-up
+  const [cateTag, setCateTag] = useState([]);
+  const changeCateTag = e => {
+    setCateTag([]);
+  };
+  const changeToggle = e => {
+    setCityTagToggle(!CityTagToggle);
+  };
   const cityArr = [
     '도시를 선택하세요!',
     '서울',
@@ -251,6 +237,29 @@ function Writing() {
     '제주특별자치도',
     '세종특별자치시',
   ];
+  // 등록 버튼 핸들러
+  const handleButton = () => {
+    //데이터 포스팅
+    const postData = async () => {
+      const data = await axios
+        .post(
+          'http://localhost:8000/api/posts/register',
+          {
+            title: header,
+            content: editorRef.current?.getInstance().getHTML(),
+            flagHideYN: 'Y',
+          },
+          config,
+        )
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    };
+    postData();
+  };
   return (
     <WritingSection>
       <WritingSidebar />
@@ -269,20 +278,37 @@ function Writing() {
           })}
         </Board>
         <WritingHeaderBox>
-          <WritingHeader placeholder="제목을 입력하세요"></WritingHeader>
+          <WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
           <Button onClick={handleButton}>발행</Button>
         </WritingHeaderBox>
         <HeaderBar />
         <TagBox>
-          <CityTag onClick={handleCityTag} className={CityTagToggle ? 'display' : 'displayNone'}>
-            {currentCity}
-          </CityTag>
-          <Select onChange={e => handleTagChange(e)}>
+          {cateTag.length
+            ? cateTag.map(e => {
+                return (
+                  <CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
+                );
+              })
+            : ''}
+          <Select
+            className={CityTagToggle ? 'display' : 'displayNone'}
+            onChange={e => handleTagChange(e)}
+          >
             {cityArr.map(e => {
               return <option value={e}>{e}</option>;
             })}
           </Select>
-          <TagInput placeholder="태그를 입력하세요" onClick={handleTag}></TagInput>
+          {TagList.map(e => {
+            return <TagBtn id={e.id} tag={e.tag} />;
+          })}
+          <form onSubmit={handleTag}>
+            <TagInput
+              ref={tagInputRef}
+              onChange={getValue}
+              placeholder="태그를 입력하세요"
+              type="text"
+            ></TagInput>
+          </form>
         </TagBox>
         <Editor
           ref={editorRef}

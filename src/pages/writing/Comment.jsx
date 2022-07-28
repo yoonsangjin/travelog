@@ -14,17 +14,16 @@ import {
 const CommentContainer = styled.div`
   display: flex;
   width: 26vw;
-  height: 100vh;
-  height: 100%;
+  height: calc(100vh - 5rem);
   flex-direction: column;
   padding-top: 1.5rem;
-  gap: 2rem;
+  gap: 1rem;
   border-left: 1px solid #e9e9e9;
   position: fixed;
   right: 0;
   margin-bottm: 5rem;
   overflow: scroll;
-`
+`;
 const CommentStatus = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -76,73 +75,12 @@ const CommentBtn = styled.button`
     height: 1.5rem;
     color: red;
     animation: ${MovingHeart} 0.3s linear ;
-
-`;
-const MypageImg = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  &:hover {
-    filter: brightness(110%);
-  }
 `;
 const ProfileBox = styled.div`
   display: flex;
   padding-left: 1rem;
   padding-right: 2rem;
   justify-content: space-between;
-`;
-const MenuBtnBox = styled.div`
-  display: flex;
-  position: relative;
-`
-const MenuBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 2rem 1.5rem 0;
-  gap 1rem;
-  border-bottom: 1px solid #e9e9e9;
-`
-const BtnInfo = styled.span`
-  display: none;
-  height: 1rem;
-  position: absolute;
-  padding: 0.5rem;
-  bottom: -57%;
-  left: 50%;
-  color: black;
-  transform: translate(-50%, 0);
-  border-radius: 0.5rem;
-  background-color: rgba(237, 247, 250, 0.8);
-`;
-const MenuBtn = styled.a`
-  display: flex;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  border: none;
-  position: relative;
-  background-color: #5f6caf;
-  color: #fff;
-  text-align: center;
-  align-items: center;
-  &:hover {
-    background-color: #949dc9;
-  }
-  &:hover ${BtnInfo} {
-    display: block;
-  }
-  .munuImg {
-    position: absolute;
-    width: 1.5rem;
-    height: 1.5rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 `;
 const InfoBox = styled.div`
   display: flex;
@@ -153,6 +91,7 @@ const InfoBox = styled.div`
 `;
 const ProfilInfo = styled.div`
   display: flex;
+  margin-bottom: 2rem;
 `
 const MoreBtn = styled.button`
   border: none;
@@ -188,6 +127,9 @@ const ProfileImg = styled.img`
     filter: brightness(110%);
   }
 `;
+const Like = styled.p`
+  padding-left: 2.3rem;
+`
 const CommentFormBox = styled.div`
   padding: 1rem 1rem 3rem 1rem;
   border-radius: 12px;
@@ -197,7 +139,6 @@ const CommentForm = styled.form`
   grid-template-columns: 1fr;
   position: relative;
 `;
-
 const CommentInput = styled.input`
   border-radius: 12px;
   height: 2rem;
@@ -237,57 +178,37 @@ function Comment() {
   const [value, setValue] = useState('');
   const [commentList, setCommnetList] = useState([]);
   const [heart, setHeart] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const handleHeart = () => {
     setHeart(!heart);
   };
     // useEffect(() => {
     //   getListData();
     // }, []);
-  useEffect(() => {
+  // 댓글 버튼
+  const handleComent = () => {
     inputRef.current.focus();
-  }, [value]);
-  // like 버튼
-  const handleComent  = () => {
-    inputRef.current.focus();
-  }
+  };
   // 사용자로 부터 받아오는 값을 value에 업데이트 
-  const getValue = (e) => {
-    setValue(e.target.value)
-  }
+  const getValue = e => {
+    setValue(e.target.value);
+    e.target.value ? setIsValid(true) : null;
+  };
 // 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
-  const addComment = (e) => {
+  const addComment = e => {
     e.preventDefault();
     inputRef.current.value = '';
     setCommnetList([...commentList, value]);
     setValue('');
-  }
-    let heartStatus = heart ? (
-      <IoHeartSharp heart={heart} className="redHeart" />
-    ) : (
-      <IoHeartOutline heart={heart} className="Heart" />
-    );
+    setIsValid(false);
+  };
+  let heartStatus = heart ? (
+    <IoHeartSharp heart={heart} className="redHeart" />
+  ) : (
+    <IoHeartOutline heart={heart} className="Heart" />
+  );
   return (
     <CommentContainer>
-      <MenuBox>
-        <MenuBtnBox>
-          <MenuBtn href="/main">
-            <IoMapOutline className="munuImg" />
-            <BtnInfo>MAP</BtnInfo>
-          </MenuBtn>
-        </MenuBtnBox>
-        <MenuBtnBox>
-          <MenuBtn href="/community">
-            <IoPeople className="munuImg" />
-            <BtnInfo>COMMUNITY</BtnInfo>
-          </MenuBtn>
-        </MenuBtnBox>
-        <MenuBtnBox>
-          <MenuBtn href="/mypage">
-            <MypageImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></MypageImg>
-            <BtnInfo className="none">MYPAGE</BtnInfo>
-          </MenuBtn>
-        </MenuBtnBox>
-      </MenuBox>
       <ProfileBox>
         <ProfilInfo>
           <ProfileImgBox>
@@ -302,6 +223,7 @@ function Comment() {
           <IoEllipsisHorizontalSharp></IoEllipsisHorizontalSharp>
         </MoreBtn>
       </ProfileBox>
+      <Like>좋아요 {heart ? 1 : 0}개</Like>
       <CommentStatus>
         <CommentBtn onClick={handleHeart}>
           {heartStatus}
@@ -322,7 +244,7 @@ function Comment() {
       <CommentFormBox>
         <CommentForm onSubmit={addComment}>
           <CommentInput ref={inputRef} onChange={getValue} type="text" />
-          <CommentSubmitBtn>게시</CommentSubmitBtn>
+          <CommentSubmitBtn disabled={isValid ? false : true}>게시</CommentSubmitBtn>
         </CommentForm>
       </CommentFormBox>
     </CommentContainer>

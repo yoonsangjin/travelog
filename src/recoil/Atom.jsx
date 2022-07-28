@@ -95,12 +95,12 @@ export const checkedState = atom({
   default: [],
 })
 
-export const TagState = atom({
-  key: 'TagState',
+export const tagState = atom({
+  key: 'tagState',
   default: [],
 });
 
-export const CityTagToggleState = atom({
-  key: 'CityTagToggleState',
+export const cityTagToggleState = atom({
+  key: 'cityTagToggleState',
   default: false,
 });

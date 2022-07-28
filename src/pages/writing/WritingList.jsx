@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDrag } from 'react-dnd'
-import { toggleState, checkedState } from '../../recoil/Atom.jsx'
+import { toggleState, checkedState, TagState } from '../../recoil/Atom.jsx'
 import { useRecoilState } from 'recoil'
 import { BiRestaurant } from 'react-icons/bi';
 import { ImLibrary } from 'react-icons/im';

@@ -11,7 +11,7 @@ const ListBox = styled.div`
   padding: 1rem;
   position: relative;
   border-radius: 1px;
-  background-color: #edf7fa;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   gap: 1rem;
