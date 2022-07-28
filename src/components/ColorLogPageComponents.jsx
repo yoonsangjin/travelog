@@ -25,7 +25,7 @@ export default ColorLogPageComponents;
 const ModalBG = styled.article`
   width: 100vw;
   height: 100%;
-  background-color: rgba(213, 213, 213, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   position: fixed;
   left: 0;
 `;
@@ -33,6 +33,7 @@ const Modal = styled.div`
   width: 50rem;
   height: 40rem;
   background-color: #fff;
+  box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.25);
   position: fixed;
   top: 10rem;
   left: calc(50vw - 25rem);

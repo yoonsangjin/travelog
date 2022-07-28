@@ -95,7 +95,7 @@ function Navbar() {
     <Nav>
       <LogoContainer
         onClick={() => {
-          window.location.href = '/';
+          navigate('/');
         }}
       >
         <Img src="img/travelog.jpg" />
@@ -136,6 +136,8 @@ function Navbar() {
                 onClick={() => {
                   if (window.confirm('로그아웃 하시겠습니까?')) {
                     localStorage.clear();
+                    setIsLoggedIn(false);
+                    setisOpen(false);
                     navigate('/login');
                   } else {
                     return;
