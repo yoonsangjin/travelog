@@ -1,16 +1,22 @@
-import React, { useState } from 'react'
-import SearchbarIntro from '../../components/SearchbarIntro'
-import PostBox from '../../components/PostBox'
+import React, { useState } from 'react';
+import SearchbarIntro from '../../components/SearchbarIntro';
+import PostBox from '../../components/PostBox';
+import { useRecoilState } from 'recoil';
+import { communityState } from '../../recoil/Atom';
+import CommunityModal from '../../components/CommunityModal';
 
 function Companion() {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState('');
+  const [postClick, setPostClick] = useRecoilState(communityState);
 
   const handleChange = e => {
-    setInputValue(e.target.value)
-  }
-  const handleClick = () => {}
+    setInputValue(e.target.value);
+  };
+  const handleClick = () => {
+    console.log(inputValue);
+  };
   return (
-    <div>
+    <>
       <SearchbarIntro
         title=""
         containerWidth="45rem"
@@ -25,9 +31,10 @@ function Companion() {
         changeMethod={handleChange}
         clickMethod={handleClick}
       />
-      <PostBox name="sojeong" content=" 같이 갈사람 괌" />
-    </div>
-  )
+      <PostBox title="testtesttest" name="sojeong" content=" 같이 갈사람 괌" />
+      {postClick && <CommunityModal></CommunityModal>}
+    </>
+  );
 }
 
-export default Companion
+export default Companion;
