@@ -23,12 +23,12 @@ function ColorLogPageComponents() {
 export default ColorLogPageComponents;
 
 const ModalBG = styled.article`
-  width: 100vw;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  position: fixed;'
-  top: 5rem;
-  left: 0;
+	width: 100vw;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
 `;
 const Modal = styled.div`
 	width: 50rem;
@@ -36,7 +36,7 @@ const Modal = styled.div`
 	background-color: #fff;
 	box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.25);
 	position: fixed;
-	top: 10rem;
+	top: 5rem;
 	left: calc(50vw - 25rem);
 `;
 const CloseButton = styled(IoClose)`
