@@ -142,7 +142,6 @@ function Writing() {
   const getListData = async () => {
     try {
       await axios.get('http://localhost:8000/api/bookmarks', config).then(res => (data = res.data));
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -153,12 +152,12 @@ function Writing() {
 
   // Editor DOM 선택용
   const editorRef = useRef();
-  //임시 이미지 배열
-  let imgArr = [];
+  //이미지 배열
+  const [imgList, setImgList] = useState([]);
   //이미지 업로드
   const onUploadImage = async (blob, callback) => {
     S3Upload(blob);
-    imgArr.push(blob.name);
+    setImgList(img => [...img, blob.name]);
     const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`;
     setTimeout(() => callback(url, '이미지'), 1000);
   };
@@ -180,12 +179,13 @@ function Writing() {
     // setBoard([items[0]]);
   };
   //제목 상태관리
-  let header = '';
+  const [header, setHeader] = useState('');
   const handleHeader = e => {
-    header = e.target.value;
+    setHeader(e.target.value);
   };
   //도시 카테고리 상태관리
   const [CityTagToggle, setCityTagToggle] = useState(true);
+    const [cateTag, setCateTag] = useState([]);
   const handleTagChange = e => {
     setCityTagToggle(!CityTagToggle);
     setCateTag([e.target.value]);
@@ -210,7 +210,6 @@ function Writing() {
     setTagList([...TagList, { id: randomId, tag: value }]);
   };
   // Lift-up
-  const [cateTag, setCateTag] = useState([]);
   const changeCateTag = e => {
     setCateTag([]);
   };
@@ -240,14 +239,22 @@ function Writing() {
   // 등록 버튼 핸들러
   const handleButton = () => {
     //데이터 포스팅
+    const newTagList = TagList.map(e => e.tag);
+    let newBoard = {};
+    board.forEach((e, index) => (newBoard[index] = e));
+    console.log(newBoard);
     const postData = async () => {
-      const data = await axios
+      await axios
         .post(
           'http://localhost:8000/api/posts/register',
           {
             title: header,
             content: editorRef.current?.getInstance().getHTML(),
+            mainImg: imgList[0],
             flagHideYN: 'Y',
+            markedData: JSON.stringify(board),
+            cateCity: cateTag[0],
+            tag: JSON.stringify(newTagList),
           },
           config,
         )

@@ -132,7 +132,7 @@ function View() {
   const getWritingData = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/posts/user/4', config)
+        .get('http://localhost:8000/api/posts/user/17', config)
         .then(res => setWriting(res.data));
     } catch (err) {
       console.log(err);
@@ -142,6 +142,8 @@ function View() {
     getWritingData();
   }, []);
   const view = [];
+  console.log(JSON.stringify(writing.markedData));
+  console.log(typeof JSON.stringify(writing));
   return (
     <WritingSection>
       <WritingContainer>
