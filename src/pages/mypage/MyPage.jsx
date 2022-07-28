@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { colorLogState } from '../../recoil/Atom';
 import ColorLogPageComponents from '../../components/ColorLogPageComponents';
+import { BiPencil } from 'react-icons/bi';
 
 const MyPage = () => {
 	const [usertext, setUserText] = useState('');
@@ -27,18 +28,16 @@ const MyPage = () => {
 			alert(err);
 		}
 	};
-	const handleKeyDown = e => {
-		if (e.key === 'Enter') {
-			axios({
-				method: 'patch',
-				url: `http://localhost:8000/api/users/${userdata.id}`,
-				headers: { Authorization: `Bearer ${token}` },
-				data: {
-					profileText: usertext,
-				},
-			});
-			setEditable(!editable);
-		}
+	const handleKeyDown = () => {
+		axios({
+			method: 'patch',
+			url: `http://localhost:8000/api/users/${userdata.id}`,
+			headers: { Authorization: `Bearer ${token}` },
+			data: {
+				profileText: usertext,
+			},
+		});
+		setEditable(!editable);
 	};
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
@@ -54,28 +53,27 @@ const MyPage = () => {
 	return (
 		<Page>
 			<Profile>
-				<ProfileHeader>
-					<ProfileImg>
-						<Img src="img/airport.jpg" />
-						<UserName>{userdata.name}</UserName>
-					</ProfileImg>
+				<Img src="img/airport.jpg" />
+				<UserName>{userdata.name}</UserName>
 
-					{!editable ? (
-						<ProfileInfo>{usertext} </ProfileInfo>
-					) : (
-						<ProfileInfo>
-							<input
-								type="text"
-								value={usertext}
-								onChange={e => {
-									setUserText(e.target.value);
-								}}
-								onKeyDown={handleKeyDown}
-							/>
-						</ProfileInfo>
-					)}
-					<button onClick={handleProfileText}>글쓰기</button>
-				</ProfileHeader>
+				{!editable ? (
+					<>
+						<ProfileInfoPara>{usertext} </ProfileInfoPara>
+						<Pencil onClick={handleProfileText}></Pencil>
+					</>
+				) : (
+					<>
+						<InputBox
+							type="text"
+							value={usertext}
+							onChange={e => {
+								setUserText(e.target.value);
+							}}
+						/>
+						<Pencil onClick={handleKeyDown} style={{ top: '-6.5rem', left: '20rem' }}></Pencil>
+					</>
+				)}
+
 				<MyInfo>
 					<MyInfoBox>
 						<p>내 여행</p>
@@ -91,8 +89,8 @@ const MyPage = () => {
 				</MyInfo>
 			</Profile>
 			<PostMenu>
-				<PostIcon src="img/posticon.png" />
-				<Post>게시물</Post>
+				{/* <PostIcon src="img/posticon.png" />
+				<Post>게시물</Post> */}
 			</PostMenu>
 			<Feed>
 				<ImgFeed src="img/airport.jpg" />
@@ -117,7 +115,6 @@ export default MyPage;
 const Page = styled.div`
 	width: 60rem;
 	margin: 3rem auto;
-	background-color: red;
 `;
 
 const Profile = styled.div`
@@ -148,39 +145,41 @@ const Post = styled.p`
 	font-size: 0.5rem;
 `;
 const ProfileHeader = styled.div`
-  display: flex;
-  width: 60vw;
-  heigth:40vh
-  justify-content: space-around;
+	display: flex;
+	width: 60rem;
+	justify-content: space-around;
 `;
 const ProfileImg = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 40vw;
+	width: 40rem;
 	align-items: center;
 `;
+const ProfileInfoPara = styled.p`
+	width: 30rem;
+	position: relative;
+	top: -6rem;
+	left: 22rem;
+`;
+
 const ProfileInfo = styled.section`
 	display: flex;
 	align-items: center;
 	width: 50rem;
 	justify-content: flex-start;
-
-	& input {
-		width: 100%;
-		height: 100%;
-	}
 `;
 
 const Img = styled.img`
 	border-radius: 50%;
 	width: 10rem;
 	height: 10rem;
+	position: relative;
+	left: 7rem;
 `;
 
 const MyInfo = styled.div`
 	display: flex;
 	justify-content: space-evenly;
-	margin-top: 4rem;
 	width: 60rem;
 `;
 const MyInfoBox = styled.div`
@@ -205,13 +204,15 @@ const MyLog = styled.p`
 	background-color: #fff;
 `;
 const UserName = styled.p`
-	font-size: 1.5rem;
-	margin-top: 1.5rem;
+	font-size: 1.8rem;
+	position: relative;
+	top: -8.5rem;
+	left: 22rem;
 `;
 
 const Feed = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
 	gap: 4rem 0;
 	width: 60rem;
 `;
@@ -226,4 +227,18 @@ const ImgFeed = styled.img`
 	&:hover {
 		filter: brightness(20%);
 	}
+`;
+const InputBox = styled.input`
+	width: 18rem;
+	height: 2.5rem;
+	padding-left: 1rem;
+	position: relative;
+	top: -7rem;
+	left: 22rem;
+`;
+const Pencil = styled(BiPencil)`
+	position: relative;
+	top: -13rem;
+	left: 53rem;
+	font-size: 1.5rem;
 `;

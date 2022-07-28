@@ -28,33 +28,34 @@ const Img = styled.img`
 const NavUl = styled.ul`
 	display: flex;
 	align-items: center;
-	margin-right: 3rem;
+	margin-right: 5rem;
 `;
 const NavLi = styled.li`
 	margin: 0 2rem;
 	color: #5f6caf;
 `;
-const MenuUl = styled(NavUl)`
-	display: flex;
-	flex-direction: column;
-	position: absolute;
-	width: 200px;
-	border: 1px solid blue;
+const MenuUl = styled.ul`
+	position: relative;
+	top: 0.9rem;
+	left: -4rem;
+	width: 10rem;
 	text-align: center;
-	right: -3.5rem;
-	background-color: #5f6caf;
-	color: #fff;
 	z-index: 999;
-	top: 5%;
+	box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.25);
+	background-color: #fff;
+	border-radius: 10px;
 `;
-const MenuLi = styled(NavLi)`
-	color: #5f6caf;
+const MenuLi = styled.li`
 	margin: 0;
 	height: 3rem;
 	width: 10rem;
 	line-height: 3rem;
-	color: #fff;
+	color: #333;
 	cursor: pointer;
+	border-bottom: 1px solid #ccc;
+	&:last-of-type {
+		border: none;
+	}
 `;
 const LoginBtn = styled(NavLink)`
 	display: block;
@@ -101,7 +102,7 @@ function Navbar() {
 			>
 				<Img src="img/travelog.jpg" />
 			</LogoContainer>
-			<NavUl>
+			<NavUl style={{ marginRight: isMenu ? '-2rem' : '' }}>
 				<NavLi>
 					<NavLink to="/community">community</NavLink>
 				</NavLi>
@@ -119,34 +120,35 @@ function Navbar() {
 							onClick={() => {
 								setisMenu(!isMenu);
 							}}
+							style={{ marginTop: isMenu ? '15.4rem' : '' }}
 						/>
+						{isMenu && (
+							<MenuUl ref={modalMenu}>
+								<MenuLi>
+									<NavLink to="/passwordcheck">회원 정보 수정</NavLink>
+								</MenuLi>
+								<MenuLi>여행 페이지 이동</MenuLi>
+								<MenuLi>
+									<NavLink to="/mypage">마이페이지</NavLink>
+								</MenuLi>
+								<MenuLi>글쓰기</MenuLi>
+								<MenuLi
+									onClick={() => {
+										if (window.confirm('로그아웃 하시겠습니까?')) {
+											localStorage.clear();
+											setIsLoggedIn(false);
+											setisMenu(false);
+											navigate('/login');
+										} else {
+											return;
+										}
+									}}
+								>
+									로그아웃
+								</MenuLi>
+							</MenuUl>
+						)}
 					</NavLi>
-				)}
-				{isMenu && (
-					<MenuUl ref={modalMenu}>
-						<MenuLi>
-							<NavLink to="/passwordcheck">회원 정보 수정</NavLink>
-						</MenuLi>
-						<MenuLi>여행 페이지 이동</MenuLi>
-						<MenuLi>
-							<NavLink to="/mypage">마이페이지</NavLink>
-						</MenuLi>
-						<MenuLi>글쓰기</MenuLi>
-						<MenuLi
-							onClick={() => {
-								if (window.confirm('로그아웃 하시겠습니까?')) {
-									localStorage.clear();
-									setIsLoggedIn(false);
-									setisMenu(false);
-									navigate('/login');
-								} else {
-									return;
-								}
-							}}
-						>
-							로그아웃
-						</MenuLi>
-					</MenuUl>
 				)}
 			</NavUl>
 		</Nav>

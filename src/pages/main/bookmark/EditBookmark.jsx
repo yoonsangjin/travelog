@@ -8,13 +8,6 @@ import { listNumberState } from '../../../recoil/Atom';
 function EditBookmark(props) {
 	const [listNumber, setListNumber] = useRecoilState(listNumberState);
 	const [select, setSelect] = useState([]);
-
-	const editRef = useRef();
-	useEffect(() => {
-		console.log(editRef.current);
-		console.log(select);
-	}, [select]);
-
 	function editFolder() {
 		setListNumber(props.i);
 		console.log(props.i);
