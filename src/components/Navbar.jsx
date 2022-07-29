@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { loginState } from '../recoil/Atom';
 import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const Nav = styled.nav`
 	width: 100vw;
 	height: 5rem;
@@ -78,19 +78,32 @@ function Navbar() {
 	const modalMenu = useRef();
 	const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
 	const [isMenu, setisMenu] = useState(false);
+	const [profileIcon, setProfileIcon] = useState('');
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (localStorage.getItem('token')) setIsLoggedIn(true);
+		axios
+			.get('http://localhost:8000/api/users/user', config)
+			.then(({ data }) => setProfileIcon(data.profileImg));
 		window.addEventListener('mousedown', handleModalOutside);
 		return () => {
 			window.removeEventListener('mousedown', handleModalOutside);
 		};
-	});
+	}, [profileIcon]);
 
 	const handleModalOutside = event => {
 		if (isMenu && !modalMenu.current.contains(event.target)) {
 			setisMenu(!isMenu);
 		}
+	};
+
+	const token = window.localStorage.getItem('token');
+	let config = {
+		headers: { Authorization: `Bearer ${token}` },
+	};
+
+	const handleClickList = () => {
+		setisMenu(false);
 	};
 
 	return (
@@ -100,15 +113,17 @@ function Navbar() {
 					navigate('/');
 				}}
 			>
-				<Img src="img/travelog.jpg" />
+				<Img src="/img/travelog.jpg" />
 			</LogoContainer>
 			<NavUl style={{ marginRight: isMenu ? '-2rem' : '' }}>
 				<NavLi>
 					<NavLink to="/community">community</NavLink>
 				</NavLi>
-				<NavLi>
-					<NavLink to="/mypage">my page</NavLink>
-				</NavLi>
+				{isLoggedIn && (
+					<NavLi>
+						<NavLink to="/mypage">my page</NavLink>
+					</NavLi>
+				)}
 				{!isLoggedIn ? (
 					<NavLi>
 						<LoginBtn to="/login">login</LoginBtn>
@@ -116,22 +131,27 @@ function Navbar() {
 				) : (
 					<NavLi>
 						<NavbarIcon
-							src="img/default.png"
+							src={profileIcon}
 							onClick={() => {
 								setisMenu(!isMenu);
 							}}
 							style={{ marginTop: isMenu ? '15.4rem' : '' }}
 						/>
+
 						{isMenu && (
 							<MenuUl ref={modalMenu}>
 								<MenuLi>
-									<NavLink to="/passwordcheck">회원 정보 수정</NavLink>
+									<NavLink to="/passwordcheck" onClick={handleClickList}>
+										회원 정보 수정
+									</NavLink>
 								</MenuLi>
 								<MenuLi>여행 페이지 이동</MenuLi>
 								<MenuLi>
-									<NavLink to="/mypage">마이페이지</NavLink>
+									<NavLink onClick={handleClickList} to="/mypage">
+										마이페이지
+									</NavLink>
 								</MenuLi>
-								<MenuLi>글쓰기</MenuLi>
+								<MenuLi onClick={handleClickList}>글쓰기</MenuLi>
 								<MenuLi
 									onClick={() => {
 										if (window.confirm('로그아웃 하시겠습니까?')) {

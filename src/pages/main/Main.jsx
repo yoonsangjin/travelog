@@ -68,7 +68,6 @@ function Main() {
 			for (let i = 0; i < bookmarkArray.length; i++) {
 				decodeArray[i] = bookmarkArray[i].map(element => {
 					let decodeArray = {
-						serverId: element.id,
 						bookmarkMemo: element.bookmarkMemo,
 						place_name: element.placeName,
 						place_url: element.placeUrl,
