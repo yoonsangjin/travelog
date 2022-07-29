@@ -18,9 +18,7 @@ function ModalBmList() {
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
 	const [currentList, setCurrentList] = useRecoilState(currentListState);
 
-	useState(() => {
-
-	},[listNumber])
+	useState(() => {}, [listNumber]);
 
 	function handleListColor(e) {
 		const id = e.target.id;
@@ -30,10 +28,7 @@ function ModalBmList() {
 
 		setBookmarkSet(newArray);
 
-
-		currentList.includes(id)
-			? setCurrentList(currentList.filter(number => number != id))
-			: setCurrentList([...currentList, id]);
+		currentList.includes(id) ? setCurrentList('') : setCurrentList(id);
 	}
 
 	return (

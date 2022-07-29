@@ -11,16 +11,16 @@ export default function BookmarkModal() {
 	const setShowBmList = useSetRecoilState(showBmListState);
 
 	function handleMakeBookmark() {
-			setShowBmList(true)
+		setShowBmList(true);
 	}
 
 	return (
 		<BmModalStyle>
 			<div className="title">
 				<BsFillStarFill className="staricon" color="#ffb877" />
-				<p id='bookmarkTitle'>북마크</p>
+				<p id="bookmarkTitle">북마크</p>
 			</div>
-				
+
 			<div id="x" onClick={() => setAddBookmark(!addBookmark)}>
 				<MdOutlineClose color="#5f6caf" />
 			</div>

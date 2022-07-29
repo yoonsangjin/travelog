@@ -12,7 +12,7 @@ function Map() {
 	const setPlaceInfo = useSetRecoilState(placeInfoState);
 	const setMainInputValue = useSetRecoilState(mainInputValueState);
 	const location = useLocation();
-	
+
 	useEffect(() => {
 		const queryArray = decodeURI(location.search).split('=');
 		const params = queryArray[1];

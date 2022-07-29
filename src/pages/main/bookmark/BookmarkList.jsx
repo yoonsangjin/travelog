@@ -8,14 +8,12 @@ import {
 	bookmarkListState,
 	bookmarkState,
 	currentListState,
-	listNumberState,
 	viewDetailState,
 } from '../../../recoil/Atom';
 import EditBookmark from './EditBookmark';
 
 function BookmarkList(props) {
-	const setListNumber = useSetRecoilState(listNumberState);
-	const setViewDetail = useSetRecoilState(viewDetailState);
+	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
 	const allBookmark = useRecoilValue(allBookmarkState);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [bmList, setBmList] = useRecoilState(bookmarkListState);
@@ -25,8 +23,7 @@ function BookmarkList(props) {
 	const hiddenDivRef = useRef();
 	const btnRef = useRef();
 
-	useEffect(() => {
-	}, [currentList]);
+	useEffect(() => {}, [currentList]);
 
 	function addFolder() {
 		hiddenDivRef.current.style.display = 'flex';
@@ -35,17 +32,16 @@ function BookmarkList(props) {
 	function viewMore(e) {
 		props.setGetNumber(e.target.id);
 		setCurrentList(e.target.id);
-		if (allBookmark[e.target.id]) {
-			let serverArray = JSON.parse(JSON.stringify(allBookmark[e.target.id]));
-			// 서버의 배열을 가져와서 현재 배열에 합치고 중복 제거
-			let sum = [...serverArray, ...bookmark];
-			let result = sum.filter(
-				(arr, index, callback) => index === callback.findIndex(data => data.id === arr.id),
-			);
-			setBookmark(result);
-
-			setViewDetail(false);
-		}
+		// if (allBookmark[e.target.id]) {
+		// 	let serverArray = JSON.parse(JSON.stringify(allBookmark[e.target.id]));
+		// 	// 서버의 배열을 가져와서 현재 배열에 합치고 중복 제거
+		// 	let sum = [...serverArray, ...bookmark];
+		// 	let result = sum.filter(
+		// 		(arr, index, callback) => index === callback.findIndex(data => data.id === arr.id),
+		// 	);
+		// setBookmark(result);
+		setViewDetail(!viewDetail);
+		// }
 	}
 	function handleSubmit() {
 		setBmList([...bmList, inputRef.current.value]);
@@ -62,7 +58,7 @@ function BookmarkList(props) {
 				{bmList.map((element, i) => (
 					<div key={i} className="folder">
 						<MdStars color="#ffb877" className="btnStar" size="32" />
-						<button className="listName" id={i} onClick={viewMore} >
+						<button className="listName" id={i} onClick={viewMore}>
 							{element}
 						</button>
 						<EditBookmark i={i} setEdit={setEdit} edit={edit} />

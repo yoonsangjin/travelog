@@ -24,8 +24,7 @@ function SetComments(props) {
 	}
 
 	const handleChange = e => {
-			setValue(e.target.value);
-			// debounce 넣으면 메모 안들어감
+		setValue(e.target.value);
 	};
 
 	return (
@@ -43,7 +42,9 @@ function SetComments(props) {
 				<button onClick={handleBtn} ref={buttonRef}>
 					등록
 				</button>
-				<p className="viewMemo" ref={pRef}>{text[props.i]}</p>
+				<p className="viewMemo" ref={pRef}>
+					{text[props.i]}
+				</p>
 			</div>
 		</SetCommentsStyle>
 	);

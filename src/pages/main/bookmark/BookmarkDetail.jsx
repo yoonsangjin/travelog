@@ -21,23 +21,20 @@ function BookmarkDetail(props) {
 	const bmList = useRecoilValue(bookmarkListState);
 	const listNumber = useRecoilValue(listNumberState);
 	const [bookmarkSet, setBookmarkSet] = useRecoilState(bookmarkSetState);
-	const setViewDetail = useSetRecoilState(viewDetailState);
-	const [text, setText] = useRecoilState(textState)
+	const [viewDetail, setViewDetail] = useRecoilState(viewDetailState);
+	const [text, setText] = useRecoilState(textState);
 	const currentList = useRecoilValue(currentListState);
 
 	useEffect(() => {
-		let newArray = makeBookmark(bookmark, text, bmList, listNumber)
+		let newArray = makeBookmark(bookmark, text, bmList, listNumber);
 		setBookmarkSet(newArray);
-	},[bookmark])
+	}, [bookmark]);
 
 	let navigate = useNavigate();
-	
-	useEffect(()=>{
-			
-	},[listNumber])
+
+	useEffect(() => {}, [listNumber]);
 
 	async function sendToWriting() {
-
 		const token = localStorage.getItem('token');
 		await axios({
 			method: 'post',
@@ -45,7 +42,7 @@ function BookmarkDetail(props) {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
-			data: bookmarkSet,	
+			data: bookmarkSet,
 		})
 			.then(res => {
 				console.log(res.status);
@@ -59,11 +56,11 @@ function BookmarkDetail(props) {
 		<DetailPageStyle>
 			<div className="folder">
 				<MdStars color="#ffb877" id="btnStar" size="32" />
-				<p className='detailPageTitleName'>{bmList[props.getNumber]}</p>
-				<MdArrowBackIos className="backBtn" onClick={() => setViewDetail(true)} />
+				<p className="detailPageTitleName">{bmList[props.getNumber]}</p>
+				<MdArrowBackIos className="backBtn" onClick={() => setViewDetail(!viewDetail)} />
 			</div>
 			<div className="content">
-				{currentList.includes(props.getNumber) &&<BookmarkInfoDetail getNumber={props.getNumber} />}
+				{currentList == props.getNumber && <BookmarkInfoDetail getNumber={props.getNumber} />}
 			</div>
 			<button className="redirectTowrite" onClick={sendToWriting}>
 				글쓰기
@@ -86,7 +83,7 @@ const DetailPageStyle = styled.div`
 		text-align: center;
 		background-color: white;
 		border-radius: 0.5rem;
-		border: 1px solid rgb(219,219,219);
+		border: 1px solid rgb(219, 219, 219);
 	}
 	.content {
 		width: 23rem;
@@ -98,7 +95,7 @@ const DetailPageStyle = styled.div`
 		overflow-x: hidden;
 		background-color: white;
 		border-radius: 0.25rem;
-		border: 1px solid rgb(219,219,219);
+		border: 1px solid rgb(219, 219, 219);
 		&::-webkit-scrollbar {
 			width: 4px;
 		}
@@ -125,7 +122,7 @@ const DetailPageStyle = styled.div`
 		margin-left: 1.3rem;
 		font-size: 1rem;
 		min-height: 10rem;
-		border: 1px solid rgb(219,219,219);
+		border: 1px solid rgb(219, 219, 219);
 	}
 
 	.infoBox {

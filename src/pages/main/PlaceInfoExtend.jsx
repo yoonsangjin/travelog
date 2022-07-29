@@ -32,7 +32,9 @@ function PlaceInfoExtend() {
 					</h2>
 					<p>{detailInfo.phone}</p>
 					<div className="placeUrl">
-						<a href={detailInfo.place_url}>카카오 지도에서 보기</a>
+						<a href={detailInfo.place_url} target="_blank">
+							카카오 지도에서 보기
+						</a>
 					</div>
 				</div>
 				<div className="travelog"></div>

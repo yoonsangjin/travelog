@@ -39,8 +39,8 @@ function BookmarkInfo() {
 	}
 
 	function ActivateExtend(e) {
-			setActive(true);
-			setDetailInfo(placeInfo[e.target.id]);
+		setActive(true);
+		setDetailInfo(placeInfo[e.target.id]);
 	}
 
 	function makeBookmarkInfo(bookmark) {
@@ -51,9 +51,7 @@ function BookmarkInfo() {
 					<button id={data.id} name={i} className="deleteBtn" onClick={handleBookmark}>
 						x
 					</button>
-					<p className="bookmarkInfoName">
-						{data.place_name}
-					</p>
+					<p className="bookmarkInfoName">{data.place_name}</p>
 					<SetComments i={i} className="modalInput" comment={comment} setComment={setComment} />
 				</div>
 			</div>

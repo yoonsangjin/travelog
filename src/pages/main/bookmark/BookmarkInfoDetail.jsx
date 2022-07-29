@@ -3,28 +3,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 import handleStyle from '../../../function/handleStyle';
 import makeBookmark from '../../../function/makeBookmark';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-	placeInfoState,
-	bookmarkState,
-	activeState,
-	detailInfoState,
-	bookmarkListState,
-	textState,
-	listNumberState,
-	allBookmarkState,
-} from '../../../recoil/Atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { bookmarkState, bookmarkListState, textState, listNumberState } from '../../../recoil/Atom';
 import SetComments from './SetComments';
 
-function BookmarkInfoDetail(props) {
-	const [placeInfo, setPlaceInfo] = useRecoilState(placeInfoState);
-	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+function BookmarkInfoDetail() {
 	const bmList = useRecoilValue(bookmarkListState);
-	const [text, setText] = useRecoilState(textState);
-	const setActive = useSetRecoilState(activeState);
+	const text = useRecoilValue(textState);
 	const listNumber = useRecoilValue(listNumberState);
-	const [detailInfo, setDetailInfo] = useRecoilState(detailInfoState);
-	const [allBookmark, setAllBookmark] = useRecoilState(allBookmarkState);
+	const [bookmark, setBookmark] = useRecoilState(bookmarkState);
 	const [comment, setComment] = useState();
 
 	useEffect(() => {
@@ -65,13 +52,15 @@ function BookmarkInfoDetail(props) {
 				<div className="detailPageFlexBox">
 					<div className="detailPageiconBox">{handleStyle(data)}</div>
 					<div className="detaliPagecolumnFlex">
-						<div
-							className="detailPagePlaceName"
-							style={{ color: '#5f6caf', cursor: 'pointer' }}
-						>
+						<div className="detailPagePlaceName" style={{ color: '#5f6caf', cursor: 'pointer' }}>
 							{data.place_name}
 						</div>
-						<SetComments className='detailPagePencil' i={i} comment={comment} setComment={setComment} />
+						<SetComments
+							className="detailPagePencil"
+							i={i}
+							comment={comment}
+							setComment={setComment}
+						/>
 					</div>
 				</div>
 			</div>

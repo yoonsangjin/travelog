@@ -30,18 +30,20 @@ function EditModal(props) {
 				수정하기
 			</button>
 			{isEditName && (
-				<span style={{display:'flex'}}>
+				<span style={{ display: 'flex' }}>
 					<input
 						className="editInput"
 						value={editValue}
-						onChange={(e) => setEditValue(e.target.value)}
+						onChange={e => setEditValue(e.target.value)}
 					/>
 					<button className="closeEditBtn" onClick={changeName}>
 						확인
 					</button>
 				</span>
 			)}
-			<button className="editModalListBtn" onClick={deleteList}>삭제하기</button>
+			<button className="editModalListBtn" onClick={deleteList}>
+				삭제하기
+			</button>
 		</EditModalStyle>
 	);
 }
@@ -60,7 +62,7 @@ const EditModalStyle = styled.div`
 
 	border-radius: 0.25rem;
 
-	.editModalListBtn{
+	.editModalListBtn {
 		padding: 0.5rem;
 		font-size: 0.5rem;
 		border: 1px solid #eee;

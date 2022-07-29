@@ -55,6 +55,7 @@ const SearchBarContainer = styled.div`
 	}
 
 	.searchPlace {
+		padding-left: 0.5rem;
 		border: none;
 		flex-grow: 3;
 	}
