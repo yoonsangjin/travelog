@@ -1,25 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { debounce } from 'lodash';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { placeState, mainInputValueState, bookmarkbarState, extendbarState } from '../../recoil/Atom';
+import {
+	placeState,
+	mainInputValueState,
+	bookmarkbarState,
+	extendbarState,
+} from '../../recoil/Atom';
 
 function Searchbar() {
 	const [mainInputValue, setMainInputValue] = useRecoilState(mainInputValueState);
-  const setBmClose = useSetRecoilState(bookmarkbarState);
+	const setBmClose = useSetRecoilState(bookmarkbarState);
 	const setClose = useSetRecoilState(extendbarState);
-  const setPlace = useSetRecoilState(placeState);
-  
+	const setPlace = useSetRecoilState(placeState);
 
-	const onChange = e => {
+	const onChange = debounce((e) => {
 		setMainInputValue(e.target.value);
-	};
+	}, 500);
 
 	const handleSubmit = e => {
 		e.preventDefault();
 		setPlace(mainInputValue);
-    setClose(false);
-    setBmClose(true);
+		setClose(false);
+		setBmClose(true);
 	};
 
 	return (
@@ -54,7 +59,7 @@ const SearchBarContainer = styled.div`
 		border: none;
 		flex-grow: 3;
 	}
-	
+
 	.searchPlace:focus {
 		outline: none;
 	}

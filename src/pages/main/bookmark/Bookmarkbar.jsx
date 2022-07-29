@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Searchbar from '../Searchbar';
-import { BsCaretLeftSquare } from 'react-icons/bs';
 import { IoMdAirplane } from 'react-icons/io';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { bookmarkbarState, viewDetailState } from '../../../recoil/Atom';
+import {
+	allBookmarkState,
+	bookmarkbarState,
+	bookmarkState,
+	bookmarkListState,
+	viewDetailState,
+} from '../../../recoil/Atom';
 import BookmarkList from './BookmarkList';
 import BookmarkDetail from './BookmarkDetail';
 import SetModalBtn from '../../../components/SetModalBtn';
@@ -19,7 +25,11 @@ function Bookmarkbar() {
 	}, [viewDetail]);
 
 	function renderDetailPage() {
-		return viewDetail ? <BookmarkList getNumber={getNumber} setGetNumber={setGetNumber} /> : <BookmarkDetail getNumber={getNumber} setGetNumber={setGetNumber} />;
+		return viewDetail ? (
+			<BookmarkList getNumber={getNumber} setGetNumber={setGetNumber} />
+		) : (
+			<BookmarkDetail getNumber={getNumber} setGetNumber={setGetNumber} />
+		);
 	}
 
 	function handleBookmarkbar() {
@@ -43,7 +53,7 @@ function Bookmarkbar() {
 const BookmarkbarStyle = styled.div`
 	position: absolute;
 	z-index: 6;
-	border-right: 1px solid rgb(219,219,219);
+	border-right: 1px solid rgb(219, 219, 219);
 	.bookmarkbar {
 		display: flex;
 		flex-flow: column;

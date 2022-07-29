@@ -2,14 +2,17 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { MdStars } from 'react-icons/md';
 import { BsPlusCircle } from 'react-icons/bs';
-import { useRecoilState } from 'recoil';
-import { bookmarkListState, viewDetailState, listNumberState } from '../../../recoil/Atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { allBookmarkState, bookmarkListState, bookmarkState, listNumberState, viewDetailState } from '../../../recoil/Atom';
 import EditBookmark from './EditBookmark';
-function BookmarkList(props) {
-	const [bmList, setBmList] = useRecoilState(bookmarkListState);
-	const [, setViewDetail] = useRecoilState(viewDetailState);
-	const [edit, setEdit] = useState(false);
 
+function BookmarkList(props) {
+	const setListNumber = useSetRecoilState(listNumberState);
+	const setViewDetail = useSetRecoilState(viewDetailState);
+	const setBookmark = useSetRecoilState(bookmarkState);
+	const allBookmark = useRecoilValue(allBookmarkState);
+	const [bmList, setBmList] = useRecoilState(bookmarkListState);
+	const [edit, setEdit] = useState(false);
 
 	const inputRef = useRef();
 	const hiddenDivRef = useRef();
@@ -22,9 +25,14 @@ function BookmarkList(props) {
 	}
 
 	function viewMore(e) {
-		setViewDetail(false);
+		setBookmark(allBookmark[e.target.id]);
+		setListNumber(e.target.id);
 		props.setGetNumber(e.target.id);
 		console.log(props.getNumber);
+		setTimeout(()=>{
+			setViewDetail(false);
+		},200)
+		
 	}
 
 	function handleSubmit() {
@@ -40,10 +48,12 @@ function BookmarkList(props) {
 					<p>새 폴더</p>
 				</div>
 				{bmList.map((element, i) => (
-					<div key={i} className="folder" >
+					<div key={i} className="folder">
 						<MdStars color="#ffb877" className="btnStar" size="32" />
-						<p id={i} onClick={viewMore}>{element}</p>
-						<EditBookmark  i={i} setEdit={setEdit} edit={edit}/>
+						<p id={i} onClick={viewMore}>
+							{element}
+						</p>
+						<EditBookmark i={i} setEdit={setEdit} edit={edit} />
 					</div>
 				))}
 
@@ -74,7 +84,7 @@ const BmListStyle = styled.div`
 		height: 65vh;
 		margin: 0 auto;
 		background-color: white;
-		border: 1px solid rgb(219,219,219);
+		border: 1px solid rgb(219, 219, 219);
 		border-radius: 0.25rem;
 	}
 
@@ -104,13 +114,13 @@ const BmListStyle = styled.div`
 
 	.btnPlus {
 		position: absolute;
-		color: rgb(255,184,119);
+		color: rgb(255, 184, 119);
 		padding-top: 0.1rem;
 		left: 8rem;
 	}
 
 	.btnStar {
-		color: rgb(255,184,119);
+		color: rgb(255, 184, 119);
 		padding: 0.5rem;
 		position: absolute;
 		left: 4rem;
@@ -146,4 +156,4 @@ const BmListStyle = styled.div`
 	}
 `;
 
-export default BookmarkList;
+export default BookmarkList; 
