@@ -78,6 +78,7 @@ const CommentBtn = styled.button`
 `;
 const ProfileBox = styled.div`
   display: flex;
+  height: 5rem;
   padding-left: 1rem;
   padding-right: 2rem;
   justify-content: space-between;
@@ -157,7 +158,14 @@ const CommentSubmitBtn = styled.button`
   transform: translate(-50%, -50%);
 `;
 
-function Comment() {
+function Comment({ nickname, profileImg, createAt }) {
+  let date = new Date(createAt);
+  let year = date.getFullYear();
+	let month = ('0' + (1 + date.getMonth())).slice(-2);
+  let day = ('0' + date.getDate()).slice(-2);
+  var hours = ('0' + date.getHours()).slice(-2);
+  var minutes = ('0' + date.getMinutes()).slice(-2);
+  const created = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
   const [commentData, setCommentData] = useState([]);
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
@@ -177,7 +185,6 @@ function Comment() {
 	useEffect(() => {
 		getCommnetData();
 	}, []);
-  console.log(commentData);
 	const inputRef = useRef();
 	const [value, setValue] = useState('');
 	const [heart, setHeart] = useState(false);
@@ -199,9 +206,8 @@ function Comment() {
 	useEffect(() => {
 		setRandomId(new Date().getTime());
 	}, [value]);
-	  const [commentList, setCommentList] = useState([]);
   // 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
-  const addComment = e => {
+  const addComment = async e => {
     const addCommnetData = async () => {
 			await axios
 				.post(
@@ -212,7 +218,6 @@ function Comment() {
 						like: 0,
 						createAt: new Date(),
 						postId: 32,
-						userId: 2,
 					},
 					config,
 				)
@@ -225,9 +230,10 @@ function Comment() {
 		};
 		e.preventDefault();
 		inputRef.current.value = '';
-    addCommnetData();
+    await addCommnetData();
 		setValue('');
     setIsValid(false);
+    await getCommnetData();
 	};
 	let heartStatus = heart ? (
 		<IoHeartSharp heart={heart} className="redHeart" />
@@ -239,11 +245,11 @@ function Comment() {
 			<ProfileBox>
 				<ProfilInfo>
 					<ProfileImgBox>
-						<ProfileImg src="https://cdn.pixabay.com/photo/2016/11/18/15/03/man-1835195_1280.jpg"></ProfileImg>
+						<ProfileImg src={profileImg ? profileImg : 'img/default.png'}></ProfileImg>
 					</ProfileImgBox>
 					<InfoBox>
-						<UserName>관리자</UserName>
-						<DateNTime> 2022년 7월 25일</DateNTime>
+						<UserName>{nickname}</UserName>
+            <DateNTime>{created}</DateNTime>
 					</InfoBox>
 				</ProfilInfo>
 				<MoreBtn>

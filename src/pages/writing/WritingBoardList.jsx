@@ -8,6 +8,7 @@ import { ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 
 const ListBox = styled.div`
+  min-width: 10rem;
 	flex: 0 0 auto;
 	padding: 1rem;
 	position: relative;

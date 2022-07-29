@@ -114,6 +114,11 @@ export const boardState = atom({
   default: [],
 })
 
+export const dataState = atom({
+	key: 'dataState',
+	default: [],
+});
+
 export const checkedState = atom({
   key: 'checkedState',
   default: [],

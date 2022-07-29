@@ -7,6 +7,11 @@ import { IoMapOutline, IoFlagSharp } from 'react-icons/io5';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
 import axios from 'axios';
+//colorLog
+import { colorLogState } from '../../recoil/Atom';
+import ColorLogPageComponents from '../../components/ColorLogPageComponents';
+import { useRecoilState } from 'recoil';
+
 const WritingSection = styled.section`
   width: 100vw;
   height: calc(100vh - 5rem);
@@ -20,23 +25,23 @@ const WritingContainer = styled.div`
   display: flex;
 `;
 const EditContainer = styled.div`
-  display: flex;
-  width: 46vw;
-  margin-right: 22vw;
-  padding-right: 2vw;
-  padding-left: 2vw;
-  flex-direction: column;
-  padding-top: 3rem;
-  gap: 2rem;
-  border-left: 1px solid #e9e9e9;
-  .toastui-editor-defaultUI {
-    border: 3px solid #f1f1f1 !important;
-    padding: 5px !important;
-    border-radius: 2px !important;
-  }
-  .toastui-editor-defaultUI-toolbar {
-    background-color: #edf7fa;
-  }
+	display: flex;
+	width: 46vw;
+	margin-right: 22vw;
+	padding-right: 2vw;
+	padding-left: 2vw;
+	flex-direction: column;
+	padding-top: 3rem;
+	gap: 2rem;
+	border-left: 1px solid #e9e9e9;
+	.toastui-editor-defaultUI {
+		border: 3px solid #f1f1f1 !important;
+		padding: 5px !important;
+		border-radius: 2px !important;
+	}
+	.toastui-editor-defaultUI-toolbar {
+		background-color: #edf7fa;
+	}
 `;
 const WritingHeader = styled.h1`
 	font-size: 3rem;
@@ -83,11 +88,10 @@ const City = styled.a`
 	line-height: 2.5rem;
 `;
 const Board = styled.div`
-  width: 100%;
-  height: 18rem;
-  display: flex;
-  gap: 1rem;
-  overflow: scroll;
+	width: 100%;
+	height: 18rem;
+	display: flex;
+	gap: 1rem;
 `;
 const ViewerBox = styled.div`
   padding-left: 1 rem;
@@ -168,12 +172,12 @@ function View() {
   const getWritingData = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/posts/user/32', config)
+        .get('http://localhost:8000/api/posts/user/62', config)
         .then(res => {
-          setWriting(res.data);
-          setBoard(JSON.parse(res.data.markedData));
-          setTag(JSON.parse(res.data.tag));
-        });
+        setWriting(res.data);
+        setBoard(JSON.parse(res.data.markedData));
+        setTag(JSON.parse(res.data.tag));
+      });
     } catch (err) {
       console.log(err);
     }
@@ -181,6 +185,10 @@ function View() {
   useEffect(() => {
     getWritingData();
   }, []);
+  const [buttonClick, setButtonClick] = useRecoilState(colorLogState);
+  const handleButtonClick = () => {
+		setButtonClick(true);
+	};
   return (
 		<WritingSection>
 			<WritingContainer>
@@ -192,9 +200,10 @@ function View() {
 						</MenuBtn>
 					</MenuBtnBox>
 					<MenuBtnBox>
-						<MenuBtn href="/community">
+						<MenuBtn onClick={handleButtonClick}>
 							<IoFlagSharp className="munuImg" />
 							<BtnInfo className="log">COLORLOG</BtnInfo>
+							{buttonClick && <ColorLogPageComponents />}
 						</MenuBtn>
 					</MenuBtnBox>
 				</MenuBox>
@@ -202,15 +211,16 @@ function View() {
 					<WritingHeaderBox>
 						<WritingHeader>{writing.title}</WritingHeader>
 						<TagBox>
-              {writing.cateCity ? <City>{writing.cateCity}</City> : ''}
+							{writing.cateCity ? <City>{writing.cateCity}</City> : ''}
 							{tag ? tag.map(e => <Tag>{e}</Tag>) : ''}
 						</TagBox>
 					</WritingHeaderBox>
 					<Board>
+						{console.log(board)}
 						{board.map(e => {
 							return (
 								<ViewBoardList
-									bookmarkId={e.bookmarkId}
+									id={e.id}
 									placeName={e.placeName}
 									placeUrl={e.placeUrl}
 									bookmarkMemo={e.bookmarkMemo}
@@ -220,7 +230,15 @@ function View() {
 					</Board>
 					<ViewerBox>{writing.id ? <Viewer initialValue={writing.content} /> : ''}</ViewerBox>
 				</EditContainer>
-				<Comment/>
+				{writing.id ? (
+					<Comment
+						nickname={writing.User.nickname}
+						profileImg={writing.User.profileImg}
+						createAt={writing.createAt}
+					/>
+				) : (
+					' '
+				)}
 			</WritingContainer>
 		</WritingSection>
 	);

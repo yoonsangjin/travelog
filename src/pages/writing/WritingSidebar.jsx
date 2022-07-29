@@ -134,7 +134,7 @@ function WritingSidebar() {
 		let newlist = [];
 		switch (selected) {
 			case '최신':
-				newlist = [...list].sort((a, b) => a.index - b.index);
+				newlist = [...list].sort((a, b) => a.id - b.id);
 				setList(newlist);
 				break;
 			case '장소':
@@ -185,7 +185,7 @@ function WritingSidebar() {
 		e.preventDefault();
 		const filterData = list.filter(e => e.placeName.includes(inputValue));
 		setFiltering(filterData);
-	};
+  };
 	let filteredList;
 	if (inputValue) {
 		filteredList = filtering.map(e => {
@@ -207,7 +207,7 @@ function WritingSidebar() {
 					placeName={e.placeName}
 					placeUrl={e.placeUrl}
 					bookmarkMemo={e.bookmarkMemo}
-					categoryGroupName={e.categoryGroupName}
+          categoryGroupName={e.categoryGroupName}
 				/>
 			);
 		});

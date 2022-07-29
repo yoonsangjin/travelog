@@ -13,7 +13,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // recoil
 import { useRecoilState } from 'recoil';
-import { boardState, tagState, CityTagToggleState } from '../../recoil/Atom.jsx';
+import { boardState, tagState, CityTagToggleState, dataState } from '../../recoil/Atom.jsx';
 //react dnd
 import { useDrop } from 'react-dnd';
 import axios from 'axios';
@@ -131,6 +131,10 @@ const Select = styled.select`
   cursor: pointer;
   height: 2rem;
 `;
+const NoList = styled.p`
+	position: relative;
+	left: 45%;
+`;
 function Writing() {
 	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
 	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
@@ -138,7 +142,7 @@ function Writing() {
   
 	useBeforeunload(e => e.preventDefault());
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useRecoilState(dataState);
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
@@ -170,7 +174,6 @@ function Writing() {
 	};
 	// 보드 상태 변경
   const [board, setBoard] = useRecoilState(boardState);
-    console.log(data);
 	// DnD
 	const [{ isOver }, dropToAdd] = useDrop(() => ({
 		accept: 'card',
@@ -257,7 +260,7 @@ function Writing() {
 						title: header,
 						content: editorRef.current?.getInstance().getHTML(),
 						mainImg: imgList[0],
-						flagHideYN: 'Y',
+						flagHideYN: 'N',
 						markedData: JSON.stringify(board),
 						cateCity: cateTag[0],
 						tag: JSON.stringify(newTagList),
@@ -283,13 +286,13 @@ function Writing() {
 		const difference = imgList.filter(x => !realImg.includes(x));
 		difference.forEach(e => console.log(e));
 		alert('저장되었습니다.');
-	};
+  };
 	return (
 			<WritingSection>
 				<WritingSidebar />
 				<WritingContainer>
 					<Board ref={dropToAdd}>
-						{[...new Set(board)].map(e => {
+						{board.length ? [...new Set(board)].map(e => {
 							return (
 								<WritingBoardList
 									id={e.id}
@@ -299,7 +302,7 @@ function Writing() {
 									categoryGroupName={e.categoryGroupName}
 								/>
 							);
-						})}
+						}): <NoList> 여정을 추가하세요! </NoList> }
 					</Board>
 					<WritingHeaderBox>
 						<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
