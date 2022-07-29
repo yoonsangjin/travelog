@@ -34,7 +34,8 @@ function Kakao() {
 				const toServer = await axios.post('http://localhost:8000/api/users/kakao', {
 					data: userData,
 				});
-				window.localStorage.setItem('token', toServer.data.token);
+				localStorage.setItem('userId', toServer.data.userId);
+				localStorage.setItem('token', toServer.data.token);
 				setIsLoggedIn(true);
 				navigate('/');
 			} catch (e) {

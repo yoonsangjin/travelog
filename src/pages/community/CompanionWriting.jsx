@@ -11,21 +11,19 @@ function CompanionWriting() {
 	const data = {
 		title: input,
 		content: textarea,
-		type: 'qna',
+		type: 'together',
 	};
 	const token = localStorage.getItem('token');
 
 	const clickHandler = async () => {
 		try {
-			await axios.post(
-				'http://localhost:8000/api/posts/register',
-				{ data },
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+			await axios.post('http://localhost:8000/api/posts/register', data, {
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-			);
+			});
+
+			navigate('/community');
 		} catch (e) {
 			console.error(e);
 		}
