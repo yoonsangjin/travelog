@@ -17,22 +17,26 @@ const MyPage = () => {
 	const [userName, setUserName] = useState('');
 	const [userbookmark, setUserBookmark] = useState([]);
 	useEffect(() => {
-		axios.get('http://localhost:8000/api/users/user', config).then(({ data }) => {
-			setUserText(data.profileText);
-			setUserProfile(data.profileImg);
-			setUserId(data.id);
-			setUserName(data.name);
-		});
-		axios.get('http://localhost:8000/api/posts/user', config).then(({ data }) => setUserPost(data));
 		axios
-			.get('http://localhost:8000/api/bookmarks/folders', config)
+			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/user', config)
+			.then(({ data }) => {
+				setUserText(data.profileText);
+				setUserProfile(data.profileImg);
+				setUserId(data.id);
+				setUserName(data.name);
+			});
+		axios
+			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/user', config)
+			.then(({ data }) => setUserPost(data));
+		axios
+			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folders', config)
 			.then(({ data }) => setUserBookmark(data.length));
 	}, []);
 
 	const handleKeyDown = () => {
 		axios({
 			method: 'patch',
-			url: `http://localhost:8000/api/users/${userId}`,
+			url: `http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/${userId}`,
 			headers: { Authorization: `Bearer ${token}` },
 			data: {
 				profileText: usertext,

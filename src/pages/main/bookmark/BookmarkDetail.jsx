@@ -38,7 +38,7 @@ function BookmarkDetail(props) {
 		const token = localStorage.getItem('token');
 		await axios({
 			method: 'post',
-			url: 'http://localhost:8000/api/bookmarks/registers',
+			url: 'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/registers',
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

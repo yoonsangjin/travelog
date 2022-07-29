@@ -33,7 +33,7 @@ function Main() {
 			const token = localStorage.getItem('token');
 			await axios({
 				method: 'get',
-				url: 'http://localhost:8000/api/bookmarks/folders',
+				url: 'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folders',
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -47,7 +47,7 @@ function Main() {
 			for (let i = 0; i < bmArray.length; i++) {
 				axios({
 					method: 'get',
-					url: `http://localhost:8000/api/bookmarks/folder/${listResult[i]}`,
+					url: `http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folder/${listResult[i]}`,
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},

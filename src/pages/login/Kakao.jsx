@@ -7,7 +7,7 @@ function Kakao() {
 	const navigate = useNavigate();
 	const code = new URL(window.location.href).searchParams.get('code');
 	const grant_type = 'authorization_code';
-	const REDIRECT_URI = 'http://localhost:3000/auth';
+	const REDIRECT_URI = 'http://kdt-sw2-busan-team01.elicecoding.com:5001/auth';
 	const setIsLoggedIn = useSetRecoilState(loginState);
 	const getData = data => {
 		return axios.create({
@@ -25,9 +25,12 @@ function Kakao() {
 				console.log(res);
 				const accessToken = res.data.access_token;
 				const userData = await getData(accessToken).get();
-				const toServer = await axios.post('http://localhost:8000/api/users/kakao', {
-					data: userData,
-				});
+				const toServer = await axios.post(
+					'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/kakao',
+					{
+						data: userData,
+					},
+				);
 				localStorage.setItem('userId', toServer.data.userId);
 				localStorage.setItem('token', toServer.data.token);
 				setIsLoggedIn(true);

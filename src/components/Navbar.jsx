@@ -83,7 +83,7 @@ function Navbar() {
 	useEffect(() => {
 		if (localStorage.getItem('token')) setIsLoggedIn(true);
 		axios
-			.get('http://localhost:8000/api/users/user', config)
+			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/user', config)
 			.then(({ data }) => setProfileIcon(data.profileImg));
 		window.addEventListener('mousedown', handleModalOutside);
 		return () => {
