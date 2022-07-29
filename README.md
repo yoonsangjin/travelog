@@ -1,4 +1,4 @@
-# travelog[!travelog](file:///Users/parksojeong/Downloads/travelog.jpg)
+# ![travelog](https://user-images.githubusercontent.com/80265536/181826144-fcd582ee-f000-4f4d-a55c-6fc5637d58b6.jpg)
 
 ## 서비스 설명
 여행 중 관광지에서의 추억을 기록하는 서비스입니다. 
