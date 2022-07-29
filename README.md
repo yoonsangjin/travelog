@@ -1,4 +1,4 @@
-# travelog
+# travelog[!travelog](file:///Users/parksojeong/Downloads/travelog.jpg)
 
 ## 서비스 설명
 여행 중 관광지에서의 추억을 기록하는 서비스입니다. 
