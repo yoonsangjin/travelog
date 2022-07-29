@@ -89,7 +89,7 @@ function Navbar() {
 		return () => {
 			window.removeEventListener('mousedown', handleModalOutside);
 		};
-	}, [profileIcon]);
+	}, []);
 
 	const handleModalOutside = event => {
 		if (isMenu && !modalMenu.current.contains(event.target)) {
@@ -129,7 +129,7 @@ function Navbar() {
 				) : (
 					<NavLi>
 						<NavbarIcon
-							src={profileIcon}
+							src={profileIcon || '/img/default.png'}
 							onClick={() => {
 								setisMenu(!isMenu);
 							}}

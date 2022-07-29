@@ -169,7 +169,6 @@ function View() {
 	};
 	const getWritingData = async () => {
 		try {
-			console.log(id);
 			await axios.get(`http://localhost:8000/api/posts/user/${id}`, config).then(res => {
 				setWriting(res.data);
 				setBoard(JSON.parse(res.data.markedData));

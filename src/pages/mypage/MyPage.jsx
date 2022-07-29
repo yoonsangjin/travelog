@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { colorLogState } from '../../recoil/Atom';
 import ColorLogPageComponents from '../../components/ColorLogPageComponents';
 import { BiPencil } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
 	const [usertext, setUserText] = useState('');
@@ -14,6 +15,7 @@ const MyPage = () => {
 	const [editable, setEditable] = useState(false);
 	const [buttonClick, setButtonClick] = useRecoilState(colorLogState);
 	const [userName, setUserName] = useState('');
+	const navigate = useNavigate();
 	useEffect(() => {
 		axios.get('http://localhost:8000/api/users/user', config).then(({ data }) => {
 			setUserText(data.profileText);
@@ -22,6 +24,7 @@ const MyPage = () => {
 			setUserName(data.name);
 		});
 		axios.get('http://localhost:8000/api/posts/user', config).then(({ data }) => setUserPost(data));
+		axios.get('http://localhost:8000/api/bookmarks/folders', config).then(e => console.log(e));
 	}, []);
 
 	const handleKeyDown = () => {
@@ -49,7 +52,7 @@ const MyPage = () => {
 	return (
 		<Page>
 			<Profile>
-				<Img src={userprofile} />
+				<Img src={userprofile || '/img/default.png'} />
 				<UserName>{userName}</UserName>
 
 				{!editable ? (
@@ -89,16 +92,9 @@ const MyPage = () => {
 				<Post>게시물</Post>
 			</PostMenu>
 			<Feed>
-				<ImgFeed src="img/airport.jpg" />
-				<ImgFeed src="img/beach.jpg" />
-				<ImgFeed src="img/hamburg.jpg" />
-				<ImgFeed src="img/people.jpg" />
-				<ImgFeed src="img/avatar.jpg" />
 				{userpost.map(post => (
-					<div key={post.id}>
-						<a href="www.naver.com">
-							<ImgFeed src={post.mainImg} />
-						</a>
+					<div key={post.id} onClick={() => navigate(`/view/${post.id}`)}>
+						<ImgFeed src={post.mainImg} />
 					</div>
 				))}
 			</Feed>
