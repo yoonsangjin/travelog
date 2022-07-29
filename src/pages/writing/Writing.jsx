@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import WritingSidebar from './WritingSidebar';
 import TagBtn from './TagBtn';
@@ -13,12 +14,10 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // recoil
 import { useRecoilState } from 'recoil';
-import { boardState, tagState, CityTagToggleState, dataState } from '../../recoil/Atom.jsx';
-//react dnd
-import { useDrop } from 'react-dnd';
+import { boardState, tagState, dataState } from '../../recoil/Atom.jsx';
 import axios from 'axios';
 //s3
-import { S3Upload, S3deleteObject } from '../../components/S3';
+import { S3Upload } from '../../components/S3';
 import { useBeforeunload } from 'react-beforeunload';
 import { useLocation } from 'react-router';
 
@@ -137,6 +136,7 @@ const NoList = styled.p`
 `;
 function Writing() {
 	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
+	const navigate = useNavigate(); // redirect
 	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
 	const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
 
@@ -174,14 +174,6 @@ function Writing() {
 	};
 	// 보드 상태 변경
 	const [board, setBoard] = useRecoilState(boardState);
-	// DnD
-	const [{ isOver }, dropToAdd] = useDrop(() => ({
-		accept: 'card',
-		drop: item => addToBoard(item),
-		collect: monitor => ({
-			isOver: !!monitor.isOver(),
-		}),
-	}));
 	// 보드에 리스트 추가
 	const addToBoard = id => {
 		const items = data.filter(e => id === e.id);
@@ -259,8 +251,8 @@ function Writing() {
 			.slice(1)
 			.map(e => e.split(' ')[0])
 			.map(e => e.substring(0, e.length - 1));
+		// 업로드된 이미지를 삭제하기 위함
 		const difference = imgList.filter(x => !realImg.includes(x));
-		difference.forEach(e => console.log(e));
 		const firstImg = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${realImg[0]}`;
 		const postData = async () => {
 			await axios
@@ -286,12 +278,13 @@ function Writing() {
 		};
 		postData();
 		alert('저장되었습니다.');
+		navigate('../mypage');
 	};
 	return (
 		<WritingSection>
 			<WritingSidebar />
 			<WritingContainer>
-				<Board ref={dropToAdd}>
+				<Board>
 					{board.length ? (
 						[...new Set(board)].map(e => {
 							return (
