@@ -14,7 +14,7 @@ function Kakao() {
 	const getData = data => {
 		return axios.create({
 			baseURL: 'https://kapi.kakao.com/v2/user/me',
-			headers: { Authorization: ` ${data}` },
+			headers: { Authorization: `Bearer ${data}` },
 		});
 	};
 	useEffect(() => {
@@ -28,7 +28,6 @@ function Kakao() {
 						},
 					},
 				);
-
 				const accessToken = res.data.access_token;
 				const userData = await getData(accessToken).get();
 				const toServer = await axios.post('http://localhost:8000/api/users/kakao', {
