@@ -128,12 +128,12 @@ function CommentList({ content, createAt, like, userName, userprofile }) {
 	let now = new Date();
 	let ago = Math.ceil((now.getTime() - korea.getTime()) / 60000);
 	let time = 0;
-	if (ago > 60) {
-		let hour = Math.ceil(ago / 60);
-		time = `${hour}시간 전`;
-	} else if (ago > 1440) {
+	if (ago > 1440) {
 		let day = Math.ceil(ago / 1440);
 		time = `${day}일 전`;
+	} else if (ago > 60) {
+		let hour = Math.ceil(ago / 60);
+		time = `${hour}시간 전`;
 	} else {
 		time = `${ago}분 전`;
 	}

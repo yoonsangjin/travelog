@@ -93,7 +93,7 @@ const MyPage = () => {
 			<Feed>
 				{userpost.map(post => (
 					<FeedBox key={post.id}>
-						<FeedBtn onClick={() => navigate(`../View/${post.id}`)}>
+						<FeedBtn onClick={() => navigate(`../view/${post.id}`)}>
 							<FeedImg
 								src={
 									post.mainImg
