@@ -66,7 +66,7 @@ const MyPage = () => {
 				<Profile>
 					<ProfileHeader>
 						<ProfileImg>
-							<Img src="img/airport.jpg" />
+							<Img src={userdata.profileImg} />
 							<UserName>{userdata.name}</UserName>
 						</ProfileImg>
 
