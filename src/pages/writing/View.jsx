@@ -12,7 +12,6 @@ import axios from 'axios';
 import { colorLogState } from '../../recoil/Atom';
 import ColorLogPageComponents from '../../components/ColorLogPageComponents';
 import { useRecoilState } from 'recoil';
-
 const WritingSection = styled.section`
 	width: 100vw;
 	height: calc(100vh - 5rem);
@@ -163,9 +162,9 @@ const MenuBox = styled.div`
 
 function View() {
 	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
-	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
-	const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
-	console.log(params);
+	const queryArray = location.pathname.split('/'); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기 // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+	const params = queryArray[2]; // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기 // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+
 	const [writing, setWriting] = useState({});
 	const [board, setBoard] = useState([]);
 	const [tag, setTag] = useState([]);
@@ -176,7 +175,7 @@ function View() {
 	};
 	const getWritingData = async () => {
 		try {
-			await axios.get('http://localhost:8000/api/posts/user/62', config).then(res => {
+			await axios.get(`http://localhost:8000/api/posts/user/${params}`, config).then(res => {
 				setWriting(res.data);
 				setBoard(JSON.parse(res.data.markedData));
 				setTag(JSON.parse(res.data.tag));
@@ -218,17 +217,18 @@ function View() {
 						</TagBox>
 					</WritingHeaderBox>
 					<Board>
-						{console.log(board)}
-						{board.map(e => {
-							return (
-								<ViewBoardList
-									id={e.id}
-									placeName={e.placeName}
-									placeUrl={e.placeUrl}
-									bookmarkMemo={e.bookmarkMemo}
-								/>
-							);
-						})}
+						{board.length
+							? board.map(e => {
+									return (
+										<ViewBoardList
+											id={e.id}
+											placeName={e.placeName}
+											placeUrl={e.placeUrl}
+											bookmarkMemo={e.bookmarkMemo}
+										/>
+									);
+							  })
+							: ''}
 					</Board>
 					<ViewerBox>{writing.id ? <Viewer initialValue={writing.content} /> : ''}</ViewerBox>
 				</EditContainer>

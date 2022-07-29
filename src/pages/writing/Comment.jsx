@@ -11,6 +11,7 @@ import {
 	IoArrowRedoOutline,
 	IoHeartSharp,
 } from 'react-icons/io5';
+import { useLocation } from 'react-router';
 const CommentContainer = styled.div`
 	display: flex;
 	width: 26vw;
@@ -156,6 +157,7 @@ const CommentSubmitBtn = styled.button`
 	top: 50%;
 	left: 90%;
 	transform: translate(-50%, -50%);
+	cursor: pointer;
 `;
 
 function Comment({ nickname, profileImg, createAt }) {
@@ -172,10 +174,13 @@ function Comment({ nickname, profileImg, createAt }) {
 	let config = {
 		headers: { Authorization: `Bearer ${token}` },
 	};
+	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
+	const queryArray = location.pathname.split('/'); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기 // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+	const params = queryArray[2]; // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기 // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+
 	const getCommnetData = async () => {
 		try {
-			let postId = 32;
-			await axios.get(`http://localhost:8000/api/comments/${postId}`, config).then(res => {
+			await axios.get(`http://localhost:8000/api/comments/${params}`, config).then(res => {
 				setCommentData(res.data);
 			});
 		} catch (err) {
@@ -199,7 +204,9 @@ function Comment({ nickname, profileImg, createAt }) {
 	// 사용자로 부터 받아오는 값을 value에 업데이트
 	const getValue = e => {
 		setValue(e.target.value);
-		// e.target.value ? setIsValid(true) : null;
+		if (e.target.value) {
+			setIsValid(true);
+		}
 	};
 	//랜덤 아이디 생성
 	const [randomId, setRandomId] = useState(0);
@@ -208,10 +215,11 @@ function Comment({ nickname, profileImg, createAt }) {
 	}, [value]);
 	// 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
 	const addComment = async e => {
+		console.log('hi');
 		const addCommnetData = async () => {
 			await axios
 				.post(
-					'http://localhost:8000/api/comments/register/32',
+					`http://localhost:8000/api/comments/register/${params}`,
 					{
 						id: randomId,
 						content: value,
