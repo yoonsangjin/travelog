@@ -102,7 +102,6 @@ function ChangePassword() {
 	const token = window.localStorage.getItem('token');
 	const config = {
 		headers: { Authorization: `Bearer ${token}` },
-		//data: { currentPassword: '12341234' },
 	};
 
 	const handleSubmit = async e => {
@@ -125,6 +124,7 @@ function ChangePassword() {
 						password,
 					},
 				});
+				localStorage.clear();
 				window.location.href = '/login';
 			} catch (err) {
 				console.error(err.stack);

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const MyPage = () => {
 	const [usertext, setUserText] = useState('');
 	const [userpost, setUserPost] = useState([]);
+	const [userbookmark, setUserBookmark] = useState([]);
 	const [userId, setUserId] = useState('');
 	const [userprofile, setUserProfile] = useState('');
 	const [editable, setEditable] = useState(false);
@@ -23,8 +24,13 @@ const MyPage = () => {
 			setUserId(data.id);
 			setUserName(data.name);
 		});
-		axios.get('http://localhost:8000/api/posts/user', config).then(({ data }) => setUserPost(data));
-		axios.get('http://localhost:8000/api/bookmarks/folders', config).then(e => console.log(e));
+		const type = 'post';
+		axios
+			.get(`http://localhost:8000/api/posts/user/${type}`, config)
+			.then(({ data }) => setUserPost(data));
+		axios
+			.get('http://localhost:8000/api/bookmarks/folders', config)
+			.then(({ data }) => setUserBookmark(data.length));
 	}, []);
 
 	const handleKeyDown = () => {
@@ -49,6 +55,7 @@ const MyPage = () => {
 	const handleButtonClick = () => {
 		setButtonClick(true);
 	};
+
 	return (
 		<Page>
 			<Profile>
@@ -76,7 +83,7 @@ const MyPage = () => {
 				<MyInfo>
 					<MyInfoBox>
 						<p>내 여행</p>
-						<MyLog>3</MyLog>
+						<MyLog>{userbookmark}</MyLog>
 					</MyInfoBox>
 					<MyInfoBox>
 						<p>여행글</p>
@@ -93,9 +100,18 @@ const MyPage = () => {
 			</PostMenu>
 			<Feed>
 				{userpost.map(post => (
-					<div key={post.id} onClick={() => navigate(`/view/${post.id}`)}>
-						<ImgFeed src={post.mainImg} />
-					</div>
+					<FeedBox key={post.id}>
+						<FeedBtn onClick={() => navigate(`../View/${post.id}`)}>
+							<FeedImg
+								src={
+									post.mainImg
+										? post.mainImg
+										: 'https://cdn.crowdpic.net/detail-thumb/thumb_d_3865635F24FB50FC7E5E781B7974F81E.jpg'
+								}
+							></FeedImg>
+							<Title>{post.title}</Title>
+						</FeedBtn>
+					</FeedBox>
 				))}
 			</Feed>
 			{buttonClick && <ColorLogPageComponents />}
@@ -103,6 +119,53 @@ const MyPage = () => {
 	);
 };
 export default MyPage;
+
+const FeedImg = styled.img`
+	width: 17rem;
+	height: 20rem;
+	z-index: -9999;
+	box-sizing: border-box;
+	top: 0;
+	left: 0;
+	position: absolute;
+`;
+const FeedBtn = styled.button`
+	width: 17rem;
+	height: 20rem;
+	border: 0;
+	background-color:
+	box-sizing: border-box;
+	margin: auto;
+	object-fit: fill;
+	cursor: pointer;
+	position: relative;
+	background-color: transparent;
+`;
+const Title = styled.h2`
+	font-size: 1.4rem;
+	text-align: center;
+	display: none;
+`;
+const FeedBox = styled.div`
+	width: 17rem;
+	height: 20rem;
+	box-sizing: border-box;
+	margin: auto;
+	object-fit: fill;
+	cursor: pointer;
+
+	box-shadow: rgb(31 38 135 / 20%) 0px 8px 32px 0px;
+	&:hover ${FeedImg} {
+		filter: brightness(70%);
+	}
+	&:hover {
+		transform: scale(1.1);
+	}
+	&:hover ${Title} {
+		display: block;
+		color: #fff;
+	}
+`;
 
 const Page = styled.div`
 	width: 60rem;
@@ -209,17 +272,6 @@ const Feed = styled.div`
 	width: 60rem;
 `;
 
-const ImgFeed = styled.img`
-	width: 17rem;
-	height: 20rem;
-	box-sizing: border-box;
-	margin: auto;
-	object-fit: fill;
-	cursor: pointer;
-	&:hover {
-		filter: brightness(20%);
-	}
-`;
 const InputBox = styled.input`
 	width: 18rem;
 	height: 2.5rem;
