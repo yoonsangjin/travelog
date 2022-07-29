@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ViewBoardList from './ViewBoardList'
-import Comment from './Comment'
+import ViewBoardList from './ViewBoardList';
+import Comment from './Comment';
 import { IoMapOutline, IoFlagSharp } from 'react-icons/io5';
 // Toast-UI Viewer 임포트
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
@@ -13,16 +13,16 @@ import ColorLogPageComponents from '../../components/ColorLogPageComponents';
 import { useRecoilState } from 'recoil';
 
 const WritingSection = styled.section`
-  width: 100vw;
-  height: calc(100vh - 5rem);
-  gap: 2rem;
+	width: 100vw;
+	height: calc(100vh - 5rem);
+	gap: 2rem;
 `;
 const WritingContainer = styled.div`
-  width: 74vw;
-  height: calc(100vh - 5rem);
-  padding-left: 20vw;
-  position: relative;
-  display: flex;
+	width: 74vw;
+	height: calc(100vh - 5rem);
+	padding-left: 20vw;
+	position: relative;
+	display: flex;
 `;
 const EditContainer = styled.div`
 	display: flex;
@@ -94,55 +94,55 @@ const Board = styled.div`
 	gap: 1rem;
 `;
 const ViewerBox = styled.div`
-  padding-left: 1 rem;
-`
+	padding-left: 1 rem;
+`;
 //메뉴 버튼
 const BtnInfo = styled.span`
-  display: none;
-  height: 1rem;
-  position: absolute;
-  padding: 0.5rem;
-  bottom: 25%;
-  color: black;
-  transform: translate(-50%, 0);
-  border-radius: 0.5rem;
-  background-color: #f1f1f1;
+	display: none;
+	height: 1rem;
+	position: absolute;
+	padding: 0.5rem;
+	bottom: 25%;
+	color: black;
+	transform: translate(-50%, 0);
+	border-radius: 0.5rem;
+	background-color: #f1f1f1;
 `;
 const MenuBtn = styled.a`
-  display: flex;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  border: none;
-  position: relative;
-  background-color: #5f6caf;
-  color: #fff;
-  text-align: center;
-  align-items: center;
-  &:hover {
-    background-color: #949dc9;
-  }
-  &:hover ${BtnInfo} {
-    display: block;
-  }
-  .munuImg {
-    position: absolute;
-    width: 1.5rem;
-    height: 1.5rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .map {
-    left: -2.7rem;
-  }
-  .log {
-    left: -4.2rem;
-  }
+	display: flex;
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
+	border: none;
+	position: relative;
+	background-color: #5f6caf;
+	color: #fff;
+	text-align: center;
+	align-items: center;
+	&:hover {
+		background-color: #949dc9;
+	}
+	&:hover ${BtnInfo} {
+		display: block;
+	}
+	.munuImg {
+		position: absolute;
+		width: 1.5rem;
+		height: 1.5rem;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.map {
+		left: -2.7rem;
+	}
+	.log {
+		left: -4.2rem;
+	}
 `;
 const MenuBtnBox = styled.div`
-  display: flex;
-  position: relative;
+	display: flex;
+	position: relative;
 `;
 const MenuBox = styled.div`
   display: flex;
@@ -244,4 +244,4 @@ function View() {
 	);
 }
 
-export default View
+export default View;

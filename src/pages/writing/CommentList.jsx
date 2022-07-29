@@ -6,66 +6,66 @@ const CommentSection = styled.div`
   display flex;
   padding-left: 2rem;
 `;
-const Content = styled.span``; 
+const Content = styled.span``;
 
 const CommentBox = styled.div`
-  display: flex;
-  width: 18rem;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  position: relative;
-  margin-left: 1rem;
-  margin-right: 2rem;
-  padding: 0.8rem;
-  background-color: #edf7fa;
-  border-radius: 1rem;
-  box-sizing: border-box;
+	display: flex;
+	width: 18rem;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.5rem;
+	position: relative;
+	margin-left: 1rem;
+	margin-right: 2rem;
+	padding: 0.8rem;
+	background-color: #edf7fa;
+	border-radius: 1rem;
+	box-sizing: border-box;
 `;
 const UserName = styled.h2`
-  font-weight: bold;
+	font-weight: bold;
 `;
 const MenuBtn = styled.a`
-  display: flex;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  border: none;
-  position: relative;
-  background-color: #5f6caf;
-  color: #fff;
-  text-align: center;
-  align-items: center;
-  &:hover {
-    background-color: #949dc9;
-  }
-  .munuImg {
-    position: absolute;
-    width: 1.5rem;
-    height: 1.5rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+	display: flex;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	border: none;
+	position: relative;
+	background-color: #5f6caf;
+	color: #fff;
+	text-align: center;
+	align-items: center;
+	&:hover {
+		background-color: #949dc9;
+	}
+	.munuImg {
+		position: absolute;
+		width: 1.5rem;
+		height: 1.5rem;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 `;
 const ProfileImg = styled.img`
-  width: 3rem;
-  height: 3rem;
-  border-radius: 2rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  &:hover {
-    filter: brightness(110%);
-  }
+	width: 3rem;
+	height: 3rem;
+	border-radius: 2rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	&:hover {
+		filter: brightness(110%);
+	}
 `;
 
 const DateNLIke = styled.div`
-  display: flex;
-  position: absolute;
-  gap: 1rem;
-  bottom: -1rem;
-  color: #808080;
+	display: flex;
+	position: absolute;
+	gap: 1rem;
+	bottom: -1rem;
+	color: #808080;
 `;
 
 const MovingHeart = keyframes`
@@ -153,4 +153,4 @@ function CommentList({ id, content, createAt, like, userName, userprofile }) {
 	);
 }
 
-export default CommentList
+export default CommentList;

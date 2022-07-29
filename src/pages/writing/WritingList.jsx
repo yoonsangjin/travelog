@@ -37,16 +37,15 @@ const SidebarList = styled.div`
 	}
 `;
 const ListHeader = styled.h2`
-  font-size: 1.2rem;
-  text-align: center;
+	font-size: 1.2rem;
+	text-align: center;
 `;
 const ListTextBox = styled.div`
-  display: flex;
-  width: 18rem;
-  gap: 1rem;
-  flex-direction: column;
-  align-items: center;
-
+	display: flex;
+	width: 18rem;
+	gap: 1rem;
+	flex-direction: column;
+	align-items: center;
 `;
 const Label = styled.label`
 	display: flex;
@@ -84,12 +83,11 @@ const LinkToURL = styled.a`
 	display: flex;
 `;
 function WritingList({ id, placeName, placeUrl, bookmarkMemo, categoryGroupName }) {
-  const [toggle, setToggle] = useRecoilState(toggleState);
-  const [{ isDragging }, drag, previewRef] = useDrag(() => ({
+	const [toggle, setToggle] = useRecoilState(toggleState);
+	const [{ isDragging }, drag, previewRef] = useDrag(() => ({
 		type: 'card',
 		item: { id: id },
-    collect: monitor => (
-      { isDragging: monitor.isDragging() }),
+		collect: monitor => ({ isDragging: monitor.isDragging() }),
 	}));
   const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
   
