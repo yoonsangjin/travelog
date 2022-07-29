@@ -1,5 +1,4 @@
 import React from 'react';
-import { debounce } from 'lodash';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -16,9 +15,9 @@ function Searchbar() {
 	const setClose = useSetRecoilState(extendbarState);
 	const setPlace = useSetRecoilState(placeState);
 
-	const onChange = debounce((e) => {
+	const onChange = e => {
 		setMainInputValue(e.target.value);
-	}, 500);
+	};
 
 	const handleSubmit = e => {
 		e.preventDefault();

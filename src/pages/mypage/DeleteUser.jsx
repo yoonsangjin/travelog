@@ -112,7 +112,6 @@ function DeleteUser() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(e => e.data);
-      console.log(typeof userData.password);
       await axios({
         method: 'delete',
         url: `http://localhost:8000/api/users/${userData.id}`,

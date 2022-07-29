@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import handleStyle from '../../function/handleStyle';
 import { TiArrowLeft } from 'react-icons/ti';
-import { useRecoilState } from 'recoil';
-import { activeState, detailInfoState } from '../../recoil/Atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { activeState, detailInfoState, placeInfoState } from '../../recoil/Atom';
 
 function PlaceInfoExtend() {
 	const [active, setActive] = useRecoilState(activeState);
