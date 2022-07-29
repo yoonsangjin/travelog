@@ -7,12 +7,16 @@ function TravelPost({ title, username, profileImg, cateCity, img, markedData }) 
 	useEffect(() => {
 		const parsedTags = JSON.parse(markedData);
 		const tempArr = [];
-		parsedTags.forEach(i => {
-			const data = { category: i.categoryGroupName, name: i.placeName, placeUrl: i.placeUrl };
-			tempArr.push(data);
-		});
-		setPlaceData(tempArr);
-	}, []);
+		if (parsedTags === null) {
+			return;
+		} else {
+			parsedTags.forEach(i => {
+				const data = { category: i.categoryGroupName, name: i.placeName, placeUrl: i.placeUrl };
+				tempArr.push(data);
+			});
+			setPlaceData(tempArr);
+		}
+	}, [markedData]);
 
 	return (
 		<PostContainer>
