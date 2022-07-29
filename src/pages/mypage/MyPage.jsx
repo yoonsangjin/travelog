@@ -28,6 +28,7 @@ const MyPage = () => {
 		axios
 			.get(`http://localhost:8000/api/posts/user/${type}`, config)
 			.then(({ data }) => setUserPost(data));
+		axios.get('http://localhost:8000/api/posts/user', config).then(({ data }) => setUserPost(data));
 		axios
 			.get('http://localhost:8000/api/bookmarks/folders', config)
 			.then(({ data }) => setUserBookmark(data.length));
@@ -101,7 +102,7 @@ const MyPage = () => {
 			<Feed>
 				{userpost.map(post => (
 					<FeedBox key={post.id}>
-						<FeedBtn onClick={() => navigate(`../View/${post.id}`)}>
+						<FeedBtn onClick={() => navigate(`../view/${post.id}`)}>
 							<FeedImg
 								src={
 									post.mainImg
