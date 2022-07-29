@@ -21,7 +21,7 @@ function BookmarkList(props) {
 	function addFolder() {
 		console.log(hiddenDivRef.current);
 		hiddenDivRef.current.style.display = 'flex';
-		inputRef.current.value;
+		// inputRef.current.value;
 	}
 
 	function viewMore(e) {

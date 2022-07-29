@@ -11,15 +11,15 @@ function Extendbar() {
 	const [close, setClose] = useRecoilState(extendbarState);
 	const addBookmark = useRecoilValue(addBookmarkState);
 	function handleExtendbar() {
-			setClose(!close);
+		setClose(!close);
 	}
-	
+
 	return (
 		<ExtendbarStyle>
 			<div className={close ? 'extendbar close' : 'extendbar'}>
 				<Searchbar />
 				<PlaceInfo />
-				<SetModalBtn function={handleExtendbar}/>
+				<SetModalBtn function={handleExtendbar} />
 			</div>
 			{addBookmark && <BookmarkModal />}
 		</ExtendbarStyle>
@@ -29,7 +29,7 @@ function Extendbar() {
 const ExtendbarStyle = styled.div`
 	position: absolute;
 	z-index: 6;
-	border-right: 1px solid rgb(219,219,219);
+	border-right: 1px solid rgb(219, 219, 219);
 	.extendbar {
 		display: flex;
 		flex-flow: column;
@@ -46,7 +46,6 @@ const ExtendbarStyle = styled.div`
 		left: -20.6rem;
 		transition: 0.3s ease-in-out;
 	}
-
 `;
 
 export default Extendbar;

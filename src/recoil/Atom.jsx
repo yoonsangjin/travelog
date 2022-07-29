@@ -97,14 +97,39 @@ export const loginState = atom({
 });
 
 export const colorLogState = atom({
-  key: 'colorLogState',
-  default: false,
+	key: 'colorLogState',
+	default: false,
 });
 export const communityState = atom({
-  key: 'communityState',
-  default: false,
+	key: 'communityState',
+	default: false,
 });
 export const iconMenuState = atom({
   key: 'iconMenuState',
+  default: false,
+})
+
+export const toggleState = atom({
+  key: 'toggleState',
+  default: false,
+})
+
+export const boardState = atom({
+  key: 'boardState',
+  default: [],
+})
+
+export const checkedState = atom({
+  key: 'checkedState',
+  default: [],
+})
+
+export const tagState = atom({
+  key: 'tagState',
+  default: [],
+});
+
+export const cityTagToggleState = atom({
+  key: 'cityTagToggleState',
   default: false,
 });
