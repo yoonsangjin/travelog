@@ -1,27 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { bookmarkbarState, showBmListState } from '../../../recoil/Atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { bookmarkbarState, showBmListState, currentListState } from '../../../recoil/Atom';
 import ModalBmList from './ModalBmList';
 
 function SelectBmList() {
 	const setBmClose = useSetRecoilState(bookmarkbarState);
 	const setShowBmList = useSetRecoilState(showBmListState);
-	const [currentList, setCurrentList] = useState([]);
+	const [currentList, setCurrentList] = useRecoilState(currentListState);
 
 	function handleList() {
 		setBmClose(false);
 		setShowBmList(false);
+		console.log(currentList);
 	}
 
 	return (
 		<SelectBmListStyle>
 			<span>추가할 리스트 선택</span>
 			<div className="allbtnContainer">
-				<ModalBmList
-					currentList={currentList}
-					setCurrentList={setCurrentList}
-				/>
+				<ModalBmList currentList={currentList} setCurrentList={setCurrentList} />
 			</div>
 			<div className="addBmListContainer">
 				<button className="addBmListBtn" onClick={handleList}>
@@ -77,7 +75,7 @@ const SelectBmListStyle = styled.div`
 	}
 
 	.on {
-		background-color: #EDF7FA;
+		background-color: #edf7fa;
 	}
 
 	.addBmListBtn {

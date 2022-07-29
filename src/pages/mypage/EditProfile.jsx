@@ -111,29 +111,23 @@ function EditProfile() {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [popup, setPopup] = useState('false');
 	const [address, setAddress] = useState('');
-	const [userId, setUserId] = useState('');
 	const [address2, setAddress2] = useState('');
 	const [profileImage, setProfileImage] = useState('');
-	const [userdata, setUserData] = useState([]);
+	const [userId, setUserId] = useState('');
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		getUserData();
+		axios
+			.get('http://localhost:8000/api/users/user', config)
+			//.then(({ data }) => setUserData(data));
+			.then(({ data }) => {
+				setUserName(data.name);
+				setUserNickname(data.nickname);
+				setPhoneNumber(data.phoneNumber);
+				setUserId(data.id);
+			});
 	}, []);
 
-	const getUserData = async () => {
-		try {
-			await axios
-				.get('http://localhost:8000/api/users/user', config)
-				.then(e => setUserData(e.data));
-			setUserName(userdata.name);
-			setUserNickname(userdata.nickname);
-			setPhoneNumber(userdata.phoneNumber);
-			setUserId(userdata.id);
-		} catch (err) {
-			alert(err);
-		}
-	};
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
@@ -143,9 +137,15 @@ function EditProfile() {
 	//데이터 전송
 	const handleSubmit = async e => {
 		e.preventDefault();
+
 		const fileKey = profileImage.name;
-		S3Upload(profileImage);
-		const profileImg = S3getFileURL(`upload/${fileKey}`);
+		let profileImg;
+		if (profileImage) {
+			S3Upload(profileImage);
+			profileImg = S3getFileURL(`upload/${fileKey}`);
+		} else {
+			profileImg = S3getFileURL(`upload/default.png`);
+		}
 
 		let resultData = { userName, userNickname, phoneNumber, address, profileImg };
 
