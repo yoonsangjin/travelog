@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ViewBoardList from './ViewBoardList';
 import Comment from './Comment';
 import { IoMapOutline, IoFlagSharp } from 'react-icons/io5';
+import { useLocation } from 'react-router';
 // Toast-UI Viewer 임포트
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
@@ -161,35 +162,37 @@ const MenuBox = styled.div`
 `;
 
 function View() {
-  const [writing, setWriting] = useState({});
-  const [board, setBoard] = useState([]);
-  const [tag, setTag] = useState([]);
-  //axios bearer token
-  const token = window.localStorage.getItem('token');
-  let config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const getWritingData = async () => {
-    try {
-      await axios
-        .get('http://localhost:8000/api/posts/user/62', config)
-        .then(res => {
-        setWriting(res.data);
-        setBoard(JSON.parse(res.data.markedData));
-        setTag(JSON.parse(res.data.tag));
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    getWritingData();
-  }, []);
-  const [buttonClick, setButtonClick] = useRecoilState(colorLogState);
-  const handleButtonClick = () => {
+	const location = useLocation(); // location.search 함수로 / 뒤의 주소 받아옴
+	const queryArray = decodeURI(location.search).split('='); // 한글 url decode 해주고 = 기준으로 앞뒤로 자르기
+	const params = queryArray[1]; // 뒤에 있는 걸 가져오면 내가 원하는 검색어
+	console.log(params);
+	const [writing, setWriting] = useState({});
+	const [board, setBoard] = useState([]);
+	const [tag, setTag] = useState([]);
+	//axios bearer token
+	const token = window.localStorage.getItem('token');
+	let config = {
+		headers: { Authorization: `Bearer ${token}` },
+	};
+	const getWritingData = async () => {
+		try {
+			await axios.get('http://localhost:8000/api/posts/user/62', config).then(res => {
+				setWriting(res.data);
+				setBoard(JSON.parse(res.data.markedData));
+				setTag(JSON.parse(res.data.tag));
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getWritingData();
+	}, []);
+	const [buttonClick, setButtonClick] = useRecoilState(colorLogState);
+	const handleButtonClick = () => {
 		setButtonClick(true);
 	};
-  return (
+	return (
 		<WritingSection>
 			<WritingContainer>
 				<MenuBox>
@@ -203,7 +206,6 @@ function View() {
 						<MenuBtn onClick={handleButtonClick}>
 							<IoFlagSharp className="munuImg" />
 							<BtnInfo className="log">COLORLOG</BtnInfo>
-							{buttonClick && <ColorLogPageComponents />}
 						</MenuBtn>
 					</MenuBtnBox>
 				</MenuBox>
@@ -239,6 +241,7 @@ function View() {
 				) : (
 					' '
 				)}
+				{buttonClick && <ColorLogPageComponents />}
 			</WritingContainer>
 		</WritingSection>
 	);

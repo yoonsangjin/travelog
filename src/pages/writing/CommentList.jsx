@@ -109,33 +109,35 @@ const LikeBtn = styled.div`
     animation: ${MovingHeart} 0.3s linear ;
 `;
 function CommentList({ id, content, createAt, like, userName, userprofile }) {
-  const [heart, setHeart] = useState(false);
-  const [likeCount, setLikeCount] = useState(like);
-  const handleHeart = () => {
-    if (!heart) {
-      setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
-    }
-    setHeart(!heart);
-  };
-  let heartStatus = heart ? (
-    <IoHeartSharp heart={heart} className="redHeart" />
-  ) : (
-    <IoHeartOutline heart={heart} className="Heart" />
-  );
-  let korea = new Date(createAt);
-  let now = new Date();
-  let ago = Math.ceil((now.getTime() - korea.getTime()) / 60000);
-  let time = 0;
-  if (ago > 60) {
-    let hour = Math.ceil(ago / 60);
-    time = `${hour}시간 전`
-  } else if (ago > 1440) {
-    let day = Math.ceil(ago / 1440);
+	const [heart, setHeart] = useState(false);
+	const [likeCount, setLikeCount] = useState(like);
+	const handleHeart = () => {
+		if (!heart) {
+			setLikeCount(likeCount + 1);
+		} else {
+			setLikeCount(likeCount - 1);
+		}
+		setHeart(!heart);
+	};
+	let heartStatus = heart ? (
+		<IoHeartSharp heart={heart} className="redHeart" />
+	) : (
+		<IoHeartOutline heart={heart} className="Heart" />
+	);
+	let korea = new Date(createAt);
+	let now = new Date();
+	let ago = Math.ceil((now.getTime() - korea.getTime()) / 60000);
+	let time = 0;
+	if (ago > 60) {
+		let hour = Math.ceil(ago / 60);
+		time = `${hour}시간 전`;
+	} else if (ago > 1440) {
+		let day = Math.ceil(ago / 1440);
 		time = `${day}일 전`;
-  } else { time = `${ago}분 전` }
-  return (
+	} else {
+		time = `${ago}분 전`;
+	}
+	return (
 		<CommentSection>
 			<MenuBtn>
 				<ProfileImg src={userprofile}></ProfileImg>

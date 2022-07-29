@@ -102,7 +102,7 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 const Board = styled.div`
-	height: 18rem;
+	min-height: 15rem;
 	background-color: #fafafa;
 	border-radius: 1rem;
 	display: flex;
@@ -142,7 +142,7 @@ function Writing() {
 
 	useBeforeunload(e => e.preventDefault());
 
-  const [data, setData] = useRecoilState(dataState);
+	const [data, setData] = useRecoilState(dataState);
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
@@ -168,12 +168,12 @@ function Writing() {
 	//이미지 업로드
 	const onUploadImage = async (blob, callback) => {
 		S3Upload(blob);
-		setImgList(img => [...img, blob.name]);
 		const url = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${blob.name}`;
+		setImgList(imgList => [...imgList, blob.name]);
 		setTimeout(() => callback(url, '이미지'), 1000);
 	};
 	// 보드 상태 변경
-  const [board, setBoard] = useRecoilState(boardState);
+	const [board, setBoard] = useRecoilState(boardState);
 	// DnD
 	const [{ isOver }, dropToAdd] = useDrop(() => ({
 		accept: 'card',
@@ -182,7 +182,6 @@ function Writing() {
 			isOver: !!monitor.isOver(),
 		}),
 	}));
-
 	// 보드에 리스트 추가
 	const addToBoard = id => {
 		const items = data.filter(e => id === e.id);
@@ -250,8 +249,19 @@ function Writing() {
 	];
 	// 등록 버튼 핸들러
 	const handleButton = () => {
-		//데이터 포스팅
+		//사용된 태그 배열에 담기
 		const newTagList = TagList.map(e => e.tag);
+		//안쓰는 이미지 삭제
+		const realImg = editorRef.current
+			?.getInstance()
+			.getHTML()
+			.split('https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/')
+			.slice(1)
+			.map(e => e.split(' ')[0])
+			.map(e => e.substring(0, e.length - 1));
+		const difference = imgList.filter(x => !realImg.includes(x));
+		difference.forEach(e => console.log(e));
+		const firstImg = `https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/${realImg[0]}`;
 		const postData = async () => {
 			await axios
 				.post(
@@ -259,7 +269,7 @@ function Writing() {
 					{
 						title: header,
 						content: editorRef.current?.getInstance().getHTML(),
-						mainImg: imgList[0],
+						mainImg: firstImg,
 						flagHideYN: 'N',
 						markedData: JSON.stringify(board),
 						cateCity: cateTag[0],
@@ -275,24 +285,15 @@ function Writing() {
 				});
 		};
 		postData();
-		//안쓰는 이미지 삭제
-		const realImg = editorRef.current
-			?.getInstance()
-			.getHTML()
-			.split('https://elice-react-project-team1.s3.ap-northeast-2.amazonaws.com/upload/')
-			.slice(1)
-			.map(e => e.split(' ')[0])
-			.map(e => e.substring(0, e.length - 1));
-		const difference = imgList.filter(x => !realImg.includes(x));
-		difference.forEach(e => console.log(e));
 		alert('저장되었습니다.');
-  };
+	};
 	return (
-			<WritingSection>
-				<WritingSidebar />
-				<WritingContainer>
-					<Board ref={dropToAdd}>
-						{board.length ? [...new Set(board)].map(e => {
+		<WritingSection>
+			<WritingSidebar />
+			<WritingContainer>
+				<Board ref={dropToAdd}>
+					{board.length ? (
+						[...new Set(board)].map(e => {
 							return (
 								<WritingBoardList
 									id={e.id}
@@ -302,54 +303,57 @@ function Writing() {
 									categoryGroupName={e.categoryGroupName}
 								/>
 							);
-						}): <NoList> 여정을 추가하세요! </NoList> }
-					</Board>
-					<WritingHeaderBox>
-						<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
-						<Button onClick={handleButton}>발행</Button>
-					</WritingHeaderBox>
-					<HeaderBar />
-					<TagBox>
-						{cateTag.length
-							? cateTag.map(e => {
-									return (
-										<CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
-									);
-							  })
-							: ''}
-						<Select
-							className={CityTagToggle ? 'display' : 'displayNone'}
-							onChange={e => handleTagChange(e)}
-						>
-							{cityArr.map(e => {
-								return <option value={e}>{e}</option>;
-							})}
-						</Select>
-						{TagList.map(e => {
-							return <TagBtn id={e.id} tag={e.tag} />;
+						})
+					) : (
+						<NoList> 여정을 추가하세요! </NoList>
+					)}
+				</Board>
+				<WritingHeaderBox>
+					<WritingHeader onChange={handleHeader} placeholder="제목을 입력하세요"></WritingHeader>
+					<Button onClick={handleButton}>발행</Button>
+				</WritingHeaderBox>
+				<HeaderBar />
+				<TagBox>
+					{cateTag.length
+						? cateTag.map(e => {
+								return (
+									<CityTag changeToggle={changeToggle} changeCateTag={changeCateTag} city={e} />
+								);
+						  })
+						: ''}
+					<Select
+						className={CityTagToggle ? 'display' : 'displayNone'}
+						onChange={e => handleTagChange(e)}
+					>
+						{cityArr.map(e => {
+							return <option value={e}>{e}</option>;
 						})}
-						<form onSubmit={handleTag}>
-							<TagInput
-								ref={tagInputRef}
-								onChange={getValue}
-								placeholder="태그를 입력하세요"
-								type="text"
-							></TagInput>
-						</form>
-					</TagBox>
-					<Editor
-						ref={editorRef}
-						initialValue="여기에 이야기를 적어보세요!"
-						previewStyle="vertical"
-						initialEditType="wysiwyg"
-						plugins={[colorSyntax]}
-						height="50rem"
-						hooks={{
-							addImageBlobHook: onUploadImage,
-						}}
-					/>
-				</WritingContainer>
-			</WritingSection>
+					</Select>
+					{TagList.map(e => {
+						return <TagBtn id={e.id} tag={e.tag} />;
+					})}
+					<form onSubmit={handleTag}>
+						<TagInput
+							ref={tagInputRef}
+							onChange={getValue}
+							placeholder="태그를 입력하세요"
+							type="text"
+						></TagInput>
+					</form>
+				</TagBox>
+				<Editor
+					ref={editorRef}
+					initialValue="여기에 이야기를 적어보세요!"
+					previewStyle="vertical"
+					initialEditType="wysiwyg"
+					plugins={[colorSyntax]}
+					height="50rem"
+					hooks={{
+						addImageBlobHook: onUploadImage,
+					}}
+				/>
+			</WritingContainer>
+		</WritingSection>
 	);
 }
 

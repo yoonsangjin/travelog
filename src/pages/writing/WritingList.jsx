@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useDrag } from 'react-dnd'
+import React from 'react';
+import styled from 'styled-components';
+import { useDrag } from 'react-dnd';
 import { toggleState, checkedState, boardState, dataState } from '../../recoil/Atom.jsx';
-import { useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil';
 import { BiRestaurant, BiPlus } from 'react-icons/bi';
 import { ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
@@ -14,8 +14,8 @@ const AddBtn = styled.button`
 	cursor: pointer;
 	display: none;
 	position: absolute;
-  top: -5%;
-  right: 0;
+	top: -5%;
+	right: 0;
 `;
 const SidebarList = styled.div`
 	padding: 1rem;
@@ -60,23 +60,23 @@ const Label = styled.label`
 	}
 `;
 const Input = styled.input`
-  appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-right: 2rem;
-  color: gray;
-  border: 1px solid gray;
-  border-radius: 50%;
-  cursor: pointer;
-  &:checked {
-    border-color: transparent;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-    background-size: 100% 100%;
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-color: limegreen;
-  }
-`
+	appearance: none;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-right: 2rem;
+	color: gray;
+	border: 1px solid gray;
+	border-radius: 50%;
+	cursor: pointer;
+	&:checked {
+		border-color: transparent;
+		background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+		background-size: 100% 100%;
+		background-position: 50%;
+		background-repeat: no-repeat;
+		background-color: limegreen;
+	}
+`;
 
 const LinkToURL = styled.a`
 	cursor: pointer;
@@ -89,37 +89,37 @@ function WritingList({ id, placeName, placeUrl, bookmarkMemo, categoryGroupName 
 		item: { id: id },
 		collect: monitor => ({ isDragging: monitor.isDragging() }),
 	}));
-  const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
-  
-  function handleSelect(checked, id) {
-    if (checked) {
-      setCheckedInputs([...checkedInputs, id]);
-    } else {
-      // 체크 해제
-      setCheckedInputs(checkedInputs.filter(el => el !== id));
-    }
-  }
-  let category;
-  switch (categoryGroupName) {
-    case '카페':
-      category = <IoMdCafe className="icon" />;
-      break;
-    case '음식점':
-      category = <BiRestaurant className="icon" />;
-      break;
-    default:
-      category = <ImLibrary className="icon" />;
-  }
-  const [data, setData] = useRecoilState(dataState);
-  const [board, setBoard] = useRecoilState(boardState);
-  const handleAddBtn = e => {
+	const [checkedInputs, setCheckedInputs] = useRecoilState(checkedState);
+
+	function handleSelect(checked, id) {
+		if (checked) {
+			setCheckedInputs([...checkedInputs, id]);
+		} else {
+			// 체크 해제
+			setCheckedInputs(checkedInputs.filter(el => el !== id));
+		}
+	}
+	let category;
+	switch (categoryGroupName) {
+		case '카페':
+			category = <IoMdCafe className="icon" />;
+			break;
+		case '음식점':
+			category = <BiRestaurant className="icon" />;
+			break;
+		default:
+			category = <ImLibrary className="icon" />;
+	}
+	const [data, setData] = useRecoilState(dataState);
+	const [board, setBoard] = useRecoilState(boardState);
+	const handleAddBtn = e => {
 		const items = data.filter(e => id === e.id);
 		setBoard(board => [...board, items[0]]);
-  };
-  return (
+	};
+	return (
 		<SidebarList>
 			<Label htmlFor={id}>
-        <LinkToURL href={placeUrl} target="_blank">
+				<LinkToURL href={placeUrl} target="_blank">
 					{toggle ? (
 						<Input
 							id={id}

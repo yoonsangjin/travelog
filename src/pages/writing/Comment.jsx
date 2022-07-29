@@ -77,11 +77,11 @@ const CommentBtn = styled.button`
     animation: ${MovingHeart} 0.3s linear ;
 `;
 const ProfileBox = styled.div`
-  display: flex;
-  height: 5rem;
-  padding-left: 1rem;
-  padding-right: 2rem;
-  justify-content: space-between;
+	display: flex;
+	height: 5rem;
+	padding-left: 1rem;
+	padding-right: 2rem;
+	justify-content: space-between;
 `;
 const InfoBox = styled.div`
 	display: flex;
@@ -159,14 +159,14 @@ const CommentSubmitBtn = styled.button`
 `;
 
 function Comment({ nickname, profileImg, createAt }) {
-  let date = new Date(createAt);
-  let year = date.getFullYear();
+	let date = new Date(createAt);
+	let year = date.getFullYear();
 	let month = ('0' + (1 + date.getMonth())).slice(-2);
-  let day = ('0' + date.getDate()).slice(-2);
-  var hours = ('0' + date.getHours()).slice(-2);
-  var minutes = ('0' + date.getMinutes()).slice(-2);
-  const created = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-  const [commentData, setCommentData] = useState([]);
+	let day = ('0' + date.getDate()).slice(-2);
+	var hours = ('0' + date.getHours()).slice(-2);
+	var minutes = ('0' + date.getMinutes()).slice(-2);
+	const created = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+	const [commentData, setCommentData] = useState([]);
 	//axios bearer token
 	const token = window.localStorage.getItem('token');
 	let config = {
@@ -206,9 +206,9 @@ function Comment({ nickname, profileImg, createAt }) {
 	useEffect(() => {
 		setRandomId(new Date().getTime());
 	}, [value]);
-  // 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
-  const addComment = async e => {
-    const addCommnetData = async () => {
+	// 사용자로부터 받아오는 값을 commentList에 배열 데이터 추가 & 댓글 초기화
+	const addComment = async e => {
+		const addCommnetData = async () => {
 			await axios
 				.post(
 					'http://localhost:8000/api/comments/register/32',
@@ -230,10 +230,10 @@ function Comment({ nickname, profileImg, createAt }) {
 		};
 		e.preventDefault();
 		inputRef.current.value = '';
-    await addCommnetData();
+		await addCommnetData();
 		setValue('');
-    setIsValid(false);
-    await getCommnetData();
+		setIsValid(false);
+		await getCommnetData();
 	};
 	let heartStatus = heart ? (
 		<IoHeartSharp heart={heart} className="redHeart" />
@@ -249,7 +249,7 @@ function Comment({ nickname, profileImg, createAt }) {
 					</ProfileImgBox>
 					<InfoBox>
 						<UserName>{nickname}</UserName>
-            <DateNTime>{created}</DateNTime>
+						<DateNTime>{created}</DateNTime>
 					</InfoBox>
 				</ProfilInfo>
 				<MoreBtn>

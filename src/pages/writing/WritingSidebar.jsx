@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { TbStar } from 'react-icons/tb';
-import WritingSearchbar from './WritingSearchbar';
 import WritingList from './WritingList';
 import { useRecoilState } from 'recoil';
 import { ImSearch } from 'react-icons/im';
@@ -185,7 +184,7 @@ function WritingSidebar() {
 		e.preventDefault();
 		const filterData = list.filter(e => e.placeName.includes(inputValue));
 		setFiltering(filterData);
-  };
+	};
 	let filteredList;
 	if (inputValue) {
 		filteredList = filtering.map(e => {
@@ -207,7 +206,7 @@ function WritingSidebar() {
 					placeName={e.placeName}
 					placeUrl={e.placeUrl}
 					bookmarkMemo={e.bookmarkMemo}
-          categoryGroupName={e.categoryGroupName}
+					categoryGroupName={e.categoryGroupName}
 				/>
 			);
 		});

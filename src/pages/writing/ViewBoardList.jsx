@@ -31,7 +31,7 @@ const ListBox = styled.div`
 	border-radius: 8px;
 	background-color: #fff;
 	display: flex;
-	box-shadow: rgb(31 38 135 / 20%) 0px 8px 32px 0px !important;
+	box-shadow: rgb(31 38 135 / 20%) 0px 8px 32px 0px;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
@@ -57,7 +57,7 @@ const ListHeader = styled.h2`
 `;
 
 function ViewBoardList({ id, placeName, placeUrl, bookmarkMemo }) {
-  return (
+	return (
 		<LinkToURL href={placeUrl} target="_blank">
 			<ListBox>
 				<IconBox>
