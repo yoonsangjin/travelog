@@ -24,15 +24,16 @@ const Moving = keyframes`
 const IconBox = styled.div``;
 const ListBox = styled.div`
 	padding: 1rem;
-	margin: 1.5rem;
-	height: 12rem;
+	margin: 1rem;
+	width: 2rem;
+	min-height: 15rem;
 	position: relative;
 	border-radius: 8px;
 	background-color: #fff;
 	display: flex;
-	box-shadow: rgb(31 38 135 / 20%) 0px 8px 32px 0px !important;
+	box-shadow: rgb(31 38 135 / 20%) 0px 8px 32px 0px;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 1rem;
 	.icon {
@@ -45,10 +46,8 @@ const ListBox = styled.div`
 `;
 
 const LinkToURL = styled.a`
-	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
 	align-items: center;
 	cursor: pointer;
 `;
@@ -57,15 +56,23 @@ const ListHeader = styled.h2`
 	text-align: center;
 `;
 
-function ViewBoardList({ bookmarkId, placeName, placeUrl, bookmarkMemo }) {
+function ViewBoardList({ placeName, placeUrl, categoryGroupName }) {
+	let category;
+	switch (categoryGroupName) {
+		case '카페':
+			category = <IoMdCafe className="icon" />;
+			break;
+		case '음식점':
+			category = <BiRestaurant className="icon" />;
+			break;
+		default:
+			category = <ImLibrary className="icon" />;
+	}
 	return (
 		<LinkToURL href={placeUrl} target="_blank">
 			<ListBox>
-				<IconBox>
-					<IoMdCafe className="icon" />
-				</IconBox>
+				<IconBox>{category}</IconBox>
 				<ListHeader>{placeName.split(' ')[0]}</ListHeader>
-				<p>{bookmarkMemo}</p>
 			</ListBox>
 		</LinkToURL>
 	);

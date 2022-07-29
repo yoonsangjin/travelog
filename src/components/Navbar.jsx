@@ -119,9 +119,11 @@ function Navbar() {
 				<NavLi>
 					<NavLink to="/community">community</NavLink>
 				</NavLi>
-				<NavLi>
-					<NavLink to="/mypage">my page</NavLink>
-				</NavLi>
+				{isLoggedIn && (
+					<NavLi>
+						<NavLink to="/mypage">my page</NavLink>
+					</NavLi>
+				)}
 				{!isLoggedIn ? (
 					<NavLi>
 						<LoginBtn to="/login">login</LoginBtn>
@@ -129,11 +131,11 @@ function Navbar() {
 				) : (
 					<NavLi>
 						<NavbarIcon
-							src={profileIcon}
+							src={profileIcon || '/img/default.png'}
 							onClick={() => {
 								setisMenu(!isMenu);
 							}}
-							style={{ marginTop: isMenu ? '15.4rem' : '' }}
+							style={{ marginTop: isMenu ? '12.4rem' : '' }}
 						/>
 
 						{isMenu && (
@@ -143,13 +145,16 @@ function Navbar() {
 										회원 정보 수정
 									</NavLink>
 								</MenuLi>
-								<MenuLi>여행 페이지 이동</MenuLi>
+								<MenuLi>
+									<NavLink to="/main" onClick={handleClickList}>
+										여행 페이지 이동
+									</NavLink>
+								</MenuLi>
 								<MenuLi>
 									<NavLink onClick={handleClickList} to="/mypage">
 										마이페이지
 									</NavLink>
 								</MenuLi>
-								<MenuLi onClick={handleClickList}>글쓰기</MenuLi>
 								<MenuLi
 									onClick={() => {
 										if (window.confirm('로그아웃 하시겠습니까?')) {

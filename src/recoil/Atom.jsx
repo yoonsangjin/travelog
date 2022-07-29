@@ -35,7 +35,7 @@ export const addBookmarkState = atom({
 
 export const allBookmarkState = atom({
 	key: 'allBookmarkState',
-	default: [],
+	default: null,
 });
 
 // bookmark에 저장될 data
@@ -116,6 +116,11 @@ export const toggleState = atom({
 
 export const boardState = atom({
 	key: 'boardState',
+	default: [],
+});
+
+export const dataState = atom({
+	key: 'dataState',
 	default: [],
 });
 
