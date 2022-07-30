@@ -7,7 +7,7 @@ function Kakao() {
 	const navigate = useNavigate();
 	const code = new URL(window.location.href).searchParams.get('code');
 	const grant_type = 'authorization_code';
-	const REDIRECT_URI = 'http://kdt-sw2-busan-team01.elicecoding.com:5001/auth';
+	const REDIRECT_URI = 'http://kdt-sw2-busan-team01.elicecoding.com/auth';
 	const setIsLoggedIn = useSetRecoilState(loginState);
 	const getData = data => {
 		return axios.create({

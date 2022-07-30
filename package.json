@@ -62,7 +62,7 @@
 
 	"scripts": {
 
-		"start": "react-scripts start",
+		"start": "export PORT=5001 && react-scripts start",
 
 		"build": "react-scripts build",
 

@@ -25,8 +25,9 @@ const MyPage = () => {
 				setUserId(data.id);
 				setUserName(data.name);
 			});
+		const type = 'post';
 		axios
-			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/user', config)
+			.get(`http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/user/${type}`, config)
 			.then(({ data }) => setUserPost(data));
 		axios
 			.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folders', config)
