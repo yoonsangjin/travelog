@@ -3,7 +3,7 @@
 import Sidebar from './Sidebar.jsx';
 // import Extendbar from './Extendbar.jsx';
 // import Bookmarkbar from './bookmark/Bookmarkbar.jsx';
-// import Map from '../../components/Map.jsx';
+import Map from '../../components/Map.jsx';
 // import SelectBmList from './bookmark/SelectBmList.jsx';
 // import {
 // 	useRecoilValue,
@@ -19,7 +19,12 @@ import Sidebar from './Sidebar.jsx';
 // import PlaceInfoExtend from './PlaceInfoExtend.jsx';
 
 const Main = () => {
-	return <Sidebar />;
+	return (
+		<>
+			<Sidebar />
+			<Map />;
+		</>
+	);
 };
 
 export default Main;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 function MapBox() {
-	return <MapBoxStyle id="map" />;
+	return <MapBoxStyle />;
 }
 
 export default MapBox;
