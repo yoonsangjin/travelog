@@ -6,6 +6,7 @@ import { placeState, placeInfoState, mainInputValueState } from '../recoil/Atom'
 import makeMap from '../function/makeMap';
 import searchMap from '../function/searchMap';
 import customMarker from '../function/customMarker';
+import MapBox from './MapBox';
 
 function Map() {
 	const [place, setPlace] = useRecoilState(placeState);
@@ -15,13 +16,11 @@ function Map() {
 
 	useEffect(() => {
 		const queryArray = decodeURI(location.search).split('=');
-		const params = queryArray[1];
-		if (params !== null) {
-			const kakaoMap = makeMap();
-			searchMap(kakaoMap, params, setPlaceInfo);
-			setMainInputValue(params);
-			setPlace(params);
-		}
+		let params = queryArray[1];
+		const kakaoMap = makeMap();
+		searchMap(kakaoMap, params, setPlaceInfo);
+		setMainInputValue(params);
+		setPlace(params);
 	}, []);
 
 	useEffect(() => {
@@ -29,9 +28,10 @@ function Map() {
 		searchMap(kakaoMap, place, setPlaceInfo);
 		customMarker(kakaoMap);
 	}, [place]);
+
 	return (
 		<MapContainer>
-			<div id="map"></div>
+			<MapBox id="map" />
 		</MapContainer>
 	);
 }
@@ -41,11 +41,6 @@ const MapContainer = styled.div`
 	width: 100vw;
 	height: calc(100vh - 5rem);
 	z-index: 4;
-
-	#map {
-		height: 100%;
-	}
-
 	.customOverlay {
 		background-color: white;
 		padding: 1rem;

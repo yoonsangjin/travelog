@@ -46,24 +46,6 @@ export default function makeMap() {
 					}
 				});
 			}
-
-			function overlayContents(place) {
-				return `
-          <img src='https://elice-redirect-manager.azurewebsites.net/_next/static/media/elice_banner.077d9964.png' 
-          style='float:left; width: 5rem; height: 5rem; margin: 3rem 1rem 0 1rem;'/>
-          <div class='customOverlay' style='display:flex; width: 10rem; flex-flow:column;'>
-          </label>
-              <div style='color: blue;'>${
-								place.place_name ? place.place_name : '장소 이름이 없습니다.'
-							}</div>
-              <div>${place.address_name}</div>
-              <div>${place.phone}</div>
-              <a href=${
-								place.place_url
-							} target='_blank' style='color:#5f6caf;'>카카오 지도로 보기</a> 
-          </div>`;
-			}
-
 			kakaoMap.setBounds(bounds);
 		}
 	}
