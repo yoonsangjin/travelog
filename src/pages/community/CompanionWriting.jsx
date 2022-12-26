@@ -17,15 +17,11 @@ function CompanionWriting() {
 
 	const clickHandler = async () => {
 		try {
-			await axios.post(
-				'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/register',
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+			await axios.post('http://localhost:3000/api/posts/register', data, {
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-			);
+			});
 
 			navigate('/community');
 		} catch (e) {

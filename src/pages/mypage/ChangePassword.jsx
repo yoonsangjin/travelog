@@ -115,11 +115,11 @@ function ChangePassword() {
 		if (!passwordConfirmValidation && !passwordValidation) {
 			try {
 				const userData = await axios
-					.get('http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/user', config)
+					.get('http://localhost:3000/api/users/user', config)
 					.then(e => e.data);
 				await axios({
 					method: 'patch',
-					url: `http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/${userData.id}`,
+					url: `http://localhost:3000/api/users/${userData.id}`,
 					headers: { Authorization: `Bearer ${token}` },
 					data: {
 						password,

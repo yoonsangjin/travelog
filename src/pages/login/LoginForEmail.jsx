@@ -79,7 +79,7 @@ function LoginForEmail() {
 			try {
 				const result = await axios({
 					method: 'post',
-					url: 'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users',
+					url: 'localhost:3000/api/users',
 					data: loginData,
 				});
 

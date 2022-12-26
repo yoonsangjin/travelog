@@ -30,7 +30,7 @@ function BookmarkInfoDetail() {
 		const token = localStorage.getItem('token');
 		await axios({
 			method: 'delete',
-			url: `http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folder/${bmList[listNumber]}`,
+			url: `localhost:3000/api/bookmarks/folder/${bmList[listNumber]}`,
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

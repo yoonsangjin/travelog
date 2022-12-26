@@ -14,9 +14,7 @@ function Qna() {
 		(async () => {
 			try {
 				const type = 'qna';
-				const data = await axios.get(
-					`http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/${type}`,
-				);
+				const data = await axios.get(`localhost:3000/api/posts/${type}`);
 				setQna(data.data);
 			} catch (e) {
 				console.error(e);

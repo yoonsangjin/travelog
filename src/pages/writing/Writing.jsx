@@ -152,10 +152,7 @@ function Writing() {
 	const getListData = async () => {
 		try {
 			await axios
-				.get(
-					`http://kdt-sw2-busan-team01.elicecoding.com:5000/api/bookmarks/folder/${params}`,
-					config,
-				)
+				.get(`http://localhost:3000/api/bookmarks/folder/${params}`, config)
 				.then(res => setData(res.data));
 		} catch (err) {
 			console.log(err);
@@ -260,7 +257,7 @@ function Writing() {
 		const postData = async () => {
 			await axios
 				.post(
-					'http://kdt-sw2-busan-team01.elicecoding.com:5000/api/posts/register',
+					'http://localhost:3000/api/posts/register',
 					{
 						title: header,
 						content: editorRef.current?.getInstance().getHTML(),

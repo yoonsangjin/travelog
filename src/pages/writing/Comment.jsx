@@ -178,11 +178,9 @@ function Comment({ nickname, profileImg, createAt }) {
 
 	const getCommnetData = async () => {
 		try {
-			await axios
-				.get(`http://kdt-sw2-busan-team01.elicecoding.com:5000/api/comments/${params}`, config)
-				.then(res => {
-					setCommentData(res.data);
-				});
+			await axios.get(`http://localhost:3000/api/comments/${params}`, config).then(res => {
+				setCommentData(res.data);
+			});
 		} catch (err) {
 			console.log(err);
 		}
@@ -218,7 +216,7 @@ function Comment({ nickname, profileImg, createAt }) {
 		const addCommnetData = async () => {
 			await axios
 				.post(
-					`http://kdt-sw2-busan-team01.elicecoding.com:5000/api/comments/register/${params}`,
+					`http://localhost:3000/api/comments/register/${params}`,
 					{
 						id: randomId,
 						content: value,

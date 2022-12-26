@@ -72,7 +72,7 @@ function PasswordCheck() {
 		try {
 			const isPassword = await axios({
 				method: 'post',
-				url: `http://kdt-sw2-busan-team01.elicecoding.com:5000/api/users/user/check`,
+				url: `http://localhost:3000/api/users/user/check`,
 				headers: { Authorization: `Bearer ${token}` },
 				data: {
 					password,
