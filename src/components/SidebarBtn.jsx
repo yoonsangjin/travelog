@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function SidebarBtn({ btnName, icon, color }) {
+function SidebarBtn({ btnName, icon, color, onClick }) {
 	return (
-		<SidebarBtnStyle className={btnName} color={color}>
+		<SidebarBtnStyle className={btnName} color={color} onClick={onClick}>
 			{icon}
 		</SidebarBtnStyle>
 	);
@@ -14,8 +14,8 @@ export default SidebarBtn;
 const SidebarBtnStyle = styled.button`
 	border: none;
 	background-color: ${props => props.color};
-	margin: 20px;
-	padding: 20px;
+	margin: 25px;
+	padding: 15px;
 	border-radius: 5px;
 	color: white;
 	font-size: 2rem;

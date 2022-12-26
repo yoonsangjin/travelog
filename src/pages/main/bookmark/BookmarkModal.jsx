@@ -3,39 +3,34 @@ import BookmarkInfo from './BookmarkInfo';
 import { BsFillStarFill } from 'react-icons/bs';
 import { MdOutlineClose } from 'react-icons/md';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { bookmarkState, addBookmarkState, showBmListState } from '../../../recoil/Atom';
 
-export default function BookmarkModal() {
-	const [addBookmark, setAddBookmark] = useRecoilState(addBookmarkState);
-	const setShowBmList = useSetRecoilState(showBmListState);
-
-	function handleMakeBookmark() {
-		setShowBmList(true);
-	}
-
+const BookmarkModal = ({ setIsBookmarkOpen }) => {
 	return (
 		<BmModalStyle>
 			<div className="title">
-				<BsFillStarFill className="staricon" color="#ffb877" />
-				<p id="bookmarkTitle">북마크</p>
+				<p>북마크</p>
+				<button
+					id="x"
+					onClick={() => {
+						setIsBookmarkOpen(false);
+					}}
+				>
+					x
+				</button>
 			</div>
 
-			<div id="x" onClick={() => setAddBookmark(!addBookmark)}>
-				<MdOutlineClose color="#5f6caf" />
-			</div>
 			<BookmarkInfo />
-			<button className="makeBookmark" onClick={handleMakeBookmark}>
-				여정 만들기
-			</button>
+			<button className="makeBookmark">여정 만들기</button>
 		</BmModalStyle>
 	);
-}
+};
+
+export default BookmarkModal;
 
 const BmModalStyle = styled.div`
 	position: absolute;
-	top: 1rem;
-	left: 80vw;
+	top: 2rem;
+	left: 85vw;
 	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 4px;
 	display: flex;
@@ -55,29 +50,23 @@ const BmModalStyle = styled.div`
 		background: #ccc;
 	}
 
-	#bookmarkTitle {
-		padding-top: 0.7rem;
+	p {
+		font-size: 1.5rem;
 	}
 	.title {
+		background-color: #fafafa;
 		display: flex;
 		justify-content: center;
-		padding-right: 0.5rem;
-	}
-
-	.staricon {
-		padding: 10px 5px 0 0;
-		position: absolute;
-		left: 30%;
 	}
 
 	#x {
 		position: absolute;
 		right: 0;
 		margin: 2px;
-		text-align: end;
-		height: 1rem;
-		line-height: 1rem;
+		font-size: 2rem;
 		transform: scale(0.8);
+		border: none;
+		background-color: transparent;
 	}
 
 	.redirect {

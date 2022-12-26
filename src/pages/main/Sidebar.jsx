@@ -5,6 +5,10 @@ import { BiRestaurant } from 'react-icons/bi';
 import { ImSearch, ImLibrary } from 'react-icons/im';
 import { IoMdCafe } from 'react-icons/io';
 import { BsFillStarFill } from 'react-icons/bs';
+import { useState } from 'react';
+import Extendbar from './Extendbar';
+import BookmarkModal from './bookmark/BookmarkModal';
+import Bookmarkbar from './bookmark/Bookmarkbar';
 
 // import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 // import {
@@ -16,17 +20,54 @@ import { BsFillStarFill } from 'react-icons/bs';
 // } from '../../recoil/Atom';
 
 const Sidebar = () => {
-	const btnName = ['search', 'restaurant', 'landmark', 'cafe', 'bookmark'];
-	const icon = [<ImSearch />, <BiRestaurant />, <ImLibrary />, <IoMdCafe />, <BsFillStarFill />];
-	const color = ['#d9d9d9', '#0029fe', '#039b00', '#e05836', '#ffb877'];
-	let btnStyle = [];
-	for (let i = 0; i < icon.length; i++) {
-		btnStyle[i] = {
-			btnName: btnName[i],
-			icon: icon[i],
-			color: color[i],
-		};
-	}
+	const [isOpen, setIsOpen] = useState(false);
+	const [isBookmarkOpen, setIsBookmarkOpen] = useState(false);
+
+	const btnStyle = [
+		{
+			btnName: 'search',
+			icon: <ImSearch />,
+			color: '#d9d9d9',
+			onClick: () => {
+				setIsOpen(isOpen => !isOpen);
+				setIsBookmarkOpen(false);
+			},
+		},
+		{
+			btnName: 'restaurant',
+			icon: <BiRestaurant />,
+			color: '#0029fe',
+			onClick: () => {
+				setIsOpen(isOpen => true);
+			},
+		},
+		{
+			btnName: 'landmark',
+			icon: <ImLibrary />,
+			color: '#039b00',
+			onClick: () => {
+				setIsOpen(isOpen => true);
+			},
+		},
+		{
+			btnName: 'cafe',
+			icon: <IoMdCafe />,
+			color: '#e05836',
+			onClick: () => {
+				setIsOpen(isOpen => true);
+			},
+		},
+		{
+			btnName: 'bookmark',
+			icon: <BsFillStarFill />,
+			color: '#ffb877',
+			onClick: () => {
+				setIsOpen(false);
+				setIsBookmarkOpen(isOpen => !isOpen);
+			},
+		},
+	];
+
 	return (
 		<SidebarStyle>
 			{btnStyle.map((element, index) => {
@@ -36,9 +77,17 @@ const Sidebar = () => {
 						btnName={element.btnName}
 						icon={element.icon}
 						color={element.color}
+						onClick={element.onClick}
 					/>
 				);
 			})}
+			<Extendbar
+				isOpen={isOpen}
+				isBookmarkOpen={isBookmarkOpen}
+				setIsBookmarkOpen={setIsBookmarkOpen}
+			/>
+			{isBookmarkOpen && <BookmarkModal setIsBookmarkOpen={setIsBookmarkOpen} />}
+			<Bookmarkbar isBookmarkOpen={isBookmarkOpen} />
 		</SidebarStyle>
 	);
 };
@@ -47,12 +96,11 @@ const SidebarStyle = styled.div`
 	left: 0;
 	width: 120px;
 	float: left;
-	position: relative;
+	position: absolute;
 	background-color: #ffffff;
 	line-height: 48px;
 	transition: 0.3s ease-in-out;
 	height: calc(100vh - 80px);
-	z-index: 10;
 	display: flex;
 	flex-flow: column;
 `;
