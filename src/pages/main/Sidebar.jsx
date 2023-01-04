@@ -9,8 +9,8 @@ import { useState } from 'react';
 import Extendbar from './Extendbar';
 import BookmarkModal from './bookmark/BookmarkModal';
 import Bookmarkbar from './bookmark/Bookmarkbar';
-
-// import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+import { categoryState } from '../../recoil/Atom';
 // import {
 // 	extendbarState,
 // 	bookmarkbarState,
@@ -22,6 +22,7 @@ import Bookmarkbar from './bookmark/Bookmarkbar';
 const Sidebar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isBookmarkOpen, setIsBookmarkOpen] = useState(false);
+	const setCategory = useSetRecoilState(categoryState);
 
 	const btnStyle = [
 		{
@@ -39,14 +40,7 @@ const Sidebar = () => {
 			color: '#0029fe',
 			onClick: () => {
 				setIsOpen(isOpen => true);
-			},
-		},
-		{
-			btnName: 'landmark',
-			icon: <ImLibrary />,
-			color: '#039b00',
-			onClick: () => {
-				setIsOpen(isOpen => true);
+				setCategory(category => 'FD6');
 			},
 		},
 		{
@@ -55,6 +49,16 @@ const Sidebar = () => {
 			color: '#e05836',
 			onClick: () => {
 				setIsOpen(isOpen => true);
+				setCategory(category => 'CE7');
+			},
+		},
+		{
+			btnName: 'landmark',
+			icon: <ImLibrary />,
+			color: '#039b00',
+			onClick: () => {
+				setIsOpen(isOpen => true);
+				setCategory(category => 'AT4');
 			},
 		},
 		{

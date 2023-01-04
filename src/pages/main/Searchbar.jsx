@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ImSearch } from 'react-icons/im';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
+	categoryState,
 	placeState,
 	mainInputValueState,
 	bookmarkbarState,
@@ -14,6 +15,7 @@ function Searchbar() {
 	const setBmClose = useSetRecoilState(bookmarkbarState);
 	const setClose = useSetRecoilState(extendbarState);
 	const setPlace = useSetRecoilState(placeState);
+	const setCategory = useSetRecoilState(categoryState);
 
 	const onChange = e => {
 		setMainInputValue(e.target.value);
@@ -24,6 +26,7 @@ function Searchbar() {
 		setPlace(mainInputValue);
 		setClose(false);
 		setBmClose(true);
+		setCategory(null);
 	};
 
 	return (

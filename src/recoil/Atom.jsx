@@ -6,6 +6,11 @@ export const placeState = atom({
 	default: '',
 });
 
+export const categoryState = atom({
+	key: 'categoryState',
+	default: '',
+});
+
 // 간단한 place info
 export const placeInfoState = atom({
 	key: 'placeInfoState',
