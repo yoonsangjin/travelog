@@ -2,28 +2,26 @@ import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import makeMap from '../function/makeMap';
-import searchMap from '../function/searchMap';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { placeState, categoryState } from '../recoil/Atom';
+import searchPlace from '../function/searchPlace';
+// import searchByCategory from '../function/searchByCategory';
 
 const Map = () => {
-	const location = useLocation();
-	const queryArray = decodeURI(location.search).split('=');
-	let params = queryArray[1];
 	const mapRef = useRef();
-	const place = useRecoilValue(placeState);
+	const queryArray = decodeURI(useLocation().search).split('=');
+	const [place, setPlace] = useRecoilState(placeState);
 	const category = useRecoilValue(categoryState);
+
 	useEffect(() => {
-		const container = mapRef.current;
-		const kakaoMap = makeMap(container, params);
-		searchMap(kakaoMap, params);
+		makeMap(mapRef);
+		!place && setPlace(queryArray[1]);
 	}, []);
 
 	useEffect(() => {
-		const container = mapRef.current;
-		const kakaoMap = makeMap(container);
-		searchMap(kakaoMap, place, category);
-	}, [place, category]);
+		const kakaoMap = makeMap(mapRef);
+		searchPlace(kakaoMap, place, category);
+	}, [place, category]); // map 첫 로딩
 
 	return <MapContainer ref={mapRef} />;
 };

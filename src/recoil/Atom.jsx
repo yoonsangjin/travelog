@@ -11,6 +11,11 @@ export const categoryState = atom({
 	default: '',
 });
 
+export const searchState = atom({
+	key: 'searchState',
+	default: [],
+});
+
 // 간단한 place info
 export const placeInfoState = atom({
 	key: 'placeInfoState',
