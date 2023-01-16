@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import handleStyle from '../../../function/handleStyle';
 import makeBookmark from '../../../function/makeBookmark';
 import { MdOutlineClose } from 'react-icons/md';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -46,7 +45,7 @@ function BookmarkInfo() {
 	function makeBookmarkInfo(bookmark) {
 		return bookmark.map((data, i) => (
 			<div key={Math.random()} id={data.id} className="bookmarkBox">
-				<div key={Math.random()}>{handleStyle(data)}</div>
+				<div key={Math.random()}>{}</div>
 				<div className="bookmarkInfoBox">
 					<button id={data.id} name={i} className="deleteBtn" onClick={handleBookmark}>
 						x

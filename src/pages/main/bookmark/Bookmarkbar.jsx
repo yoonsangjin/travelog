@@ -9,23 +9,6 @@ import styled from 'styled-components';
 import SetModalBtn from '../../../components/SetModalBtn';
 
 const Bookmarkbar = ({ isBookmarkOpen }) => {
-	// const [bmClose, setBmClose] = useRecoilState(bookmarkbarState);
-	// const [getNumber, setGetNumber] = useState('');
-	// const isLoggedIn = useRecoilValue(loginState);
-	// const viewDetail = useRecoilValue(viewDetailState);
-
-	// useEffect(() => {
-	// 	renderDetailPage();
-	// }, [viewDetail]);
-
-	// function renderDetailPage() {
-	// 	return viewDetail ? (
-	// 		<BookmarkList getNumber={getNumber} setGetNumber={setGetNumber} />
-	// 	) : (
-	// 		<BookmarkDetail getNumber={getNumber} setGetNumber={setGetNumber} />
-	// 	);
-	// }
-
 	return (
 		<BookmarkbarStyle toggle={isBookmarkOpen}>
 			<Searchbar />
@@ -33,13 +16,7 @@ const Bookmarkbar = ({ isBookmarkOpen }) => {
 			<p className="myTravel">
 				<IoMdAirplane /> 나의 여정
 			</p>
-			<div className="contents">
-				{/* {isLoggedIn ? (
-					renderDetailPage()
-				) : (
-					<span className="pleaseLogin">로그인이 필요합니다.</span>
-				)} */}
-			</div>
+			<div className="contents"></div>
 		</BookmarkbarStyle>
 	);
 };
@@ -51,9 +28,9 @@ const BookmarkbarStyle = styled.div`
 	display: flex;
 	flex-flow: column;
 	top: 0;
-	left: ${props => (props.toggle ? '120px' : '-20rem')};
+	left: ${props => (props.toggle ? '80px' : '-20rem')};
 	width: 25rem;
-	height: 91.5vh;
+	height: 90vh;
 	background-color: #fafafa;
 	transition: 0.5s ease-in-out;
 

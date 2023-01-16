@@ -5,23 +5,28 @@ import makeMap from '../function/makeMap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { placeState, categoryState } from '../recoil/Atom';
 import searchPlace from '../function/searchPlace';
-// import searchByCategory from '../function/searchByCategory';
 
 const Map = () => {
 	const mapRef = useRef();
 	const queryArray = decodeURI(useLocation().search).split('=');
 	const [place, setPlace] = useRecoilState(placeState);
-	const category = useRecoilValue(categoryState);
+	const [category, setCategory] = useRecoilState(categoryState);
 
 	useEffect(() => {
 		makeMap(mapRef);
 		!place && setPlace(queryArray[1]);
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // map 첫 로딩
+
+	useEffect(() => {
+		const kakaoMap = makeMap(mapRef);
+		searchPlace(kakaoMap, place, '');
+	}, [place]);
 
 	useEffect(() => {
 		const kakaoMap = makeMap(mapRef);
 		searchPlace(kakaoMap, place, category);
-	}, [place, category]); // map 첫 로딩
+	}, [category]);
 
 	return <MapContainer ref={mapRef} />;
 };

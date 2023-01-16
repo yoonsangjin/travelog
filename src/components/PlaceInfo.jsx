@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import handleStyle from '../function/handleStyle';
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -38,7 +37,7 @@ function PlaceInfo() {
 	function makePlaceInfo(placeInfo) {
 		return placeInfo.map((data, i) => (
 			<div key={Math.random()} id={data.id} name={i} className="infoBox">
-				<div key={Math.random()}>{handleStyle(data)}</div>
+				<div key={Math.random()}>{}</div>
 				<button
 					id={data.id}
 					name={i}

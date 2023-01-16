@@ -21,9 +21,9 @@ const ExtendbarStyle = styled.div`
 	flex-flow: column;
 	z-index: -1;
 	top: 0;
-	left: ${props => (props.toggle ? '110px' : '-25rem')};
+	left: ${props => (props.toggle ? '80px' : '-20rem')};
 	width: 25rem;
-	height: 91.5vh;
+	height: 90vh;
 	background-color: #fafafa;
 	transition: 0.5s ease-in-out;
 `;

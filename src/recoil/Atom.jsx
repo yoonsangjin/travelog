@@ -11,11 +11,6 @@ export const categoryState = atom({
 	default: '',
 });
 
-export const searchState = atom({
-	key: 'searchState',
-	default: [],
-});
-
 // 간단한 place info
 export const placeInfoState = atom({
 	key: 'placeInfoState',
@@ -25,11 +20,6 @@ export const placeInfoState = atom({
 // detail info 창에 뿌릴 데이터
 export const detailInfoState = atom({
 	key: 'detailInfoState',
-	default: '',
-});
-
-export const mainInputValueState = atom({
-	key: 'mainInputValueState',
 	default: '',
 });
 

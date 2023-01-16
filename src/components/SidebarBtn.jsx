@@ -14,8 +14,8 @@ export default SidebarBtn;
 const SidebarBtnStyle = styled.button`
 	border: none;
 	background-color: ${props => props.color};
-	margin: 25px;
-	padding: 15px;
+	margin: 15px;
+	padding: 5px;
 	border-radius: 5px;
 	color: white;
 	font-size: 2rem;

@@ -5,6 +5,8 @@ export default function searchPlace(kakaoMap, place, category) {
 	let markers = [];
 	const places = new kakao.maps.services.Places();
 	const keywordSearchCB = (data, status, pagination) => {
+		sessionStorage.setItem('searchData', JSON.stringify(data));
+		console.log(JSON.parse(sessionStorage.getItem('searchData')));
 		if (status === kakao.maps.services.Status.OK) {
 			if (markers) {
 				markers.map(marker => marker.setMap(null));
@@ -32,6 +34,8 @@ export default function searchPlace(kakaoMap, place, category) {
 	};
 	const categorySearchCB = (data, status, pagination) => {
 		if (status === kakao.maps.services.Status.OK) {
+			sessionStorage.setItem('searchData', JSON.stringify(data));
+			console.log(JSON.parse(sessionStorage.getItem('searchData')));
 			if (markers) {
 				markers.map(marker => marker.setMap(null));
 				markers = [];

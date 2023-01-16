@@ -4,7 +4,7 @@ import { BsFillStarFill } from 'react-icons/bs';
 import { MdOutlineClose } from 'react-icons/md';
 import styled from 'styled-components';
 
-const BookmarkModal = ({ setIsBookmarkOpen }) => {
+const BookmarkModal = ({ setIsBookmarkModalOpen }) => {
 	return (
 		<BmModalStyle>
 			<div className="title">
@@ -12,7 +12,7 @@ const BookmarkModal = ({ setIsBookmarkOpen }) => {
 				<button
 					id="x"
 					onClick={() => {
-						setIsBookmarkOpen(false);
+						setIsBookmarkModalOpen(false);
 					}}
 				>
 					x
@@ -29,14 +29,13 @@ export default BookmarkModal;
 
 const BmModalStyle = styled.div`
 	position: absolute;
-	top: 2rem;
-	left: 85vw;
+	left: 80vw;
 	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 4px;
 	display: flex;
 	flex-flow: column;
 	width: 20rem;
-	height: 50rem;
+	height: 45rem;
 	text-align: center;
 	overflow: scroll;
 
