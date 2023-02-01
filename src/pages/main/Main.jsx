@@ -3,7 +3,7 @@
 import Sidebar from './Sidebar.jsx';
 // import Extendbar from './Extendbar.jsx';
 // import Bookmarkbar from './bookmark/Bookmarkbar.jsx';
-import { Map } from 'react-kakao-maps-sdk';
+import MapContainer from '../../components/MapContainer';
 // import SelectBmList from './bookmark/SelectBmList.jsx';
 // import {
 // 	useRecoilValue,
@@ -22,20 +22,7 @@ const Main = () => {
 	return (
 		<>
 			<Sidebar />
-			<Map
-				center={{
-					// 지도의 중심좌표
-					lat: 33.450701,
-					lng: 126.570667,
-				}}
-				style={{
-					// 지도의 크기
-					width: '100%',
-					height: '450px',
-				}}
-				level={3} // 지도의 확대 레벨
-			/>
-			;
+			<MapContainer />;
 		</>
 	);
 };
