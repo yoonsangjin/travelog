@@ -1,6 +1,6 @@
 import overlayContents from './overlayContents';
 
-export default function searchPlace(kakaoMap, place, category) {
+export default function searchPlace(map, place, category) {
 	const { kakao } = window;
 	let markers = [];
 	const places = new kakao.maps.services.Places();
@@ -19,16 +19,16 @@ export default function searchPlace(kakaoMap, place, category) {
 					position: new kakao.maps.LatLng(data.y, data.x),
 				});
 				markers.push(marker);
-				markers.map(marker => marker.setMap(kakaoMap));
+				markers.map(marker => marker.setMap(map));
 				let infowindow = new kakao.maps.InfoWindow({
 					zIndex: 1,
 					removable: true,
 				});
 				kakao.maps.event.addListener(marker, 'click', function () {
 					infowindow.setContent(overlayContents(data));
-					infowindow.open(kakaoMap, marker);
+					infowindow.open(map, marker);
 				});
-				kakaoMap.setBounds(bounds);
+				map.setBounds(bounds);
 			});
 		}
 	};
@@ -45,14 +45,14 @@ export default function searchPlace(kakaoMap, place, category) {
 					position: new kakao.maps.LatLng(data.y, data.x),
 				});
 				markers.push(marker);
-				markers.map(marker => marker.setMap(kakaoMap));
+				markers.map(marker => marker.setMap(map));
 				let infowindow = new kakao.maps.InfoWindow({
 					zIndex: 1,
 					removable: true,
 				});
 				kakao.maps.event.addListener(marker, 'click', function () {
 					infowindow.setContent(overlayContents(data));
-					infowindow.open(kakaoMap, marker);
+					infowindow.open(map, marker);
 				});
 			});
 		}
@@ -60,10 +60,10 @@ export default function searchPlace(kakaoMap, place, category) {
 
 	places.keywordSearch(place, keywordSearchCB, {});
 
-	kakao.maps.event.addListener(kakaoMap, 'tilesloaded', () => {
+	kakao.maps.event.addListener(map, 'tilesloaded', () => {
 		if (category) {
-			const sw = kakaoMap.getBounds().getSouthWest(),
-				ne = kakaoMap.getBounds().getNorthEast();
+			const sw = map.getBounds().getSouthWest(),
+				ne = map.getBounds().getNorthEast();
 			places.categorySearch(category, categorySearchCB, {
 				bounds: new kakao.maps.LatLngBounds(sw, ne),
 			});
