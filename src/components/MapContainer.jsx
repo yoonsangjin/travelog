@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { useLocation } from 'react-router';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { placeState, categoryState } from '../recoil/Atom';
-import searchPlace from '../function/searchPlace';
 
 const MapContainer = () => {
 	const { kakao } = window;
@@ -19,9 +19,39 @@ const MapContainer = () => {
 		errMsg: null,
 		isLoading: true,
 	});
+	const [currentPosition, setCurrentPosition] = useState();
 	const queryArray = decodeURI(useLocation().search).split('=');
-	const [place, setPlace] = useRecoilState(placeState);
-	const [category, setCategory] = useRecoilState(categoryState);
+	const place = useRecoilValue(placeState);
+	const category = useRecoilValue(categoryState);
+
+	const keywordSearch = place => {
+		const ps = new kakao.maps.services.Places();
+		ps.keywordSearch(place, (data, status, _pagination) => {
+			if (status === kakao.maps.services.Status.OK) {
+				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+				// LatLngBounds 객체에 좌표를 추가합니다
+				const bounds = new kakao.maps.LatLngBounds();
+				let markers = [];
+
+				for (let i = 0; i < data.length; i++) {
+					// @ts-ignore
+					markers.push({
+						position: {
+							lat: data[i].y,
+							lng: data[i].x,
+						},
+						content: data[i].place_name,
+					});
+					// @ts-ignore
+					bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+				}
+				setMarkers(markers);
+
+				// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+				map.setBounds(bounds);
+			}
+		});
+	};
 
 	useEffect(() => {
 		if (navigator.geolocation) {
@@ -57,36 +87,41 @@ const MapContainer = () => {
 
 	useEffect(() => {
 		if (!map) return;
-		const ps = new kakao.maps.services.Places();
-
-		ps.keywordSearch('이태원 맛집', (data, status, _pagination) => {
-			if (status === kakao.maps.services.Status.OK) {
-				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-				// LatLngBounds 객체에 좌표를 추가합니다
-				const bounds = new kakao.maps.LatLngBounds();
-				let markers = [];
-
-				for (let i = 0; i < data.length; i++) {
-					// @ts-ignore
-					markers.push({
-						position: {
-							lat: data[i].y,
-							lng: data[i].x,
-						},
-						content: data[i].place_name,
-					});
-					// @ts-ignore
-					bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-				}
-				setMarkers(markers);
-
-				// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-				map.setBounds(bounds);
-			}
-		});
-		console.log(markers);
+		keywordSearch(queryArray);
 	}, [map]);
 
+	useEffect(() => {
+		keywordSearch(place);
+	}, [place]);
+
+	useEffect(() => {
+		if (category && currentPosition) {
+			const ps = new kakao.maps.services.Places();
+			const searchCB = (data, status, _pagination) => {
+				if (status === kakao.maps.services.Status.OK) {
+					// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+					// LatLngBounds 객체에 좌표를 추가합니다
+					let markers = [];
+					for (let i = 0; i < data.length; i++) {
+						// @ts-ignore
+						markers.push({
+							position: {
+								lat: data[i].y,
+								lng: data[i].x,
+							},
+							content: data[i].place_name,
+						});
+						// @ts-ignore
+					}
+					setMarkers(markers);
+				}
+			};
+			ps.categorySearch(category, searchCB, {
+				bounds: new kakao.maps.LatLngBounds(currentPosition.sw, currentPosition.ne),
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [category, currentPosition]);
 	return (
 		<MapContainerStyle>
 			<Map // 지도를 표시할 Container
@@ -98,6 +133,12 @@ const MapContainer = () => {
 				}}
 				level={3} // 지도의 확대 레벨
 				onCreate={setMap}
+				onTileLoaded={map =>
+					setCurrentPosition({
+						sw: map.getBounds().getSouthWest(),
+						ne: map.getBounds().getNorthEast(),
+					})
+				}
 			>
 				{!mapInfo.isLoading && (
 					<MapMarker position={mapInfo.center}>
